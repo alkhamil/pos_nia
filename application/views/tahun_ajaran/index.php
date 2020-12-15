@@ -12,7 +12,7 @@
                 <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <i class="fa fa-plus-circle"></i> Tahun Ajaran
+                        <i class="fa fa-plus-circle"></i> <?= $title ?>
                     </button>
                     </h2>
                 </div>
@@ -63,7 +63,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Tahun Ajaran</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar <?= $title ?></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -238,7 +238,7 @@
     }
 
     $("#reset").click(function() {
-      resetForm("#form-lembaga");
+      resetForm("#form-tahun-ajaran");
     })
     // reset
 </script>

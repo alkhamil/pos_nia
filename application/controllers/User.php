@@ -11,7 +11,7 @@ class User extends CI_Controller {
 
 	public function index()
 	{
-        $data['title'] = 'Halaman User';
+        $data['title'] = 'User';
         $data['isi'] = 'user/index';
         $data['simpan'] = base_url('user/simpan');
         $data['data'] = base_url('user/data');
@@ -82,6 +82,7 @@ class User extends CI_Controller {
             //create
 			$this->User_model->insert($savedata);
         }
+
         
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();

@@ -12,7 +12,7 @@
                 <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <i class="fa fa-plus-circle"></i> User
+                        <i class="fa fa-plus-circle"></i> <?= $title ?>
                     </button>
                     </h2>
                 </div>
@@ -25,19 +25,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="username" class="label-required">Username</label>
-                                        <input type="text" class="form-control form-required" name="username" id="username">
+                                        <input type="text" class="form-control form-required" name="username" id="username" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="password" class="label-required">Password</label>
-                                        <input type="password" class="form-control form-required" name="password" id="password">
+                                        <input type="password" class="form-control form-required" name="password" id="password" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="user_type_id" class="label-required">User Type</label>
-                                        <select name="user_type_id" id="user_type_id" class="form-control" style="width: 100%" data-placeholder="Choose Type">
+                                        <select name="user_type_id" id="user_type_id" class="form-control" style="width: 100%" data-placeholder="Pilih Type" required>
 
                                         </select>
                                     </div>
@@ -66,7 +66,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar User</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar <?= $title ?></h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

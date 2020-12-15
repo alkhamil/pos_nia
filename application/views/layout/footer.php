@@ -72,11 +72,14 @@
             }
         }
 
-        let type = <?= json_encode($this->session->flashdata('msg')['type']) ?>;
-        let msg = <?= json_encode($this->session->flashdata('msg')['msg']) ?>;
-        if (msg) {
-            showToasts(type, msg);
-        }
+        <?php if (isset($this->session->flashdata('msg')['type'])) { ?>
+            let type = <?= json_encode($this->session->flashdata('msg')['type']) ?>;
+            let msg = <?= json_encode($this->session->flashdata('msg')['msg']) ?>;
+            if (msg) {
+                showToasts(type, msg);
+            }
+        <?php } ?>
+
     </script>
 
 </body>

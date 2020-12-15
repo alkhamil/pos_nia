@@ -11,7 +11,7 @@ class Tahun_ajaran extends CI_Controller {
 
 	public function index()
 	{
-        $data['title'] = 'Halaman Tahun Ajaran';
+        $data['title'] = 'Tahun Ajaran';
         $data['isi'] = 'tahun_ajaran/index';
         $data['simpan'] = base_url('tahun_ajaran/simpan');
         $data['data'] = base_url('tahun_ajaran/data');

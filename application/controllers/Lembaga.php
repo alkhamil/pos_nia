@@ -11,7 +11,7 @@ class Lembaga extends CI_Controller {
 
 	public function index()
 	{
-        $data['title'] = 'Halaman Lembaga';
+        $data['title'] = 'Lembaga';
         $data['isi'] = 'lembaga/index';
         $data['simpan'] = base_url('lembaga/simpan');
         $data['data'] = base_url('lembaga/data');
