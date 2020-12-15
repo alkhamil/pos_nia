@@ -8,7 +8,7 @@ class Siswa_model extends CI_Model {
     public $order_type = 'ASC';
     public $search_field = 'm_siswa.name';
     public $column_order = ['m_siswa.name']; //set column field database for datatable orderable
-    public $column_search = ['m_siswa.name']; //set column field database for datatable searchable 
+    public $column_search = ['m_siswa.name', 'm_lembaga.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -69,6 +69,7 @@ class Siswa_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_lembaga', 'm_lembaga.id = m_siswa.lembaga_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])

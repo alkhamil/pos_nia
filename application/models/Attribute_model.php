@@ -8,7 +8,7 @@ class Attribute_model extends CI_Model {
     public $order_type = 'ASC';
     public $search_field = 'm_attribute.name';
     public $column_order = ['m_attribute.name']; //set column field database for datatable orderable
-    public $column_search = ['m_attribute.name']; //set column field database for datatable searchable 
+    public $column_search = ['m_attribute.name', 'm_attribute_type.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -69,6 +69,7 @@ class Attribute_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_attribute_type', 'm_attribute_type.id = m_attribute.attribute_type_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])

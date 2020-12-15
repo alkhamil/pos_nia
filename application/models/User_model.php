@@ -69,6 +69,7 @@ class User_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_user_type', 'm_user_type.id = m_user.user_type_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])

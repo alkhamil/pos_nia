@@ -70,6 +70,8 @@ class Biaya_lembaga_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_biaya_lembaga.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_biaya_lembaga.lembaga_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])
