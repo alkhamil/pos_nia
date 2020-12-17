@@ -14,8 +14,25 @@ class Login extends CI_Controller {
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
 
-        if ($username) {
-            redirect(base_url('dashboard'),'refresh');
+        $user = $this->db->get_where('m_user', ['username'=>$username])->row_object();
+
+        if ($user) {
+            if (password_verify($password, $user->password)) {
+                $this->session->set_userdata('userdata', $user);
+                redirect(base_url('dashboard'),'refresh');
+            }else {
+                $this->session->set_flashdata('pesan', 'Password tidak cocok!');
+                redirect(base_url('login'),'refresh'); 
+            }
+        }else{
+            $this->session->set_flashdata('pesan', 'Akun tidak ditemukan!');
+            redirect(base_url('login'),'refresh');
         }
+    }
+
+    public function do_logout()
+    {
+        $this->session->unset_userdata('userdata');
+        redirect(base_url('login'), 'refresh');
     }
 }

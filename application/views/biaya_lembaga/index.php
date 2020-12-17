@@ -44,22 +44,24 @@
                                         <button id="btn-lanjutkan" class="btn btn-block btn-info btn-lanjutkan">Lanjutkan</button>
                                     </div>
                                 </div>
-                                <div class="col-md-12" id="list-attribute">
-                                    <div class="dropdown mb-1">
-                                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownAttribute" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-plus-circle"></i> Attribute
-                                        </button>
-                                        <div class="dropdown-menu shadow dropdown-attribute" aria-labelledby="dropdownAttribute">
-                                            <div class="row p-3">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <select name="attribute_id" id="attribute_id" class="form-control" style="width: 100%" data-placeholder="Pilih Attribute" required>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-md-12 d-none" id="edit-attribute">
+                                  <div class="dropdown mb-1">
+                                      <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownAttribute" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fa fa-plus-circle"></i> Attribute
+                                      </button>
+                                      <div class="dropdown-menu shadow dropdown-attribute" aria-labelledby="dropdownAttribute">
+                                          <div class="row p-3">
+                                              <div class="col-md-12">
+                                                  <div class="form-group">
+                                                      <select name="attribute_id" id="attribute_id" class="form-control" style="width: 100%" data-placeholder="Pilih Attribute">
+                                                      </select>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-12 d-none" id="list-attribute">
                                     <table class="table table-sm table-bordered">
                                         <thead class="thead-dark">
                                             <tr>
@@ -75,8 +77,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <hr>
-                                    <!-- <input type="hidden" name="list-attribute-temp" id="list-attribute-temp"> -->
-                                    <textarea name="list-attribute-temp" id="list-attribute-temp" class="form-control mb-2" cols="10" rows="5"></textarea>
+                                    <input type="hidden" name="list-attribute-temp" id="list-attribute-temp">
+                                    <!-- <textarea name="list-attribute-temp" id="list-attribute-temp" class="form-control mb-2" cols="10" rows="5"></textarea> -->
                                     <button type="submit" id="submit" class="btn btn-primary">
                                         Simpan
                                     </button>
@@ -250,7 +252,6 @@
         let dataTarget = $('#accordionExample .card-header button').attr('data-target');
         let form = $('#form-biaya-lembaga');
         $('#btn-lanjutkan').prop('disabled', true).css('cursor', 'not-allowed');
-      
         $.ajax({
             url: "<?= $get ?>?id=" + id,
             method: 'get',
@@ -260,6 +261,8 @@
                 hideLoad();
                 scrollUp('#form-biaya-lembaga');
                 $('#submit').prop('disabled', false).css('cursor', 'pointer');
+                $('#edit-attribute').removeClass('d-none');
+
                 if(!$(dataTarget).hasClass('show')) {
                     $('#accordionExample .card-header button').click()
                 }
@@ -439,6 +442,35 @@
     });
     
     // end hapus Lembaga
+
+    $(document).on("click.ev", ".btn-cetak", function(e) {
+        e.preventDefault();
+        showLoad();
+        let $this = $(this);
+        let id = $this.attr("data-id");
+        setTimeout(() => {
+            Swal.fire({
+                title: 'Cetak data ini?',
+                text: "Anda akan di alihkan ke halaman baru untuk mencetak",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Cetak!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let link = "<?= $cetak ?>" +"?id="+ id;
+                    window.open(link);
+                    hideLoad();
+                }else{
+                    hideLoad();
+                }
+                check_nis();
+            });
+        }, 1000);
+      
+        
+    });
     
 
     
@@ -492,7 +524,10 @@
           "fixedColumns": true,
           "render": function(data, type, row) {
             return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-lihat">
-                        <i class="fa fa-fw fa-eye"></i> Lihat Data
+                        <i class="fa fa-fw fa-eye"></i> Lihat
+                    </button>
+                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-cetak">
+                        <i class="fa fa-fw fa-print"></i> Cetak
                     </button>`;
           }
         },
@@ -508,6 +543,7 @@
       $(formEl).find('select').prop('disabled', false);
       $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer');
       $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+      $('#edit-attribute').addClass('d-none');
     }
 
     $("#reset").click(function() {

@@ -30,6 +30,7 @@ class Siswa extends CI_Controller {
 	{
         $data['title'] = 'Siswa';
         $data['isi'] = 'siswa/index';
+        $data['userdata'] = $this->userdata;
         $data['nis'] = base_url('siswa/check_nis');
         $data['simpan'] = base_url('siswa/simpan');
         $data['data'] = base_url('siswa/data');

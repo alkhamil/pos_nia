@@ -59,6 +59,13 @@ class CI_Controller {
 	private static $instance;
 
 	/**
+	 * Userdata
+	 *
+	 * @var	object
+	 */
+	public $userdata;
+
+	/**
 	 * CI_Loader
 	 *
 	 * @var	CI_Loader
@@ -84,6 +91,7 @@ class CI_Controller {
 
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
+		$this->userdata = $this->session->userdata('userdata');
 		log_message('info', 'Controller Class Initialized');
 	}
 

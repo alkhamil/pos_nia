@@ -13,6 +13,7 @@ class Lembaga extends CI_Controller {
 	{
         $data['title'] = 'Lembaga';
         $data['isi'] = 'lembaga/index';
+        $data['userdata'] = $this->userdata;
         $data['simpan'] = base_url('lembaga/simpan');
         $data['data'] = base_url('lembaga/data');
         $data['get'] = base_url('lembaga/get_data');

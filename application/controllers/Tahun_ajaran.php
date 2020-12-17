@@ -13,6 +13,7 @@ class Tahun_ajaran extends CI_Controller {
 	{
         $data['title'] = 'Tahun Ajaran';
         $data['isi'] = 'tahun_ajaran/index';
+        $data['userdata'] = $this->userdata;
         $data['simpan'] = base_url('tahun_ajaran/simpan');
         $data['data'] = base_url('tahun_ajaran/data');
         $data['get'] = base_url('tahun_ajaran/get_data');

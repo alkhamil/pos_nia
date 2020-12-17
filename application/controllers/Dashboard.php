@@ -7,6 +7,7 @@ class Dashboard extends CI_Controller {
 	{
         $data['title'] = 'Dashboard';
         $data['isi'] = 'dashboard/index';
+        $data['userdata'] = $this->userdata;
         $this->load->view('layout/wrapper', $data);
     }
 }

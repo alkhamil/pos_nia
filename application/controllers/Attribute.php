@@ -13,6 +13,7 @@ class Attribute extends CI_Controller {
 	{
         $data['title'] = 'Attribute';
         $data['isi'] = 'attribute/index';
+        $data['userdata'] = $this->userdata;
         $data['simpan'] = base_url('attribute/simpan');
         $data['data'] = base_url('attribute/data');
         $data['get'] = base_url('attribute/get_data');

@@ -7,17 +7,19 @@ class Biaya_lembaga extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Biaya_lembaga_model');
+        $this->load->library('pdf');
     }
 
 	public function index()
 	{
         $data['title'] = 'Biaya Lembaga';
         $data['isi'] = 'biaya_lembaga/index';
+        $data['userdata'] = $this->userdata;
         $data['simpan'] = base_url('biaya_lembaga/simpan');
         $data['data'] = base_url('biaya_lembaga/data');
         $data['get'] = base_url('biaya_lembaga/get_data');
         $data['get_biaya_lembaga'] = base_url('biaya_lembaga/get_biaya_lembaga');
-        $data['hapus'] = base_url('biaya_lembaga/hapus');
+        $data['cetak'] = base_url('biaya_lembaga/cetak');
         $data['select_tahun_ajaran'] = base_url('biaya_lembaga/select_tahun_ajaran');
         $data['select_lembaga'] = base_url('biaya_lembaga/select_lembaga');
         $data['select_attribute'] = base_url('biaya_lembaga/select_attribute');
@@ -180,15 +182,30 @@ class Biaya_lembaga extends CI_Controller {
         $savedata['tahun_ajaran_id'] = $this->input->post('tahun_ajaran_id', TRUE);
         $savedata['lembaga_id'] = $this->input->post('lembaga_id', TRUE);
 
+        $list_attribute_temp = json_decode($this->input->post('list-attribute-temp'));
+
+        
         $this->db->trans_begin();
         if($this->input->post('id')) { 
             // edit
+            $biaya_lembaga_id = $this->input->post('id',TRUE);
+            
             $savedata['tahun_ajaran_id'] = $this->input->post('tahun_ajaran_id_temp', TRUE);
             $savedata['lembaga_id'] = $this->input->post('lembaga_id_temp', TRUE);
-			$this->Biaya_lembaga_model->update($savedata, array('id' => $this->input->post('id', TRUE)));
+            $this->Biaya_lembaga_model->update($savedata, ['id'=>$biaya_lembaga_id]);
+            
+            $savedata_detail = [];
+            $this->Biaya_lembaga_model->table = 't_biaya_lembaga_detail';
+            $this->Biaya_lembaga_model->delete(['biaya_lembaga_id'=>$biaya_lembaga_id]);
+            foreach ($list_attribute_temp as $key => $lat) {
+                $savedata_detail['biaya_lembaga_id'] = $biaya_lembaga_id;
+                $savedata_detail['attribute_id'] = $lat->attribute_id;
+                $savedata_detail['amount'] = $lat->amount;
+                
+                $this->Biaya_lembaga_model->insert($savedata_detail);
+            }
         } else { 
             //create
-            $list_attribute_temp = json_decode($this->input->post('list-attribute-temp'));
             $biaya_lembaga_id = $this->Biaya_lembaga_model->insert($savedata, true);
             if ($biaya_lembaga_id) {
                 $savedata_detail = [];
@@ -222,26 +239,44 @@ class Biaya_lembaga extends CI_Controller {
         redirect(base_url('biaya_lembaga'), 'refresh');
     }
 
-    public function hapus()
+    public function cetak()
     {
-        $where['id'] = $this->input->get('id', TRUE);
-        $this->db->trans_begin();
-        $this->Biaya_lembaga_model->delete($where);
+        $where['t_biaya_lembaga.id'] = $this->input->get('id', TRUE);
+        $select = "
+            t_biaya_lembaga.*, 
+            m_tahun_ajaran.id as tahun_ajaran_id,
+            m_tahun_ajaran.name as tahun_ajaran_name,
+            m_lembaga.id as lembaga_id,
+            m_lembaga.name as lembaga_name,
+        ";
+        $join = [
+            [
+                'table'     => 'm_tahun_ajaran',
+                'on'        => 'm_tahun_ajaran.id = t_biaya_lembaga.tahun_ajaran_id'
+            ],
+            [
+                'table'     => 'm_lembaga',
+                'on'        => 'm_lembaga.id = t_biaya_lembaga.lembaga_id'
+            ]
+        ];
+        $result = $this->Biaya_lembaga_model->get($where, $select, $join);
 
-        if ($this->db->trans_status() === FALSE){
-            $this->db->trans_rollback();
-            $msg = array(
-                'type' => 'error',
-                'msg' => 'Data tidak terhapus.',
-            );
-        }else{
-            $this->db->trans_commit();
-            $msg = array(
-                'type' => 'success',
-                'msg' => 'Data berhasil terhapus.',
-            );
-        }
-        echo json_encode($msg);
+        $data['tahun_ajaran_id'] = $result->tahun_ajaran_id;
+        $data['tahun_ajaran_name'] = $result->tahun_ajaran_name;
+        $data['lembaga_id'] = $result->lembaga_id;
+        $data['lembaga_name'] = $result->lembaga_name;
+        $data['id'] = $result->id;
+        $data['biaya_lembaga_detail'] = $this->biaya_lembaga_detail($result->id);
+        $data['title'] = 'Lampiran Biaya '.$result->tahun_ajaran_name.' Lembaga '.$result->lembaga_name;
+
+        // echo json_encode($data);exit;
+        
+
+        $this->load->library('pdf');
+    
+        $this->pdf->setPaper('A4', 'potrait');
+        $this->pdf->filename = $data['title'];
+        $this->pdf->load_view('biaya_lembaga/cetak', $data);
     }
 
     public function select_tahun_ajaran()

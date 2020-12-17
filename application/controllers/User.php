@@ -13,6 +13,7 @@ class User extends CI_Controller {
 	{
         $data['title'] = 'User';
         $data['isi'] = 'user/index';
+        $data['userdata'] = $this->userdata;
         $data['simpan'] = base_url('user/simpan');
         $data['data'] = base_url('user/data');
         $data['get'] = base_url('user/get_data');
