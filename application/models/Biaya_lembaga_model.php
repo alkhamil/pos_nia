@@ -168,8 +168,11 @@ class Biaya_lembaga_model extends CI_Model {
         return $q->result_object();
     }
 
-    function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0)
-    {
+    function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0, $join=false)
+    {   
+        if ($join) {
+            $this->db->join('m_attribute_type', 'm_attribute_type.id = m_attribute.attribute_type_id');
+        }
         $this->db->select($select)
                  ->order_by($this->order_by, $this->order_type)
                  ->limit($limit,$offset);

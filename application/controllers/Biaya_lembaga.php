@@ -20,6 +20,7 @@ class Biaya_lembaga extends CI_Controller {
         $data['hapus'] = base_url('biaya_lembaga/hapus');
         $data['select_tahun_ajaran'] = base_url('biaya_lembaga/select_tahun_ajaran');
         $data['select_lembaga'] = base_url('biaya_lembaga/select_lembaga');
+        $data['select_attribute'] = base_url('biaya_lembaga/select_attribute');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -265,6 +266,18 @@ class Biaya_lembaga extends CI_Controller {
         $this->Biaya_lembaga_model->column_search = "name";
         $this->Biaya_lembaga_model->table = "m_lembaga";
         $data = $this->Biaya_lembaga_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
+    public function select_attribute()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        $this->Biaya_lembaga_model->order_by = "m_attribute.id";
+        $this->Biaya_lembaga_model->search_field = "m_attribute.name";
+        $this->Biaya_lembaga_model->table = "m_attribute";
+        $select = "m_attribute.*, m_attribute_type.name as attribute_type_name";
+        $data = $this->Biaya_lembaga_model->list_select($q, $where, $select, 10, 0, true);
         echo json_encode($data);
     }
 

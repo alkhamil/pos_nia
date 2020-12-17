@@ -11631,6 +11631,11 @@ body.sidebar-toggled footer.sticky-footer {
     color: red;
 }
 
+.dropdown-attribute {
+    width: 300px;
+    border: none;
+}
+
 .loader {
     border: 10px solid #3E64D3;
     border-top: 10px solid #000;

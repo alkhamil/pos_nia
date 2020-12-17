@@ -41,10 +41,25 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="text-white">.</label>
-                                        <button id="btn-lanjutkan" class="btn btn-block btn-primary btn-lanjutkan">Lanjutkan</button>
+                                        <button id="btn-lanjutkan" class="btn btn-block btn-info btn-lanjutkan">Lanjutkan</button>
                                     </div>
                                 </div>
-                                <div class="col-md-12 d-none" id="list-attribute">
+                                <div class="col-md-12" id="list-attribute">
+                                    <div class="dropdown mb-1">
+                                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownAttribute" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-plus-circle"></i> Attribute
+                                        </button>
+                                        <div class="dropdown-menu shadow dropdown-attribute" aria-labelledby="dropdownAttribute">
+                                            <div class="row p-3">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <select name="attribute_id" id="attribute_id" class="form-control" style="width: 100%" data-placeholder="Pilih Attribute" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <table class="table table-sm table-bordered">
                                         <thead class="thead-dark">
                                             <tr>
@@ -60,8 +75,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <hr>
-                                    <input type="hidden" name="list-attribute-temp" id="list-attribute-temp">
-                                    <!-- <textarea name="list-attribute-temp" id="list-attribute-temp" class="form-control mb-2" cols="10" rows="5"></textarea> -->
+                                    <!-- <input type="hidden" name="list-attribute-temp" id="list-attribute-temp"> -->
+                                    <textarea name="list-attribute-temp" id="list-attribute-temp" class="form-control mb-2" cols="10" rows="5"></textarea>
                                     <button type="submit" id="submit" class="btn btn-primary">
                                         Simpan
                                     </button>
@@ -111,6 +126,10 @@
 <script>
     showLoad();
     $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+
+    $(document).on('click.ev', '.dropdown-attribute', function (e) {
+        e.stopPropagation();
+    });
 
     let tahun_ajaran_id = null;
     $("#tahun_ajaran_id").select2({
@@ -172,6 +191,56 @@
       lembaga_id = null;
     });
 
+
+    $("#attribute_id").select2({
+      ajax: {
+        url: "<?php echo $select_attribute ?>",
+        delay: 100,
+        dataType: 'json',
+        processResults: function(data) {
+          let items = [];
+          if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              let tempData = {
+                id: data[i].id,
+                text: data[i].name,
+                data: data[i]
+              }
+              items.push(tempData)
+            }
+          }
+          return {
+            results: items
+          };
+        }
+      }
+    }).on("select2:select", function(e) {
+      let data = e.params.data;
+      let _lembaga_id = $('[name=id]').val();
+      let row = {
+        id : data.data.id,
+        biaya_lembaga_id : _lembaga_id,
+        attribute_id : data.data.id,
+        amount : data.data.amount,
+        name : data.data.name,
+        attribute_type_name : data.data.attribute_type_name,
+      }
+
+      let load = true;
+      $.each(DATA, function (index, dt) { 
+          if (parseInt(dt.attribute_id) == parseInt(data.id)) {
+              load = false;
+          }
+      });
+      if (load) {
+          DATA.push(row);
+          loadDataChild(DATA);
+      }else{
+        Swal.fire('"'+data.data.name+'" sudah ada!', 'Data sudah pernah di masukan', 'warning')
+      }
+    }).on("select2:unselect", function(e){
+    });
+
     // edit Lembaga
     $(document).on("click.ev", ".btn-lihat", function(e) {
         e.preventDefault();
@@ -204,29 +273,8 @@
                 form.find('[name=lembaga_id]').append(opt_lembaga).trigger('change');
                 form.find('[name=lembaga_id]').prop('disabled', true);
                 form.find('[name=lembaga_id_temp]').val(dt.lembaga_id);
-
                 DATA = dt.biaya_lembaga_detail;
-                $('#list-attribute-temp').val(JSON.stringify(DATA));
-                if (DATA) {
-                    $('#list-attribute').removeClass('d-none');
-                    $('#list-attribute-data').html("");
-                    $.each(DATA, function (index, data) { 
-                        index+=1;
-                        let rows = `<tr>
-                                        <td>`+index+`</td>
-                                        <td>`+data.name+`</td>
-                                        <td>`+data.attribute_type_name+`</td>
-                                        <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
-                                        <td align="center" width="80">
-                                            <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>`
-                        $('#list-attribute-data').append(rows);
-                    });
-                }
-
+                loadDataChild(DATA)
             }
       });
     });
@@ -307,26 +355,7 @@
                         DATA = data.biaya_lembaga;
                         form.find('[name=id]').val(data.id);
                         if (!data.is_isset) {
-                            $('#list-attribute-temp').val(JSON.stringify(DATA));
-                            if (DATA) {
-                                $('#list-attribute').removeClass('d-none');
-                                $('#list-attribute-data').html("");
-                                $.each(DATA, function (index, data) { 
-                                    index+=1;
-                                    let rows = `<tr>
-                                                    <td>`+index+`</td>
-                                                    <td>`+data.name+`</td>
-                                                    <td>`+data.attribute_type_name+`</td>
-                                                    <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
-                                                    <td align="center" width="80">
-                                                        <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>`
-                                    $('#list-attribute-data').append(rows);
-                                });
-                            }
+                            loadDataChild(DATA);
                         }else{
                             let msg = 'Data biaya tahun <b>'+data.tahun_ajaran_name+'</b> & lembaga <b>'+data.lembaga_name+'</b> sudah pernah di input. <br> Silahkan di check kembali!  ';
                             Swal.fire('Oopss!', msg, 'warning')
@@ -348,30 +377,35 @@
         DATA.splice(i-1, 1);
         showLoad();
         setTimeout(() => {
-            $('#list-attribute-temp').val(JSON.stringify(DATA));
-            if (DATA) {
-                $('#list-attribute').removeClass('d-none');
-                $('#list-attribute-data').html("");
-                $.each(DATA, function (index, data) { 
-                    index+=1;
-                    let rows = `<tr>
-                                    <td>`+index+`</td>
-                                    <td>`+data.name+`</td>
-                                    <td>`+data.attribute_type_name+`</td>
-                                    <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
-                                    <td align="center" width="80">
-                                        <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>`
-                    $('#list-attribute-data').append(rows);
-                });
-            }
+            loadDataChild(DATA);
             $(this).closest('tr').remove();
             hideLoad();
         }, 1000);
     });
+
+
+    function loadDataChild(_DATA){
+        $('#list-attribute-temp').val(JSON.stringify(_DATA));
+        if (_DATA) {
+            $('#list-attribute').removeClass('d-none');
+            $('#list-attribute-data').html("");
+            $.each(_DATA, function (index, data) { 
+                index+=1;
+                let rows = `<tr>
+                                <td>`+index+`</td>
+                                <td>`+data.name+`</td>
+                                <td>`+data.attribute_type_name+`</td>
+                                <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
+                                <td align="center" width="80">
+                                    <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>`
+                $('#list-attribute-data').append(rows);
+            });
+        }
+    }
 
     $(document).on("change.ev", ".change-price-item", function(e) {
         e.preventDefault();
