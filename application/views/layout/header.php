@@ -124,6 +124,19 @@
             </div>
         </div>
     </li>
+    <li class="nav-item <?php if($uri=='pembayaran') echo 'active' ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
+            aria-expanded="true" aria-controls="collapseTransaksi">
+            <i class="fas fa-fw fa-money-check-alt"></i>
+            <span>Transaksi</span>
+        </a>
+        <div id="collapseTransaksi" class="collapse <?php if($uri=='pembayaran') echo 'show' ?>" aria-labelledby="headingTransaksi"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item <?php if($uri=='pembayaran') echo 'active' ?>" href="<?= base_url('pembayaran') ?>">Pembayaran</a>
+            </div>
+        </div>
+    </li>
     <li class="nav-item <?php if($uri=='user') echo 'active' ?>">
         <a class="nav-link" href="<?= base_url('user') ?>">
             <i class="fas fa-fw fa-cog"></i>

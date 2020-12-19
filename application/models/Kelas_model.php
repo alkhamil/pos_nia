@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tahun_ajaran_model extends CI_Model {
+class Kelas_model extends CI_Model {
 
-    public $table = 'm_tahun_ajaran';
+    public $table = 'm_kelas';
     public $primary_key = 'id';
     public $order_by = 'id';
     public $order_type = 'ASC';

@@ -25,15 +25,15 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="name" class="label-required">Tahun Ajaran</label>
-                                        <input type="text" class="form-control form-required" name="name" id="name" required>
+                                        <input type="text" class="form-control form-required" name="name" id="name" required readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="desc" class="label-required">Deskripsi</label>
                                         <textarea name="desc" id="desc" class="form-control" cols="10" rows="3" required></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="status" class="label-required">Status</label>
-                                        <select name="status" id="status"style="width: 100%" class="form-control" data-placeholder="Choose Status" required>
+                                        <label for="is_active" class="label-required">Status</label>
+                                        <select name="is_active" id="is_active"style="width: 100%" class="form-control" data-placeholder="Choose Status" required>
                                             <option value="1">AKTIF</option>
                                             <option value="0">TIDAK AKTIF</option>
                                         </select>
@@ -90,7 +90,9 @@
 
 <script>
     showLoad();
-    $("select[name=status]").select2();
+    cek_tahun_ajaran();
+    $("select[name=is_active]").select2();
+    
 
     // edit Lembaga
     $(document).on("click.ev", ".btn-edit", function(e) {
@@ -115,51 +117,51 @@
                 form.find('[name=id]').val(dt.id);
                 form.find('[name=name]').val(dt.name);
                 form.find('[name=desc]').val(dt.desc);
-                form.find('[name=status]').val(dt.status).trigger('change');
+                form.find('[name=is_active]').val(dt.is_active).trigger('change');
             }
       });
     });
     // end edit Lembaga
 
     // hapus Lembaga
-    $(document).on("click.ev", ".btn-hapus", function(e) {
-        e.preventDefault();
-        showLoad();
-        let $this = $(this);
-        let id = $this.attr("data-id");
-        setTimeout(() => {
-            Swal.fire({
-                title: 'Anda yakin ingin hapus?',
-                text: "Data ini akan hilang permanent",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "<?= $hapus ?>?id=" + id,
-                        method: 'get',
-                        dataType: 'json',
-                        success: function(data){
-                            if (data.type == 'success') {
-                                Swal.fire('Terhapus!', data.msg, 'success')
-                            }else {
-                                Swal.fire('Gagal!', data.msg, 'warning')
-                            }
-                            hideLoad();
-                            table.ajax.reload();
-                        }
-                    });
-                }else{
-                    hideLoad();
-                }
-            });
-        }, 1000);
+    // $(document).on("click.ev", ".btn-hapus", function(e) {
+    //     e.preventDefault();
+    //     showLoad();
+    //     let $this = $(this);
+    //     let id = $this.attr("data-id");
+    //     setTimeout(() => {
+    //         Swal.fire({
+    //             title: 'Anda yakin ingin hapus?',
+    //             text: "Data ini akan hilang permanent",
+    //             icon: 'warning',
+    //             showCancelButton: true,
+    //             confirmButtonColor: '#3085d6',
+    //             cancelButtonColor: '#d33',
+    //             confirmButtonText: 'Ya, Hapus!'
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 $.ajax({
+    //                     url: "<?= $hapus ?>?id=" + id,
+    //                     method: 'get',
+    //                     dataType: 'json',
+    //                     success: function(data){
+    //                         if (data.type == 'success') {
+    //                             Swal.fire('Terhapus!', data.msg, 'success')
+    //                         }else {
+    //                             Swal.fire('Gagal!', data.msg, 'warning')
+    //                         }
+    //                         hideLoad();
+    //                         table.ajax.reload();
+    //                     }
+    //                 });
+    //             }else{
+    //                 hideLoad();
+    //             }
+    //         });
+    //     }, 1000);
       
         
-    });
+    // });
     // end hapus Lembaga
 
     
@@ -195,7 +197,7 @@
           "data": "desc"
         },
         {
-          "data": "status",
+          "data": "is_active",
           "render" : function(data, type, row){
               return (data=='0'||data==0) ? 'Tidak Aktif' : 'Aktif';
           }
@@ -220,16 +222,26 @@
           "render": function(data, type, row) {
             return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-fw fa-edit"></i> Edit
-                    </button>
-                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus">
-                        <i class="fa fa-fw fa-trash"></i> Hapus
                     </button>`;
           }
         },
       ],
     });
     // end data
-
+    //cek tahun_ajaran
+    function cek_tahun_ajaran() { 
+        $.ajax({
+            type: "get",
+            url: "<?= $cek_tahun ?>",
+            dataType: "json",
+            success: function (data) {
+                if(data){
+                    $('#name').val(data);
+                }
+            }
+        });
+    };
+    //end tahun_ajaran
     // reset
     function resetForm(formEl) {
       $(formEl).trigger("reset");
@@ -239,6 +251,7 @@
 
     $("#reset").click(function() {
       resetForm("#form-tahun-ajaran");
+      cek_tahun_ajaran();
     })
     // reset
 </script>

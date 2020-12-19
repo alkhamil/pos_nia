@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Tahun_ajaran_model extends CI_Model {
+class Pembayaran_model extends CI_Model {
 
-    public $table = 'm_tahun_ajaran';
+    public $table = 't_pembayaran';
     public $primary_key = 'id';
     public $order_by = 'id';
     public $order_type = 'ASC';
-    public $search_field = 'name';
-    public $column_order = ['name']; //set column field database for datatable orderable
-    public $column_search = ['name']; //set column field database for datatable searchable 
+    public $search_field = 'siswa_id';
+    public $column_order = ['siswa_id']; //set column field database for datatable orderable
+    public $column_search = ['siswa_id']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -166,16 +166,16 @@ class Tahun_ajaran_model extends CI_Model {
 
     function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0)
     {
-        $this->db->select($select)
-                 ->order_by($this->order_by, $this->order_type)
-                 ->limit($limit,$offset);
-
         if($where) {
             $this->db->where($where);
         }
         if($q) {
             $this->db->like("LOWER(".$this->search_field.")", strtolower($q));
         }
+
+        $this->db->select($select)
+                 ->order_by($this->order_by, $this->order_type)
+                 ->limit($limit,$offset);
          
         $q = $this->db->get($this->table);
         return $q->result_array();
