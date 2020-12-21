@@ -242,6 +242,7 @@ class Biaya_lembaga extends CI_Controller {
         $savedata_detail = [];
         foreach ($data as $key => $dt) {
             $savedata_detail['amount'] = $dt->amount;
+            $savedata_detail['is_checked'] = $dt->is_checked;
             $this->Biaya_lembaga_model->table = $table;
             $this->Biaya_lembaga_model->update($savedata_detail, ['id'=>$dt->id]);
         }
@@ -255,6 +256,7 @@ class Biaya_lembaga extends CI_Controller {
             $savedata_detail['biaya_lembaga_id'] = $biaya_lembaga_id;
             $savedata_detail[$foreign_key] = $dt->id;
             $savedata_detail['amount'] = $dt->amount;
+            $savedata_detail['is_checked'] = (isset($dt->is_checked)) ? $dt->is_checked : 0;
 
             $this->Biaya_lembaga_model->table = $table;
             $this->Biaya_lembaga_model->insert($savedata_detail);

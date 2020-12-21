@@ -5,7 +5,7 @@ class Biaya_lembaga_model extends CI_Model {
     public $table = 't_biaya_lembaga';
     public $primary_key = 't_biaya_lembaga.id';
     public $order_by = 't_biaya_lembaga.id';
-    public $order_type = 'ASC';
+    public $order_type = 'DESC';
     public $search_field = 'm_tahun_ajaran.name';
     public $column_order = ['m_tahun_ajaran.name']; //set column field database for datatable orderable
     public $column_search = ['m_tahun_ajaran.name', 'm_lembaga.name']; //set column field database for datatable searchable 

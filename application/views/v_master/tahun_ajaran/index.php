@@ -155,7 +155,7 @@
         {
           "data": "is_active",
           "render" : function(data, type, row){
-              return (data=='0'||data==0) ? 'Tidak Aktif' : 'Aktif';
+              return (data=='0'||data==0) ? '<div class="badge badge-danger">Tidak Aktif</div>' : '<div class="badge badge-success">Aktif</div>';
           }
         },
         {

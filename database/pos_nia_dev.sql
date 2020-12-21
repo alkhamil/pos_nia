@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 21/12/2020 15:45:29
+ Date: 21/12/2020 17:00:15
 */
 
 SET NAMES utf8mb4;
@@ -270,6 +270,9 @@ CREATE TABLE `t_biaya_lembaga`  (
 -- Records of t_biaya_lembaga
 -- ----------------------------
 INSERT INTO `t_biaya_lembaga` VALUES (2, 14, 1);
+INSERT INTO `t_biaya_lembaga` VALUES (3, 14, 2);
+INSERT INTO `t_biaya_lembaga` VALUES (4, 14, 3);
+INSERT INTO `t_biaya_lembaga` VALUES (5, 14, 4);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_komite
@@ -287,30 +290,54 @@ CREATE TABLE `t_biaya_lembaga_komite`  (
 -- ----------------------------
 -- Records of t_biaya_lembaga_komite
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_komite` VALUES (37, 2, 1, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (38, 2, 2, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (39, 2, 3, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (40, 2, 4, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (41, 2, 5, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (42, 2, 6, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (43, 2, 7, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (44, 2, 8, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (45, 2, 9, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (46, 2, 10, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (47, 2, 11, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (48, 2, 12, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (49, 2, 37, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (50, 2, 38, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (51, 2, 39, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (52, 2, 40, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (53, 2, 41, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (54, 2, 42, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (55, 2, 43, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (56, 2, 44, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (57, 2, 45, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (58, 2, 46, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (59, 2, 47, 4000, 0);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (60, 2, 48, 4000, 0);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (37, 2, 1, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (38, 2, 2, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (39, 2, 3, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (40, 2, 4, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (41, 2, 5, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (42, 2, 6, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (43, 2, 7, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (44, 2, 8, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (45, 2, 9, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (46, 2, 10, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (47, 2, 11, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (48, 2, 12, 4000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (61, 3, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (62, 3, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (63, 3, 3, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (64, 3, 4, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (65, 3, 5, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (66, 3, 6, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (67, 3, 7, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (68, 3, 8, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (69, 3, 9, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (70, 3, 10, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (71, 3, 11, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (72, 3, 12, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (73, 4, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (74, 4, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (75, 4, 3, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (76, 4, 4, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (77, 4, 5, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (78, 4, 6, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (79, 4, 7, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (80, 4, 8, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (81, 4, 9, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (82, 4, 10, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (83, 4, 11, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (84, 4, 12, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (85, 5, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (86, 5, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (87, 5, 3, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (88, 5, 4, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (89, 5, 5, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (90, 5, 6, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (91, 5, 7, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (92, 5, 8, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (93, 5, 9, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (94, 5, 10, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (95, 5, 11, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (96, 5, 12, 0, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_lainnya
@@ -328,10 +355,14 @@ CREATE TABLE `t_biaya_lembaga_lainnya`  (
 -- ----------------------------
 -- Records of t_biaya_lembaga_lainnya
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (7, 2, 1, 5000, 0);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (8, 2, 2, 4000, 0);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (9, 2, 7, 4000, 0);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (10, 2, 8, 4000, 0);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (7, 2, 1, 5000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (8, 2, 2, 4000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (11, 3, 1, 0, 0);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (12, 3, 2, 0, 0);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (13, 4, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (14, 4, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (15, 5, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (16, 5, 2, 0, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_semester
@@ -349,10 +380,14 @@ CREATE TABLE `t_biaya_lembaga_semester`  (
 -- ----------------------------
 -- Records of t_biaya_lembaga_semester
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_semester` VALUES (7, 2, 1, 4000, 0);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (7, 2, 1, 4000, 1);
 INSERT INTO `t_biaya_lembaga_semester` VALUES (8, 2, 2, 4000, 0);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (9, 2, 7, 4000, 0);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (10, 2, 8, 4000, 0);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (11, 3, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (12, 3, 2, 0, 0);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (13, 4, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (14, 4, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (15, 5, 1, 0, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (16, 5, 2, 0, 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran

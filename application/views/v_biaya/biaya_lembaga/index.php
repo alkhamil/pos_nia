@@ -73,6 +73,9 @@
                                 </div> -->
                                 <div class="col-md-12 d-none" id="list-attribute">
                                     <hr>
+                                    <div class="alert alert-info">Note: <br>
+                                        - Gunakan fitur <b>Centang dan Tidak Centang</b> untuk mengatur attribute yang di butuhkan.
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4 table-scroll">
                                             <table class="table table-sm table-bordered">
@@ -84,7 +87,7 @@
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Harga</th>
-                                                        <th>C/UC</th>
+                                                        <th>C/TC</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="list-attribute-komite"></tbody>
@@ -100,7 +103,7 @@
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Harga</th>
-                                                        <th>C/UC</th>
+                                                        <th>C/TC</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="list-attribute-semester"></tbody>
@@ -116,7 +119,7 @@
                                                         <th>#</th>
                                                         <th>Name</th>
                                                         <th>Harga</th>
-                                                        <th>C/UC</th>
+                                                        <th>C/TC</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="list-attribute-lainnya"></tbody>
@@ -394,21 +397,20 @@
 
 
     function loadDataChild(_DATA){
-        $('#list-attribute-temp').val(JSON.stringify(_DATA));
-        console.log(_DATA);
         if (_DATA) {
             $('#list-attribute').removeClass('d-none');
             // use komite
             $('#list-attribute-komite').html("");
             $.each(_DATA.komite, function (index, data) { 
                 index+=1;
+                data.is_checked = 1;
                 let rows = `<tr>
                                 <td>`+index+`</td>
                                 <td>`+data.name+`</td>
                                 <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-komite" data-id="`+index+`"></td>
                                 <td align="center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_komite" data-id="`+index+`" checked>
+                                        <input class="form-check-input set_attr_komite" type="checkbox" value=""  data-id="`+index+`" checked disabled>
                                     </div>
                                 </td>
                             </tr>`
@@ -418,13 +420,14 @@
             $('#list-attribute-semester').html("");
             $.each(_DATA.semester, function (index, data) { 
                 index+=1;
+                let checked = (data.is_checked == 1) ? 'checked' : '';
                 let rows = `<tr>
                                 <td>`+index+`</td>
                                 <td>`+data.name+`</td>
                                 <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-semester" data-id="`+index+`"></td>
                                 <td align="center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_semester" data-id="`+index+`" checked>
+                                        <input class="form-check-input set_attr_semester" type="checkbox" value="" data-id="`+index+`" `+checked+`>
                                     </div>
                                 </td>
                             </tr>`
@@ -434,19 +437,21 @@
             $('#list-attribute-lainnya').html("");
             $.each(_DATA.lainnya, function (index, data) { 
                 index+=1;
+                let checked = (data.is_checked == 1) ? 'checked' : '';
                 let rows = `<tr>
                                 <td>`+index+`</td>
                                 <td>`+data.name+`</td>
                                 <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-lainnya" data-id="`+index+`"></td>
                                 <td align="center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_lainnya" data-id="`+index+`" checked>
+                                        <input class="form-check-input set_attr_lainnya" type="checkbox" value=""  data-id="`+index+`" `+checked+`>
                                     </div>
                                 </td>
                             </tr>`
                 $('#list-attribute-lainnya').append(rows);
             });
         }
+        $('#list-attribute-temp').val(JSON.stringify(_DATA));
     }
 
     // change use komite
@@ -489,6 +494,33 @@
             loadDataChild(DATA);
             hideLoad();
         }, 600);
+    });
+
+
+    // change active semester
+    $(document).on("change.ev", ".set_attr_semester", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA.semester[i-1].is_checked = (this.checked) ? 1 : 0;
+        showLoad();
+        setTimeout(() => {
+            $('#list-attribute-temp').val(JSON.stringify(DATA));
+            loadDataChild(DATA);
+            hideLoad();
+        }, 300);
+    });
+
+    // change active lainnya
+    $(document).on("change.ev", ".set_attr_lainnya", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA.lainnya[i-1].is_checked = (this.checked) ? 1 : 0;
+        showLoad();
+        setTimeout(() => {
+            $('#list-attribute-temp').val(JSON.stringify(DATA));
+            loadDataChild(DATA);
+            hideLoad();
+        }, 300);
     });
     
     // end hapus Lembaga
