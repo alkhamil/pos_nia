@@ -193,7 +193,10 @@
           "data": "name"
         },
         {
-          "data": "type"
+          "data": "type",
+          "render" : function (data, type, row) {
+            return (data=='PRIMARY') ? '<div class="badge badge-primary">Primary</div>' : '<div class="badge badge-success">Secondary</div>';
+          }
         },
         {
           "data": "desc"
