@@ -19,23 +19,33 @@
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
-                        <form action="<?= $simpan ?>" method="POST" id="form-attribute">
+                        <form action="<?= $simpan ?>" method="POST" id="form-siswa">
                             <div class="row">
                                 <input type="hidden" name="id">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="attribute_type_id" class="label-required">Attribute Tipe</label>
-                                        <select name="attribute_type_id" id="attribute_type_id" class="form-control" style="width: 100%" data-placeholder="Choose Type" required>
-
-                                        </select>
+                                        <label for="nis" class="label-required">NIS</label>
+                                        <input type="text" class="form-control form-required" name="nis" id="nis" required readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="name" class="label-required">Nama</label>
+                                        <label for="name" class="label-required">Nama Siswa</label>
                                         <input type="text" class="form-control form-required" name="name" id="name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="desc" class="label-required">Deskripsi</label>
-                                        <textarea name="desc" id="desc" class="form-control" cols="10" rows="3" required></textarea>
+                                        <label for="phone" class="label-required">Telepon</label>
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control form-required" name="phone" id="phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="birthday" class="label-required">Tanggal Lahir</label>
+                                        <input type="text" class="form-control form-required" name="birthday" id="birthday" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lembaga_id" class="label-required">Lembaga</label>
+                                        <select name="lembaga_id" id="lembaga_id" class="form-control" style="width: 100%" data-placeholder="Choose Lembaga" required>
+
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -70,9 +80,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Nis</th>
                                 <th>Nama</th>
-                                <th>Tipe</th>
-                                <th>Deskripsi</th>
+                                <th>Lembaga</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Telepon</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -89,10 +101,35 @@
 
 <script>
     showLoad();
+    check_nis();
 
-    $("#attribute_type_id").select2({
+    function check_nis(){
+      $.ajax({
+        type: "get",
+        url: "<?= $nis ?>",
+        dataType: "json",
+        success: function (data) {
+          if (data) {
+            $('#nis').val(data);
+          }
+        }
+      });
+    }
+
+    $("#birthday").daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      locale : {
+          format : 'YYYY-MM-DD'
+      }
+    }).on('apply.daterangepicker', function (ev, picker) {
+      let startDate = picker.startDate.format('YYYY-MM-DD');
+      $(this).val(startDate);
+    });
+
+    $("#lembaga_id").select2({
       ajax: {
-        url: "<?php echo $select_attribute_type ?>",
+        url: "<?php echo $select_lembaga ?>",
         delay: 100,
         dataType: 'json',
         processResults: function(data) {
@@ -124,24 +161,27 @@
         let $this = $(this);
         let id = $this.attr("data-id");
         let dataTarget = $('#accordionExample .card-header button').attr('data-target');
-        let form = $('#form-attribute');
+        let form = $('#form-siswa');
       
         $.ajax({
             url: "<?= $get ?>?id=" + id,
             method: 'get',
             dataType: 'json',
             success: function(data){
-                let dt = data.attribute;
+                let dt = data.siswa;
                 hideLoad();
-                scrollUp('#form-attribute');
+                scrollUp('#form-siswa');
                 if(!$(dataTarget).hasClass('show')) {
                     $('#accordionExample .card-header button').click()
                 }
                 form.find('[name=id]').val(dt.id);
-                let opt_attribute_type = new Option(dt.attribute_type_name, dt.attribute_type_id, true, true);
-                form.find('[name=attribute_type_id]').append(opt_attribute_type).trigger('change');
+                form.find('[name=nis]').val(dt.nis);
                 form.find('[name=name]').val(dt.name);
-                form.find('[name=desc]').val(dt.desc);
+                form.find('[name=phone]').val(dt.phone);
+                form.find('[name=birthday]').val(dt.birthday);
+
+                let opt_lembaga = new Option(dt.lembaga_name, dt.lembaga_id, true, true);
+                form.find('[name=lembaga_id]').append(opt_lembaga).trigger('change');
             }
       });
     });
@@ -181,6 +221,7 @@
                 }else{
                     hideLoad();
                 }
+                check_nis();
             });
         }, 1000);
       
@@ -215,13 +256,19 @@
           "data": "no"
         },
         {
+          "data": "nis"
+        },
+        {
           "data": "name"
         },
         {
-          "data": "attribute_type_name"
+          "data": "lembaga_name"
         },
         {
-          "data": "desc"
+          "data": "birthday"
+        },
+        {
+          "data": "phone"
         },
         {
           "data": "id"
@@ -230,14 +277,14 @@
       
       "columnDefs": [
         {
-          "targets": [0, 4], 
+          "targets": [0, 6], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 4,
+          "targets": 6,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
@@ -261,7 +308,8 @@
     }
 
     $("#reset").click(function() {
-      resetForm("#form-attribute");
+      resetForm("#form-siswa");
+      check_nis();
     })
     // reset
 </script>

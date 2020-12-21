@@ -1,24 +1,23 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class Lembaga extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('User_model');
+        $this->load->model('m_master/Lembaga_model');
     }
 
 	public function index()
 	{
-        $data['title'] = 'User';
-        $data['isi'] = 'user/index';
+        $data['title'] = 'Lembaga';
+        $data['isi'] = 'v_master/lembaga/index';
         $data['userdata'] = $this->userdata;
-        $data['simpan'] = base_url('user/simpan');
-        $data['data'] = base_url('user/data');
-        $data['get'] = base_url('user/get_data');
-        $data['hapus'] = base_url('user/hapus');
-        $data['select_user_type'] = base_url('user/select_user_type');
+        $data['simpan'] = base_url('c_master/lembaga/simpan');
+        $data['data'] = base_url('c_master/lembaga/data');
+        $data['get'] = base_url('c_master/lembaga/get_data');
+        $data['hapus'] = base_url('c_master/lembaga/hapus');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -27,8 +26,8 @@ class User extends CI_Controller {
         $temp_data = [];
         $where = [];
         $no = $this->input->post('start');
-        $list = $this->User_model->lists(
-            'm_user.* , m_user_type.name as user_type_name',
+        $list = $this->Lembaga_model->lists(
+            '*',
             $where, 
             $this->input->post('length'), 
             $this->input->post('start')
@@ -38,9 +37,9 @@ class User extends CI_Controller {
 				$no++;
 				$row = array();
                 $row['no'] = $no;
-				$row['user_type_name'] = $ls['user_type_name'];
-				$row['username'] = $ls['username'];
-				$row['password'] = $ls['password'];
+				$row['name'] = $ls['name'];
+				$row['desc'] = $ls['desc'];
+				$row['saldo'] = $ls['saldo'];
 				$row['id'] = $ls['id'];
 	
 				$temp_data[] = (object)$row;
@@ -48,42 +47,34 @@ class User extends CI_Controller {
 		}
 		
 		$data['draw'] = $this->input->post('draw');
-		$data['recordsTotal'] = $this->User_model->list_count($where, true);
-		$data['recordsFiltered'] = $this->User_model->list_count($where, true);
+		$data['recordsTotal'] = $this->Lembaga_model->list_count($where, true);
+		$data['recordsFiltered'] = $this->Lembaga_model->list_count($where, true);
         $data['data'] = $temp_data;
         echo json_encode($data);
     }
 
     public function get_data()
     {
-        $where['m_user.id'] = $this->input->get('id', TRUE);
-        $select = "m_user.*, m_user_type.id as user_type_id, m_user_type.name as user_type_name";
-        $join = [
-            [
-                'table'     => 'm_user_type',
-                'on'        => 'm_user_type.id = m_user.user_type_id'
-            ]
-        ];
-        $data['user'] = $this->User_model->get($where, $select, $join);
+        $where['id'] = $this->input->get('id', TRUE);
+        $select = "*";
+        $data['lembaga'] = $this->Lembaga_model->get($where, $select);
         
         echo json_encode($data);
     }
 
     public function simpan()
     {
-        $savedata['username'] = $this->input->post('username', TRUE);
-        $savedata['password'] = password_hash($this->input->post('password', TRUE), PASSWORD_BCRYPT);
-        $savedata['user_type_id'] = $this->input->post('user_type_id', TRUE);
+        $savedata['name'] = $this->input->post('name', TRUE);
+        $savedata['desc'] = $this->input->post('desc', TRUE);
 
         $this->db->trans_begin();
         if($this->input->post('id')) { 
             // edit
-			$this->User_model->update($savedata, array('id' => $this->input->post('id', TRUE)));
+			$this->Lembaga_model->update($savedata, array('id' => $this->input->post('id', TRUE)));
         } else { 
             //create
-			$this->User_model->insert($savedata);
+            $this->Lembaga_model->insert($savedata);
         }
-
         
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
@@ -100,14 +91,14 @@ class User extends CI_Controller {
         }
         $this->session->set_flashdata('msg', $msg);
         
-        redirect(base_url('user'), 'refresh');
+        redirect(base_url('c_master/lembaga'), 'refresh');
     }
 
     public function hapus()
     {
         $where['id'] = $this->input->get('id', TRUE);
         $this->db->trans_begin();
-        $this->User_model->delete($where);
+        $this->Lembaga_model->delete($where);
 
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
@@ -125,15 +116,4 @@ class User extends CI_Controller {
         echo json_encode($msg);
     }
 
-    public function select_user_type()
-    {
-        $q = $this->input->get('q');
-        $where = [];
-        $this->User_model->order_by = "id";
-        $this->User_model->search_field = "name";
-        $this->User_model->column_search = "name";
-        $this->User_model->table = "m_user_type";
-        $data = $this->User_model->list_select($q, $where);
-        echo json_encode($data);
-    }
 }

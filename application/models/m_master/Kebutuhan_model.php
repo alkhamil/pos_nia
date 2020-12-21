@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Kelas_model extends CI_Model {
+class Kebutuhan_model extends CI_Model {
 
-    public $table = 'm_kelas';
-    public $primary_key = 'id';
-    public $order_by = 'id';
+    public $table = 'm_kebutuhan';
+    public $primary_key = 'm_kebutuhan.id';
+    public $order_by = 'm_kebutuhan.id';
     public $order_type = 'ASC';
-    public $search_field = 'name';
-    public $column_order = ['name']; //set column field database for datatable orderable
-    public $column_search = ['name']; //set column field database for datatable searchable 
+    public $search_field = 'm_kebutuhan.name';
+    public $column_order = ['m_kebutuhan.name']; //set column field database for datatable orderable
+    public $column_search = ['m_kebutuhan.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {

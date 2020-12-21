@@ -1,23 +1,23 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Lembaga extends CI_Controller {
+class Kebutuhan extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Lembaga_model');
+        $this->load->model('m_master/Kebutuhan_model');
     }
 
 	public function index()
 	{
-        $data['title'] = 'Lembaga';
-        $data['isi'] = 'lembaga/index';
+        $data['title'] = 'Kebutuhan';
+        $data['isi'] = 'v_master/kebutuhan/index';
         $data['userdata'] = $this->userdata;
-        $data['simpan'] = base_url('lembaga/simpan');
-        $data['data'] = base_url('lembaga/data');
-        $data['get'] = base_url('lembaga/get_data');
-        $data['hapus'] = base_url('lembaga/hapus');
+        $data['simpan'] = base_url('c_master/kebutuhan/simpan');
+        $data['data'] = base_url('c_master/kebutuhan/data');
+        $data['get'] = base_url('c_master/kebutuhan/get_data');
+        $data['hapus'] = base_url('c_master/kebutuhan/hapus');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -26,8 +26,8 @@ class Lembaga extends CI_Controller {
         $temp_data = [];
         $where = [];
         $no = $this->input->post('start');
-        $list = $this->Lembaga_model->lists(
-            '*',
+        $list = $this->Kebutuhan_model->lists(
+            'm_kebutuhan.*',
             $where, 
             $this->input->post('length'), 
             $this->input->post('start')
@@ -38,8 +38,8 @@ class Lembaga extends CI_Controller {
 				$row = array();
                 $row['no'] = $no;
 				$row['name'] = $ls['name'];
+				$row['type'] = $ls['type'];
 				$row['desc'] = $ls['desc'];
-				$row['saldo'] = $ls['saldo'];
 				$row['id'] = $ls['id'];
 	
 				$temp_data[] = (object)$row;
@@ -47,17 +47,17 @@ class Lembaga extends CI_Controller {
 		}
 		
 		$data['draw'] = $this->input->post('draw');
-		$data['recordsTotal'] = $this->Lembaga_model->list_count($where, true);
-		$data['recordsFiltered'] = $this->Lembaga_model->list_count($where, true);
+		$data['recordsTotal'] = $this->Kebutuhan_model->list_count($where, true);
+		$data['recordsFiltered'] = $this->Kebutuhan_model->list_count($where, true);
         $data['data'] = $temp_data;
         echo json_encode($data);
     }
 
     public function get_data()
     {
-        $where['id'] = $this->input->get('id', TRUE);
-        $select = "*";
-        $data['lembaga'] = $this->Lembaga_model->get($where, $select);
+        $where['m_kebutuhan.id'] = $this->input->get('id', TRUE);
+        $select = "m_kebutuhan.*";
+        $data['kebutuhan'] = $this->Kebutuhan_model->get($where, $select);
         
         echo json_encode($data);
     }
@@ -65,15 +65,16 @@ class Lembaga extends CI_Controller {
     public function simpan()
     {
         $savedata['name'] = $this->input->post('name', TRUE);
+        $savedata['type'] = $this->input->post('type', TRUE);
         $savedata['desc'] = $this->input->post('desc', TRUE);
 
         $this->db->trans_begin();
         if($this->input->post('id')) { 
             // edit
-			$this->Lembaga_model->update($savedata, array('id' => $this->input->post('id', TRUE)));
+			$this->Kebutuhan_model->update($savedata, array('id' => $this->input->post('id', TRUE)));
         } else { 
             //create
-            $this->Lembaga_model->insert($savedata);
+            $this->Kebutuhan_model->insert($savedata);
         }
         
         if ($this->db->trans_status() === FALSE){
@@ -91,14 +92,14 @@ class Lembaga extends CI_Controller {
         }
         $this->session->set_flashdata('msg', $msg);
         
-        redirect(base_url('lembaga'), 'refresh');
+        redirect(base_url('c_master/kebutuhan'), 'refresh');
     }
 
     public function hapus()
     {
         $where['id'] = $this->input->get('id', TRUE);
         $this->db->trans_begin();
-        $this->Lembaga_model->delete($where);
+        $this->Kebutuhan_model->delete($where);
 
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();

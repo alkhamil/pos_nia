@@ -6,19 +6,18 @@ class Tahun_ajaran extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Tahun_ajaran_model');
+        $this->load->model('m_master/Tahun_ajaran_model');
     }
 
 	public function index()
 	{
         $data['title'] = 'Tahun Ajaran';
-        $data['isi'] = 'tahun_ajaran/index';
+        $data['isi'] = 'v_master/tahun_ajaran/index';
         $data['userdata'] = $this->userdata;
-        $data['simpan'] = base_url('tahun_ajaran/simpan');
-        $data['cek_tahun'] = base_url('tahun_ajaran/tahun_ajaran_cek');
-        $data['data'] = base_url('tahun_ajaran/data');
-        $data['get'] = base_url('tahun_ajaran/get_data');
-        $data['hapus'] = base_url('tahun_ajaran/hapus');
+        $data['simpan'] = base_url('c_master/tahun_ajaran/simpan');
+        $data['cek_tahun'] = base_url('c_master/tahun_ajaran/tahun_ajaran_cek');
+        $data['data'] = base_url('c_master/tahun_ajaran/data');
+        $data['get'] = base_url('c_master/tahun_ajaran/get_data');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -127,7 +126,7 @@ class Tahun_ajaran extends CI_Controller {
         }
         $this->session->set_flashdata('msg', $msg);
         
-        redirect(base_url('Tahun_ajaran'), 'refresh');
+        redirect(base_url('c_master/tahun_ajaran'), 'refresh');
     }
 
     public function tahun_ajaran_cek()
@@ -142,27 +141,5 @@ class Tahun_ajaran extends CI_Controller {
         
         echo json_encode($result);
 
-    }
-
-    public function hapus()
-    {
-        $where['id'] = $this->input->get('id', TRUE);
-        $this->db->trans_begin();
-        $this->Tahun_ajaran_model->delete($where);
-
-        if ($this->db->trans_status() === FALSE){
-            $this->db->trans_rollback();
-            $msg = array(
-                'type' => 'error',
-                'msg' => 'Data tidak terhapus.',
-            );
-        }else{
-            $this->db->trans_commit();
-            $msg = array(
-                'type' => 'success',
-                'msg' => 'Data berhasil terhapus.',
-            );
-        }
-        echo json_encode($msg);
     }
 }

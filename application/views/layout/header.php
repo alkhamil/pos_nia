@@ -16,9 +16,10 @@
     <!-- Custom fonts for this template-->
     <link href="<?= base_url('assets/vendor/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="shortcut icon" href="<?= base_url('assets/img/ico.png') ?>" type="image/x-icon">
 
     <!-- Custom styles for this template-->
-    <link href="<?= base_url('assets/css/sb-admin-2.min.css?n=s') ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/css/sb-admin-2.min.css?n=2') ?>" rel="stylesheet">
     
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/vendor/jquery/jquery.min.js') ?>"></script>
@@ -74,72 +75,96 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">POS-NIA</div>
+        
+        <div class="sidebar-brand-text mx-3">
+            <img src="<?= base_url('assets/img/logo.png') ?>" alt="" width="40">
+            SIA-TRANS</div>
     </a>
 
     <?php  
-        $uri = $this->uri->segment(1);
+        $segment_1 = $this->uri->segment(1);
+        $segment_2 = $this->uri->segment(2);
     ?>
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item <?php if($uri=='dashboard') echo 'active' ?>">
+    <li class="nav-item <?php if($segment_1=='dashboard') echo 'active' ?>">
         <a class="nav-link" href="<?= base_url('dashboard') ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </li>
     
-    <li class="nav-item <?php if($uri=='tahun_ajaran' || $uri=='attribute' || $uri=='lembaga' || $uri=='siswa') echo 'active' ?>">
+    <!-- Data Master -->
+    <li class="nav-item <?php if($segment_1=='c_master') echo 'active' ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataMaster"
             aria-expanded="true" aria-controls="collapseDataMaster">
             <i class="fas fa-fw fa-folder"></i>
             <span>Data Master</span>
         </a>
-        <div id="collapseDataMaster" class="collapse <?php if($uri=='tahun_ajaran' || $uri=='attribute' || $uri=='lembaga' || $uri=='siswa') echo 'show' ?>" aria-labelledby="headingDataMaster"
+        <div id="collapseDataMaster" class="collapse <?php if($segment_1=='c_master') echo 'show' ?>" aria-labelledby="headingDataMaster"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <?php if($uri=='tahun_ajaran') echo 'active' ?>" href="<?= base_url('tahun_ajaran') ?>">Tahun Ajaran</a>
-                <a class="collapse-item <?php if($uri=='attribute') echo 'active' ?>" href="<?= base_url('attribute') ?>">Attribute</a>
-                <a class="collapse-item <?php if($uri=='lembaga') echo 'active' ?>" href="<?= base_url('lembaga') ?>">Lembaga</a>
-                <a class="collapse-item <?php if($uri=='siswa') echo 'active' ?>" href="<?= base_url('siswa') ?>">Siswa</a>
+                <a class="collapse-item <?php if($segment_2=='tahun_ajaran') echo 'active' ?>" href="<?= base_url('c_master/tahun_ajaran') ?>">Tahun Ajaran</a>
+                <a class="collapse-item <?php if($segment_2=='lembaga') echo 'active' ?>" href="<?= base_url('c_master/lembaga') ?>">Lembaga</a>
+                <a class="collapse-item <?php if($segment_2=='siswa') echo 'active' ?>" href="<?= base_url('c_master/siswa') ?>">Siswa</a>
+                <a class="collapse-item <?php if($segment_2=='kebutuhan') echo 'active' ?>" href="<?= base_url('c_master/kebutuhan') ?>">Kebutuhan</a>
             </div>
         </div>
     </li>
-    <li class="nav-item <?php if($uri=='biaya_lembaga') echo 'active' ?>">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataTransaksi"
-            aria-expanded="true" aria-controls="collapseDataTransaksi">
-            <i class="fas fa-fw fa-exchange-alt"></i>
-            <span>Data Transaksi</span>
+    <!-- Data Attribute -->
+    <li class="nav-item <?php if($segment_1=='c_attribute') echo 'active' ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataAttribute"
+            aria-expanded="true" aria-controls="collapseDataAttribute">
+            <i class="fas fa-fw fa-file "></i>
+            <span>Data Attribute</span>
         </a>
-        <div id="collapseDataTransaksi" class="collapse <?php if($uri=='biaya_lembaga') echo 'show' ?>" aria-labelledby="headingDataTransaksi"
+        <div id="collapseDataAttribute" class="collapse <?php if($segment_1=='c_attribute') echo 'show' ?>" aria-labelledby="headingDataAttribute"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <?php if($uri=='biaya_lembaga') echo 'active' ?>" href="<?= base_url('biaya_lembaga') ?>">Biaya Lembaga</a>
+                <a class="collapse-item <?php if($segment_2=='komite') echo 'active' ?>" href="<?= base_url('c_attribute/komite') ?>">Komite</a>
+                <a class="collapse-item <?php if($segment_2=='semester') echo 'active' ?>" href="<?= base_url('c_attribute/semester') ?>">Semester</a>
+                <a class="collapse-item <?php if($segment_2=='lainnya') echo 'active' ?>" href="<?= base_url('c_attribute/lainnya') ?>">Lainnya</a>
             </div>
         </div>
     </li>
-    <li class="nav-item <?php if($uri=='pembayaran') echo 'active' ?>">
+
+    <!-- Data Biaya -->
+    <li class="nav-item <?php if($segment_1=='c_biaya') echo 'active' ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataBiaya"
+            aria-expanded="true" aria-controls="collapseDataBiaya">
+            <i class="fas fa-fw fa-money-bill"></i>
+            <span>Pengaturan Biaya</span>
+        </a>
+        <div id="collapseDataBiaya" class="collapse <?php if($segment_1=='c_biaya') echo 'show' ?>" aria-labelledby="headingDataBiaya"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item <?php if($segment_2=='biaya_lembaga') echo 'active' ?>" href="<?= base_url('c_biaya/biaya_lembaga') ?>">Biaya Lembaga</a>
+                <a class="collapse-item <?php if($segment_2=='biaya_kebutuhan') echo 'active' ?>" href="<?= base_url('c_biaya/biaya_kebutuhan') ?>">Biaya Kebutuhan</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Data Transaksi -->
+    <li class="nav-item <?php if($segment_1=='c_transaksi') echo 'active' ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
             aria-expanded="true" aria-controls="collapseTransaksi">
             <i class="fas fa-fw fa-money-check-alt"></i>
             <span>Transaksi</span>
         </a>
-        <div id="collapseTransaksi" class="collapse <?php if($uri=='pembayaran') echo 'show' ?>" aria-labelledby="headingTransaksi"
+        <div id="collapseTransaksi" class="collapse <?php if($segment_1=='c_transaksi') echo 'show' ?>" aria-labelledby="headingTransaksi"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <?php if($uri=='pembayaran') echo 'active' ?>" href="<?= base_url('pembayaran') ?>">Pembayaran</a>
+                <a class="collapse-item <?php if($segment_2=='pembayaran') echo 'active' ?>" href="<?= base_url('c_transaksi/pembayaran') ?>">Pembayaran</a>
+                <a class="collapse-item <?php if($segment_2=='pengeluaran') echo 'active' ?>" href="<?= base_url('c_transaksi/pengeluaran') ?>">Pengeluaran</a>
             </div>
         </div>
     </li>
-    <li class="nav-item <?php if($uri=='user') echo 'active' ?>">
+    <li class="nav-item <?php if($segment_1=='user') echo 'active' ?>">
         <a class="nav-link" href="<?= base_url('user') ?>">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-user"></i>
             <span>User</span>
         </a>
     </li>

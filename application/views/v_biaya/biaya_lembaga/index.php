@@ -1,3 +1,13 @@
+<style>
+.table-scroll {
+  max-height: 250px;
+  overflow: auto;
+  display: inline-block;
+}
+.form-check-input{
+    cursor:pointer;
+}
+</style>
 <!-- Content Row -->
 <div class="row content">
     <div class="load">
@@ -44,7 +54,7 @@
                                         <button id="btn-lanjutkan" class="btn btn-block btn-info btn-lanjutkan">Lanjutkan</button>
                                     </div>
                                 </div>
-                                <div class="col-md-12 d-none" id="edit-attribute">
+                                <!-- <div class="col-md-12 d-none" id="edit-attribute">
                                   <div class="dropdown mb-1">
                                       <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownAttribute" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <i class="fa fa-plus-circle"></i> Attribute
@@ -60,20 +70,59 @@
                                           </div>
                                       </div>
                                   </div>
-                                </div>
+                                </div> -->
                                 <div class="col-md-12 d-none" id="list-attribute">
-                                    <table class="table table-sm table-bordered">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Attribute</th>
-                                                <th>Tipe</th>
-                                                <th>Harga</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="list-attribute-data"></tbody>
-                                    </table>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-4 table-scroll">
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4" class="text-center text-white bg-dark">Komite</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Harga</th>
+                                                        <th>C/UC</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="list-attribute-komite"></tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4 table-scroll">
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4" class="text-center text-white bg-dark">Semester</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Harga</th>
+                                                        <th>C/UC</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="list-attribute-semester"></tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4 table-scroll">
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="4" class="text-center text-white bg-dark">Lainnya</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Harga</th>
+                                                        <th>C/UC</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="list-attribute-lainnya"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <hr>
@@ -284,58 +333,15 @@
     // end edit Lembaga
 
     // hapus Lembaga
-    $(document).on("click.ev", ".btn-hapus", function(e) {
-        e.preventDefault();
-        showLoad();
-        let $this = $(this);
-        let id = $this.attr("data-id");
-        setTimeout(() => {
-            Swal.fire({
-                title: 'Anda yakin ingin hapus?',
-                text: "Data ini akan hilang permanent",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "<?= $hapus ?>?id=" + id,
-                        method: 'get',
-                        dataType: 'json',
-                        success: function(data){
-                            if (data.type == 'success') {
-                                Swal.fire('Terhapus!', data.msg, 'success')
-                            }else {
-                                Swal.fire('Gagal!', data.msg, 'warning')
-                            }
-                            hideLoad();
-                            table.ajax.reload();
-                        }
-                    });
-                }else{
-                    hideLoad();
-                }
-            });
-        }, 1000);
-      
-        
-    });
-    // end hapus Lembaga
-
-    // hapus Lembaga
     let DATA = [];
     let lanjut = true;
     $(document).on("click.ev", ".btn-lanjutkan", function(e) {
         e.preventDefault();
         showLoad();
         let form = $('#form-biaya-lembaga');
-
         
         $('#form-biaya-lembaga').find('.form-required').each(function(){
             let value = $(this).val();
-            console.log(value);
             if (value == null || value == '') {
                 lanjut=false;
             }else{
@@ -360,7 +366,7 @@
                         if (!data.is_isset) {
                             loadDataChild(DATA);
                         }else{
-                            let msg = 'Data biaya tahun <b>'+data.tahun_ajaran_name+'</b> & lembaga <b>'+data.lembaga_name+'</b> sudah pernah di input. <br> Silahkan di check kembali!  ';
+                            let msg = 'Data biaya lembaga tahun <b>'+data.tahun_ajaran_name+'</b> & lembaga <b>'+data.lembaga_name+'</b> sudah pernah di input. <br> Silahkan di check kembali!  ';
                             Swal.fire('Oopss!', msg, 'warning')
                         }
                         hideLoad();
@@ -389,54 +395,98 @@
 
     function loadDataChild(_DATA){
         $('#list-attribute-temp').val(JSON.stringify(_DATA));
+        console.log(_DATA);
         if (_DATA) {
             $('#list-attribute').removeClass('d-none');
-            $('#list-attribute-data').html("");
-            $.each(_DATA, function (index, data) { 
+            // use komite
+            $('#list-attribute-komite').html("");
+            $.each(_DATA.komite, function (index, data) { 
                 index+=1;
                 let rows = `<tr>
                                 <td>`+index+`</td>
                                 <td>`+data.name+`</td>
-                                <td>`+data.attribute_type_name+`</td>
-                                <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
-                                <td align="center" width="80">
-                                    <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                                <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-komite" data-id="`+index+`"></td>
+                                <td align="center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_komite" data-id="`+index+`" checked>
+                                    </div>
                                 </td>
                             </tr>`
-                $('#list-attribute-data').append(rows);
+                $('#list-attribute-komite').append(rows);
+            });
+            // use semester
+            $('#list-attribute-semester').html("");
+            $.each(_DATA.semester, function (index, data) { 
+                index+=1;
+                let rows = `<tr>
+                                <td>`+index+`</td>
+                                <td>`+data.name+`</td>
+                                <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-semester" data-id="`+index+`"></td>
+                                <td align="center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_semester" data-id="`+index+`" checked>
+                                    </div>
+                                </td>
+                            </tr>`
+                $('#list-attribute-semester').append(rows);
+            });
+            // use lainnya
+            $('#list-attribute-lainnya').html("");
+            $.each(_DATA.lainnya, function (index, data) { 
+                index+=1;
+                let rows = `<tr>
+                                <td>`+index+`</td>
+                                <td>`+data.name+`</td>
+                                <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item-lainnya" data-id="`+index+`"></td>
+                                <td align="center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="set_attr_lainnya" data-id="`+index+`" checked>
+                                    </div>
+                                </td>
+                            </tr>`
+                $('#list-attribute-lainnya').append(rows);
             });
         }
     }
 
-    $(document).on("change.ev", ".change-price-item", function(e) {
+    // change use komite
+    $(document).on("change.ev", ".change-price-item-komite", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
-        DATA[i-1].amount = $(this).val();
-        console.log(DATA);
+        let value = $(this).val();
+        $.each(DATA.komite, function (index, data) { 
+            data.amount = value;
+        });
         showLoad();
         setTimeout(() => {
             $('#list-attribute-temp').val(JSON.stringify(DATA));
-            if (DATA) {
-                $('#list-attribute').removeClass('d-none');
-                $('#list-attribute-data').html("");
-                $.each(DATA, function (index, data) { 
-                    index+=1;
-                    let rows = `<tr>
-                                    <td>`+index+`</td>
-                                    <td>`+data.name+`</td>
-                                    <td>`+data.attribute_type_name+`</td>
-                                    <td width="250"><input type="number" value="`+data.amount+`" class="form-control form-control-sm change-price-item" data-id="`+index+`"></td>
-                                    <td align="center" width="80">
-                                        <button class="btn btn-sm btn-circle btn-danger btn-hapus-item" data-id="`+index+`">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>`
-                    $('#list-attribute-data').append(rows);
-                });
-            }
+            loadDataChild(DATA);
+            hideLoad();
+        }, 600);
+    });
+
+    // change use semester
+    $(document).on("change.ev", ".change-price-item-semester", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA.semester[i-1].amount = $(this).val();
+        showLoad();
+        setTimeout(() => {
+            $('#list-attribute-temp').val(JSON.stringify(DATA));
+            loadDataChild(DATA);
+            hideLoad();
+        }, 600);
+    });
+
+    // change use lainnya
+    $(document).on("change.ev", ".change-price-item-lainnya", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA.lainnya[i-1].amount = $(this).val();
+        showLoad();
+        setTimeout(() => {
+            $('#list-attribute-temp').val(JSON.stringify(DATA));
+            loadDataChild(DATA);
             hideLoad();
         }, 600);
     });
@@ -467,14 +517,9 @@
                 }
                 check_nis();
             });
-        }, 1000);
-      
-        
+        }, 1000);    
     });
     
-
-    
-
 
     // data
     let table = $("#data").DataTable({
@@ -548,7 +593,9 @@
 
     $("#reset").click(function() {
       resetForm("#form-biaya-lembaga");
-      $('#list-attribute-data').html("");
+      $('#list-attribute-komite').html("");
+      $('#list-attribute-semester').html("");
+      $('#list-attribute-lainnya').html("");
       $('#list-attribute').addClass('d-none');
     })
     // reset

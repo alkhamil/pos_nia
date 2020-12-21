@@ -123,50 +123,6 @@
     });
     // end edit Lembaga
 
-    // hapus Lembaga
-    // $(document).on("click.ev", ".btn-hapus", function(e) {
-    //     e.preventDefault();
-    //     showLoad();
-    //     let $this = $(this);
-    //     let id = $this.attr("data-id");
-    //     setTimeout(() => {
-    //         Swal.fire({
-    //             title: 'Anda yakin ingin hapus?',
-    //             text: "Data ini akan hilang permanent",
-    //             icon: 'warning',
-    //             showCancelButton: true,
-    //             confirmButtonColor: '#3085d6',
-    //             cancelButtonColor: '#d33',
-    //             confirmButtonText: 'Ya, Hapus!'
-    //         }).then((result) => {
-    //             if (result.isConfirmed) {
-    //                 $.ajax({
-    //                     url: "<?= $hapus ?>?id=" + id,
-    //                     method: 'get',
-    //                     dataType: 'json',
-    //                     success: function(data){
-    //                         if (data.type == 'success') {
-    //                             Swal.fire('Terhapus!', data.msg, 'success')
-    //                         }else {
-    //                             Swal.fire('Gagal!', data.msg, 'warning')
-    //                         }
-    //                         hideLoad();
-    //                         table.ajax.reload();
-    //                     }
-    //                 });
-    //             }else{
-    //                 hideLoad();
-    //             }
-    //         });
-    //     }, 1000);
-      
-        
-    // });
-    // end hapus Lembaga
-
-    
-
-
     // data
     let table = $("#data").DataTable({
       "processing": true, 

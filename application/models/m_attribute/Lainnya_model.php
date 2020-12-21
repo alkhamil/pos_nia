@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Kelas_model extends CI_Model {
+class Lainnya_model extends CI_Model {
 
-    public $table = 'm_kelas';
-    public $primary_key = 'id';
-    public $order_by = 'id';
+    public $table = 'm_attribute_lainnya';
+    public $primary_key = 'm_attribute_lainnya.id';
+    public $order_by = 'm_attribute_lainnya.id';
     public $order_type = 'ASC';
-    public $search_field = 'name';
-    public $column_order = ['name']; //set column field database for datatable orderable
-    public $column_search = ['name']; //set column field database for datatable searchable 
+    public $search_field = 'm_attribute_lainnya.name';
+    public $column_order = ['m_attribute_lainnya.name']; //set column field database for datatable orderable
+    public $column_search = ['m_attribute_lainnya.name', 'm_attribute_type.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -18,6 +18,7 @@ class Kelas_model extends CI_Model {
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)
+                 ->join('m_attribute_type', 'm_attribute_type.id = m_attribute_lainnya.attribute_type_id')
                  ->limit($limit,$offset);
 
         if($where) {
@@ -68,6 +69,7 @@ class Kelas_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_attribute_type', 'm_attribute_type.id = m_attribute_lainnya.attribute_type_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])
@@ -133,35 +135,6 @@ class Kelas_model extends CI_Model {
 
         $q = $this->db->get($this->table);
         return $q->row();
-    }
-
-    function get_all($where, $select = '*', $join = null)
-    {
-        $this->db->select($select);
-        if($where)
-            $this->db->where($where);
-            
-        if($join) {
-            if(is_array($join)) {
-                foreach($join as $j) {
-                    if(!isset($j['type'])) 
-                        $type = 'default';
-                    else
-                        $type = $j['type'];
-
-                    if($type == 'default')
-                        $this->db->join($j['table'], $j['on']);
-                    else
-                        $this->db->join($j['table'], $j['on'], $j['type']);
-                }
-            }
-        }
-        if($this->order_by != '') {
-            $this->db->order_by($this->order_by, $this->order_type);
-        }
-
-        $q = $this->db->get($this->table);
-        return $q->result_array();
     }
 
     function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0)

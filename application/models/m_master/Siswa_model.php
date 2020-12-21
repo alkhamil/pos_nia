@@ -7,8 +7,8 @@ class Siswa_model extends CI_Model {
     public $order_by = 'm_siswa.id';
     public $order_type = 'ASC';
     public $search_field = 'm_siswa.name';
-    public $column_order = ['m_siswa.name']; //set column field database for datatable orderable
-    public $column_search = ['m_siswa.name', 'm_lembaga.name']; //set column field database for datatable searchable 
+    public $column_order = ['m_siswa.nis','m_siswa.name']; //set column field database for datatable orderable
+    public $column_search = ['m_siswa.nis','m_siswa.name', 'm_lembaga.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {

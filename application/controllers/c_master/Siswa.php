@@ -6,37 +6,20 @@ class Siswa extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Siswa_model');
-    }
-
-    public function check_nis()
-    {
-        $tahun = $this->db->order_by('id', 'desc')->limit(1)->get('m_siswa')->row_array();
-        if ($tahun) {
-            $tahun = date('Y', strtotime($tahun['created_at']));
-            if ($tahun != date('Y')) {
-                $nis = 0;
-            }else{
-                $nis = count($this->db->get('m_siswa')->result_array());
-            }
-        }else{
-            $nis = count($this->db->get('m_siswa')->result_array());
-        }
-        $result = 'S'.date('Ym').str_pad($nis + 1, 4, "0", STR_PAD_LEFT);
-        echo json_encode($result);
+        $this->load->model('m_master/Siswa_model');
     }
 
 	public function index()
 	{
         $data['title'] = 'Siswa';
-        $data['isi'] = 'siswa/index';
+        $data['isi'] = 'v_master/siswa/index';
         $data['userdata'] = $this->userdata;
-        $data['nis'] = base_url('siswa/check_nis');
-        $data['simpan'] = base_url('siswa/simpan');
-        $data['data'] = base_url('siswa/data');
-        $data['get'] = base_url('siswa/get_data');
-        $data['hapus'] = base_url('siswa/hapus');
-        $data['select_lembaga'] = base_url('siswa/select_lembaga');
+        $data['nis'] = base_url('c_master/siswa/check_nis');
+        $data['simpan'] = base_url('c_master/siswa/simpan');
+        $data['data'] = base_url('c_master/siswa/data');
+        $data['get'] = base_url('c_master/siswa/get_data');
+        $data['hapus'] = base_url('c_master/siswa/hapus');
+        $data['select_lembaga'] = base_url('c_master/siswa/select_lembaga');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -56,11 +39,13 @@ class Siswa extends CI_Controller {
 				$no++;
 				$row = array();
                 $row['no'] = $no;
+				$row['nis'] = $ls['nis'];
 				$row['name'] = $ls['name'];
 				$row['lembaga_id'] = $ls['lembaga_id'];
 				$row['lembaga_name'] = $ls['lembaga_name'];
 				$row['birthday'] = $ls['birthday'];
 				$row['phone'] = $ls['phone'];
+				$row['is_graduated'] = $ls['is_graduated'];
 				$row['id'] = $ls['id'];
 	
 				$temp_data[] = (object)$row;
@@ -123,7 +108,7 @@ class Siswa extends CI_Controller {
         }
         $this->session->set_flashdata('msg', $msg);
         
-        redirect(base_url('Siswa'), 'refresh');
+        redirect(base_url('c_master/siswa'), 'refresh');
     }
 
     public function hapus()
@@ -158,6 +143,23 @@ class Siswa extends CI_Controller {
         $this->Siswa_model->table = "m_lembaga";
         $data = $this->Siswa_model->list_select($q, $where);
         echo json_encode($data);
+    }
+
+    public function check_nis()
+    {
+        $tahun = $this->db->order_by('id', 'desc')->limit(1)->get('m_siswa')->row_array();
+        if ($tahun) {
+            $tahun = date('Y', strtotime($tahun['created_at']));
+            if ($tahun != date('Y')) {
+                $nis = 0;
+            }else{
+                $nis = count($this->db->get('m_siswa')->result_array());
+            }
+        }else{
+            $nis = count($this->db->get('m_siswa')->result_array());
+        }
+        $result = 'S'.date('Ym').str_pad($nis + 1, 4, "0", STR_PAD_LEFT);
+        echo json_encode($result);
     }
 
 }

@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Kelas_model extends CI_Model {
+class Biaya_kebutuhan_model extends CI_Model {
 
-    public $table = 'm_kelas';
-    public $primary_key = 'id';
-    public $order_by = 'id';
+    public $table = 't_biaya_kebutuhan';
+    public $primary_key = 't_biaya_kebutuhan.id';
+    public $order_by = 't_biaya_kebutuhan.id';
     public $order_type = 'ASC';
-    public $search_field = 'name';
-    public $column_order = ['name']; //set column field database for datatable orderable
-    public $column_search = ['name']; //set column field database for datatable searchable 
+    public $search_field = 'm_tahun_ajaran.name';
+    public $column_order = ['m_tahun_ajaran.name']; //set column field database for datatable orderable
+    public $column_search = ['m_tahun_ajaran.name', 'm_lembaga.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -18,6 +18,8 @@ class Kelas_model extends CI_Model {
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)
+                 ->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_biaya_kebutuhan.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_biaya_kebutuhan.lembaga_id')
                  ->limit($limit,$offset);
 
         if($where) {
@@ -68,6 +70,8 @@ class Kelas_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_biaya_kebutuhan.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_biaya_kebutuhan.lembaga_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])
@@ -161,11 +165,14 @@ class Kelas_model extends CI_Model {
         }
 
         $q = $this->db->get($this->table);
-        return $q->result_array();
+        return $q->result_object();
     }
 
-    function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0)
-    {
+    function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0, $join=false)
+    {   
+        if ($join) {
+            $this->db->join('m_attribute_type', 'm_attribute_type.id = m_attribute.attribute_type_id');
+        }
         $this->db->select($select)
                  ->order_by($this->order_by, $this->order_type)
                  ->limit($limit,$offset);
