@@ -28,10 +28,6 @@
                                         <input type="text" class="form-control form-required" name="name" id="name" required readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="desc" class="label-required">Deskripsi</label>
-                                        <textarea name="desc" id="desc" class="form-control" cols="10" rows="3" required></textarea>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="is_active" class="label-required">Status</label>
                                         <select name="is_active" id="is_active"style="width: 100%" class="form-control" data-placeholder="Choose Status" required>
                                             <option value="1">AKTIF</option>
@@ -72,7 +68,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tahun Ajaran</th>
-                                <th>Deskripsi</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -116,7 +111,6 @@
                 }
                 form.find('[name=id]').val(dt.id);
                 form.find('[name=name]').val(dt.name);
-                form.find('[name=desc]').val(dt.desc);
                 form.find('[name=is_active]').val(dt.is_active).trigger('change');
             }
       });
@@ -150,9 +144,6 @@
           "data": "name"
         },
         {
-          "data": "desc"
-        },
-        {
           "data": "is_active",
           "render" : function(data, type, row){
               return (data=='0'||data==0) ? '<div class="badge badge-danger">Tidak Aktif</div>' : '<div class="badge badge-success">Aktif</div>';
@@ -165,14 +156,14 @@
       
       "columnDefs": [
         {
-          "targets": [0, 4], 
+          "targets": [0, 3], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 4,
+          "targets": 3,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {

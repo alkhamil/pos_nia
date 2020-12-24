@@ -54,23 +54,7 @@
                                         <button id="btn-lanjutkan" class="btn btn-block btn-info btn-lanjutkan">Lanjutkan</button>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-12 d-none" id="edit-attribute">
-                                  <div class="dropdown mb-1">
-                                      <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownAttribute" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <i class="fa fa-plus-circle"></i> Attribute
-                                      </button>
-                                      <div class="dropdown-menu shadow dropdown-attribute" aria-labelledby="dropdownAttribute">
-                                          <div class="row p-3">
-                                              <div class="col-md-12">
-                                                  <div class="form-group">
-                                                      <select name="attribute_id" id="attribute_id" class="form-control" style="width: 100%" data-placeholder="Pilih Attribute">
-                                                      </select>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                </div> -->
+
                                 <div class="col-md-12 d-none" id="list-attribute">
                                     <hr>
                                     <div class="alert alert-info">Note: <br>
@@ -243,56 +227,6 @@
       lembaga_id = data.id;
     }).on("select2:unselect", function(e){
       lembaga_id = null;
-    });
-
-
-    $("#attribute_id").select2({
-      ajax: {
-        url: "<?php echo $select_attribute ?>",
-        delay: 100,
-        dataType: 'json',
-        processResults: function(data) {
-          let items = [];
-          if (data.length > 0) {
-            for (let i = 0; i < data.length; i++) {
-              let tempData = {
-                id: data[i].id,
-                text: data[i].name,
-                data: data[i]
-              }
-              items.push(tempData)
-            }
-          }
-          return {
-            results: items
-          };
-        }
-      }
-    }).on("select2:select", function(e) {
-      let data = e.params.data;
-      let _lembaga_id = $('[name=id]').val();
-      let row = {
-        id : data.data.id,
-        biaya_lembaga_id : _lembaga_id,
-        attribute_id : data.data.id,
-        amount : data.data.amount,
-        name : data.data.name,
-        attribute_type_name : data.data.attribute_type_name,
-      }
-
-      let load = true;
-      $.each(DATA, function (index, dt) { 
-          if (parseInt(dt.attribute_id) == parseInt(data.id)) {
-              load = false;
-          }
-      });
-      if (load) {
-          DATA.push(row);
-          loadDataChild(DATA);
-      }else{
-        Swal.fire('"'+data.data.name+'" sudah ada!', 'Data sudah pernah di masukan', 'warning')
-      }
-    }).on("select2:unselect", function(e){
     });
 
     // edit Lembaga

@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="<?= base_url('assets/img/ico.png') ?>" type="image/x-icon">
 
     <!-- Custom styles for this template-->
-    <link href="<?= base_url('assets/css/sb-admin-2.min.css?n=2') ?>" rel="stylesheet">
+    <link href="<?= base_url('assets/css/sb-admin-2.min.css?n=6') ?>" rel="stylesheet">
     
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url('assets/vendor/jquery/jquery.min.js') ?>"></script>
@@ -62,6 +62,22 @@
                 scrollTop: $(elm).offset().top
             }, 1000);
         }
+
+        function formatCurrency(amount, decimalCount = 2, decimal = ",", thousands = ".") {
+            try {
+                decimalCount = Math.abs(decimalCount);
+                decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+                const negativeSign = amount < 0 ? "-" : "";
+
+                let i = parseInt(amount = Math.abs(Number(amount) || 0)).toString();
+                let j = (i.length > 3) ? i.length % 3 : 0;
+
+                return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands);
+            } catch (e) {
+                console.log(e)
+            }
+        }
     </script>
 
 </head>
@@ -78,7 +94,7 @@
         
         <div class="sidebar-brand-text mx-3">
             <img src="<?= base_url('assets/img/logo.png') ?>" alt="" width="40">
-            SIA-TRANS</div>
+            NIA-TRANS</div>
     </a>
 
     <?php  

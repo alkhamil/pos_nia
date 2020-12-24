@@ -186,7 +186,10 @@
           "data": "desc"
         },
         {
-          "data": "saldo"
+          "data": "saldo",
+          "render": function(data, type, row){
+              return `<b>`+formatCurrency(data)+`</b>`
+          }
         },
         {
           "data": "id"

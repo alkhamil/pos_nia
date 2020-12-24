@@ -38,7 +38,6 @@ class Tahun_ajaran extends CI_Controller {
 				$row = array();
                 $row['no'] = $no;
 				$row['name'] = $ls['name'];
-				$row['desc'] = $ls['desc'];
 				$row['is_active'] = $ls['is_active'];
 				$row['id'] = $ls['id'];
 	
@@ -65,7 +64,6 @@ class Tahun_ajaran extends CI_Controller {
     public function simpan()
     {
         $savedata['name'] = $this->input->post('name', TRUE);
-        $savedata['desc'] = $this->input->post('desc', TRUE);
         $savedata['is_active'] = $this->input->post('is_active', TRUE);
         $id = $this->input->post('id',TRUE);
         if($savedata['is_active'] == 1){
@@ -73,7 +71,6 @@ class Tahun_ajaran extends CI_Controller {
             $tahun = $this->Tahun_ajaran_model->get_all($where);
             foreach ($tahun as $key => $value) {
                 $simpan['name'] = $value['name'];
-                $simpan['desc'] = $value['desc'];
                 $simpan['is_active'] = 0;
                 $this->Tahun_ajaran_model->update($simpan, array('id' => $value['id']));
             }
@@ -86,7 +83,7 @@ class Tahun_ajaran extends CI_Controller {
                     'msg' => 'Data tidak berhasil disimpan! Harus ada satu yang aktif',
                 );
                 $this->session->set_flashdata('msg',$msg);
-                redirect(base_url('Tahun_ajaran'), 'refresh');
+                redirect(base_url('c_master/Tahun_ajaran'), 'refresh');
                 exit;
             }
             if(count($tahun) == 1){
@@ -96,7 +93,7 @@ class Tahun_ajaran extends CI_Controller {
                         'msg' => 'Data tidak berhasil disimpan! Harus ada satu yang aktif',
                     );
                     $this->session->set_flashdata('msg',$msg);
-                    redirect(base_url('Tahun_ajaran'), 'refresh');
+                    redirect(base_url('c_master/Tahun_ajaran'), 'refresh');
                     exit;
                 }
             }

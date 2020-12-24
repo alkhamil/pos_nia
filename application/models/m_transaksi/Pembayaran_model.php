@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pembayaran_model extends CI_Model {
 
     public $table = 't_pembayaran';
-    public $primary_key = 'id';
-    public $order_by = 'id';
-    public $order_type = 'ASC';
-    public $search_field = 'siswa_id';
-    public $column_order = ['siswa_id']; //set column field database for datatable orderable
-    public $column_search = ['siswa_id']; //set column field database for datatable searchable 
+    public $primary_key = 't_pembayaran.id';
+    public $order_by = 't_pembayaran.id';
+    public $order_type = 'DESC';
+    public $search_field = 't_pembayaran.code';
+    public $column_order = ['t_pembayaran.code']; //set column field database for datatable orderable
+    public $column_search = ['t_pembayaran.code', 'm_tahun_ajaran.name', 'm_lembaga.name', 'm_siswa.name', 'm_siswa.nis']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -18,6 +18,10 @@ class Pembayaran_model extends CI_Model {
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)
+                 ->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_pembayaran.lembaga_id')
+                 ->join('m_siswa', 'm_siswa.id = t_pembayaran.siswa_id')
+                 ->join('m_kelas', 'm_kelas.id = t_pembayaran.kelas_id')
                  ->limit($limit,$offset);
 
         if($where) {
@@ -68,6 +72,10 @@ class Pembayaran_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_pembayaran.lembaga_id')
+                 ->join('m_siswa', 'm_siswa.id = t_pembayaran.siswa_id')
+                 ->join('m_kelas', 'm_kelas.id = t_pembayaran.kelas_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])
@@ -138,6 +146,7 @@ class Pembayaran_model extends CI_Model {
     function get_all($where, $select = '*', $join = null)
     {
         $this->db->select($select);
+        
         if($where)
             $this->db->where($where);
             
@@ -166,16 +175,16 @@ class Pembayaran_model extends CI_Model {
 
     function list_select($q = null, $where = null, $select = '*', $limit = 10 ,$offset = 0)
     {
+        $this->db->select($select)
+                 ->order_by($this->order_by, $this->order_type)
+                 ->limit($limit,$offset);
+
         if($where) {
             $this->db->where($where);
         }
         if($q) {
             $this->db->like("LOWER(".$this->search_field.")", strtolower($q));
         }
-
-        $this->db->select($select)
-                 ->order_by($this->order_by, $this->order_type)
-                 ->limit($limit,$offset);
          
         $q = $this->db->get($this->table);
         return $q->result_array();
