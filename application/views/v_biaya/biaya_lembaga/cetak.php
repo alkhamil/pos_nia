@@ -1,78 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title><?= $title ?></title>
+    
     <style>
-        @page {
-            margin: 30px 15px;
-        }
-        
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12px;
-        }
-        
-        .text-right {
-            text-align: right;
-        }
-        
-        .text-left {
-            text-align: left;
-        }
-        
-        .text-center {
+    .invoice-box {
+        max-width: 100%;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.heading td {
+        background: #eaeaea;
+        border-bottom: 1px solid #000;
+        font-weight: bold;
+    }
+    
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #eee;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
             text-align: center;
         }
         
-        .table-border {
-            border-collapse: collapse;
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
         }
-        
-        .table-border tr,
-        .table-border tr td,
-        .table-border tr th {
-            border: 1px solid #dddddd;
-            padding: 8px;
-        }
-        
-        th {
-            font-weight: bold;
-            text-align: left!important;
-        }
+    }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
     </style>
 </head>
 
 <body>
-    <table width="100%" class="table-border">
-        <tr>
-            <th width="100%" align="center">
-                <h2><?= $title ?></h2>
-            </th>
-        </tr>
-        <tr>
-            <td>
-                <table width="100%">
-                    <tr>
-                        <th>No</th>
-                        <th>Attribute Name</th>
-                        <th>Attribute Tipe</th>
-                        <th>Harga</th>
-                    </tr>
-                    <?php foreach ($biaya_lembaga_detail as $key => $bld) {?>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
                         <tr>
-                            <td><?= $key+1 ?></td>
-                            <td><?= $bld['name'] ?></td>
-                            <td><?= $bld['attribute_type_name'] ?></td>
-                            <td><?= number_format($bld['amount']) ?></td>
+                            <td colspan="2" style="text-align:center"><h4><?= strtoupper($title) ?></h4></td>
                         </tr>
-                    <?php } ?>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
+                    </table>
+                </td>
+            </tr>
+            
+            
+            <tr class="heading">
+                <td>
+                    Komite
+                </td>
+                <td>
+                    Harga
+                </td>
+            </tr>
+            <?php foreach ($biaya_lembaga_detail['komite'] as $key => $item) { ?>
+                <tr class="item">
+                    <td><?= $item->name ?></td>
+                    <td>Rp. <?= number_format($item->amount) ?></td>
+                </tr>
+            <?php } ?>
 
+            <tr class="heading">
+                <td>
+                    Semester
+                </td>
+                <td>
+                    Harga
+                </td>
+            </tr>
+            <?php foreach ($biaya_lembaga_detail['semester'] as $key => $item) { ?>
+                <tr class="item">
+                    <td><?= $item->name ?></td>
+                    <td>Rp. <?= number_format($item->amount) ?></td>
+                </tr>
+            <?php } ?>
+            <tr class="heading">
+                <td>
+                    Lainnya
+                </td>
+                <td>
+                    Harga
+                </td>
+            </tr>
+            <?php foreach ($biaya_lembaga_detail['lainnya'] as $key => $item) { ?>
+                <tr class="item">
+                    <td><?= $item->name ?></td>
+                    <td>Rp. <?= number_format($item->amount) ?></td>
+                </tr>
+            <?php } ?>
+            
+        </table>
+    </div>
+</body>
 </html>

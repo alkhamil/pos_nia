@@ -25,7 +25,7 @@ class User extends CI_Controller {
     public function data()
     {
         $temp_data = [];
-        $where = [];
+        $where['user_type_id !='] = $this->userdata->user_type_id;  
         $no = $this->input->post('start');
         $list = $this->User_model->lists(
             'm_user.* , m_user_type.name as user_type_name',
