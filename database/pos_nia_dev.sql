@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 21/12/2020 17:00:15
+ Date: 25/12/2020 10:38:20
 */
 
 SET NAMES utf8mb4;
@@ -109,7 +109,7 @@ CREATE TABLE `m_kebutuhan`  (
   `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `amount` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_kebutuhan
@@ -126,7 +126,17 @@ CREATE TABLE `m_kelas`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `level` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of m_kelas
+-- ----------------------------
+INSERT INTO `m_kelas` VALUES (1, '7', 1);
+INSERT INTO `m_kelas` VALUES (2, '8', 1);
+INSERT INTO `m_kelas` VALUES (3, '9', 1);
+INSERT INTO `m_kelas` VALUES (4, '10', 2);
+INSERT INTO `m_kelas` VALUES (5, '11', 2);
+INSERT INTO `m_kelas` VALUES (6, '12', 2);
 
 -- ----------------------------
 -- Table structure for m_lembaga
@@ -143,8 +153,8 @@ CREATE TABLE `m_lembaga`  (
 -- ----------------------------
 -- Records of m_lembaga
 -- ----------------------------
-INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 0);
-INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 0);
+INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 525000);
+INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 135000);
 INSERT INTO `m_lembaga` VALUES (3, 'SMA', 'SMA', 0);
 INSERT INTO `m_lembaga` VALUES (4, 'SMK', 'SMK', 0);
 
@@ -169,6 +179,7 @@ CREATE TABLE `m_siswa`  (
 -- Records of m_siswa
 -- ----------------------------
 INSERT INTO `m_siswa` VALUES (1, 1, 'S2020120001', 'Nazmudin', '1996-05-31', '08568029330', 0, '2020-12-19 23:35:26.000000', NULL);
+INSERT INTO `m_siswa` VALUES (2, 2, 'S2020120002', 'Nuralam', '2020-12-25', '08987728762', 0, '2020-12-25 03:47:54.000000', NULL);
 
 -- ----------------------------
 -- Table structure for m_tahun_ajaran
@@ -177,15 +188,15 @@ DROP TABLE IF EXISTS `m_tahun_ajaran`;
 CREATE TABLE `m_tahun_ajaran`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `is_active` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_tahun_ajaran
 -- ----------------------------
-INSERT INTO `m_tahun_ajaran` VALUES (14, '2020-2021', 'jaja', 1);
+INSERT INTO `m_tahun_ajaran` VALUES (14, '2020-2021', 1);
+INSERT INTO `m_tahun_ajaran` VALUES (15, '2021-2022', 0);
 
 -- ----------------------------
 -- Table structure for m_user
@@ -197,7 +208,7 @@ CREATE TABLE `m_user`  (
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_user
@@ -247,7 +258,7 @@ CREATE TABLE `t_biaya_kebutuhan_detail`  (
   `amount` int(0) NULL DEFAULT NULL,
   `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_kebutuhan_detail
@@ -264,15 +275,13 @@ CREATE TABLE `t_biaya_lembaga`  (
   `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
   `lembaga_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga` VALUES (2, 14, 1);
-INSERT INTO `t_biaya_lembaga` VALUES (3, 14, 2);
-INSERT INTO `t_biaya_lembaga` VALUES (4, 14, 3);
-INSERT INTO `t_biaya_lembaga` VALUES (5, 14, 4);
+INSERT INTO `t_biaya_lembaga` VALUES (6, 14, 1);
+INSERT INTO `t_biaya_lembaga` VALUES (7, 14, 2);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_komite
@@ -285,59 +294,35 @@ CREATE TABLE `t_biaya_lembaga_komite`  (
   `amount` int(0) NULL DEFAULT NULL,
   `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_komite
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_komite` VALUES (37, 2, 1, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (38, 2, 2, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (39, 2, 3, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (40, 2, 4, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (41, 2, 5, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (42, 2, 6, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (43, 2, 7, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (44, 2, 8, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (45, 2, 9, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (46, 2, 10, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (47, 2, 11, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (48, 2, 12, 4000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (61, 3, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (62, 3, 2, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (63, 3, 3, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (64, 3, 4, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (65, 3, 5, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (66, 3, 6, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (67, 3, 7, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (68, 3, 8, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (69, 3, 9, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (70, 3, 10, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (71, 3, 11, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (72, 3, 12, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (73, 4, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (74, 4, 2, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (75, 4, 3, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (76, 4, 4, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (77, 4, 5, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (78, 4, 6, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (79, 4, 7, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (80, 4, 8, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (81, 4, 9, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (82, 4, 10, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (83, 4, 11, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (84, 4, 12, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (85, 5, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (86, 5, 2, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (87, 5, 3, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (88, 5, 4, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (89, 5, 5, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (90, 5, 6, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (91, 5, 7, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (92, 5, 8, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (93, 5, 9, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (94, 5, 10, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (95, 5, 11, 0, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (96, 5, 12, 0, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (97, 6, 12, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (98, 6, 11, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (99, 6, 10, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (100, 6, 9, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (101, 6, 8, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (102, 6, 7, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (103, 6, 6, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (104, 6, 5, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (105, 6, 4, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (106, 6, 3, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (107, 6, 2, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (108, 6, 1, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (109, 7, 12, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (110, 7, 11, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (111, 7, 10, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (112, 7, 9, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (113, 7, 8, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (114, 7, 7, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (115, 7, 6, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (116, 7, 5, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (117, 7, 4, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (118, 7, 3, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (119, 7, 2, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (120, 7, 1, 135000, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_lainnya
@@ -350,19 +335,15 @@ CREATE TABLE `t_biaya_lembaga_lainnya`  (
   `amount` int(0) NULL DEFAULT NULL,
   `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_lainnya
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (7, 2, 1, 5000, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (8, 2, 2, 4000, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (11, 3, 1, 0, 0);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (12, 3, 2, 0, 0);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (13, 4, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (14, 4, 2, 0, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (15, 5, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (16, 5, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (17, 6, 2, 180000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (18, 6, 1, 125000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (19, 7, 2, 120000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (20, 7, 1, 90000, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_semester
@@ -375,19 +356,15 @@ CREATE TABLE `t_biaya_lembaga_semester`  (
   `amount` int(0) NULL DEFAULT NULL,
   `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_semester
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_semester` VALUES (7, 2, 1, 4000, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (8, 2, 2, 4000, 0);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (11, 3, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (12, 3, 2, 0, 0);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (13, 4, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (14, 4, 2, 0, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (15, 5, 1, 0, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (16, 5, 2, 0, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (17, 6, 2, 250000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (18, 6, 1, 250000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (19, 7, 2, 150000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (20, 7, 1, 150000, 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran
@@ -407,6 +384,12 @@ CREATE TABLE `t_pembayaran`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of t_pembayaran
+-- ----------------------------
+INSERT INTO `t_pembayaran` VALUES (1, 14, 1, 1, 1, 'IN/SMP/202012/0001', 525000, '2020-12-25 04:00:27.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (2, 14, 2, 2, 1, 'IN/MTS/202012/0002', 135000, '2020-12-25 04:01:02.000000', 1);
+
+-- ----------------------------
 -- Table structure for t_pembayaran_komite
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pembayaran_komite`;
@@ -414,8 +397,37 @@ CREATE TABLE `t_pembayaran_komite`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `pembayaran_id` int(0) NULL DEFAULT NULL,
   `biaya_lembaga_komite_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_pembayaran_komite
+-- ----------------------------
+INSERT INTO `t_pembayaran_komite` VALUES (1, 1, 108, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (2, 1, 107, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (3, 1, 106, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (4, 1, 105, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (5, 1, 104, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (6, 1, 103, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (7, 1, 102, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (8, 1, 101, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (9, 1, 100, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (10, 1, 99, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (11, 1, 98, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (12, 1, 97, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (13, 2, 120, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (14, 2, 119, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (15, 2, 118, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (16, 2, 117, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (17, 2, 116, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (18, 2, 115, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (19, 2, 114, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (20, 2, 113, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (21, 2, 112, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (22, 2, 111, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (23, 2, 110, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (24, 2, 109, 0);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_lainnya
@@ -425,8 +437,17 @@ CREATE TABLE `t_pembayaran_lainnya`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `pembayaran_id` int(0) NULL DEFAULT NULL,
   `biaya_lembaga_lainnya_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_pembayaran_lainnya
+-- ----------------------------
+INSERT INTO `t_pembayaran_lainnya` VALUES (1, 1, 18, 1);
+INSERT INTO `t_pembayaran_lainnya` VALUES (2, 1, 17, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (3, 2, 20, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (4, 2, 19, 0);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_semester
@@ -436,8 +457,17 @@ CREATE TABLE `t_pembayaran_semester`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `pembayaran_id` int(0) NULL DEFAULT NULL,
   `biaya_lembaga_semester_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_pembayaran_semester
+-- ----------------------------
+INSERT INTO `t_pembayaran_semester` VALUES (1, 1, 18, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (2, 1, 17, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (3, 2, 20, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (4, 2, 19, 0);
 
 -- ----------------------------
 -- Table structure for t_pengeluaran
