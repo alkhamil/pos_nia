@@ -248,8 +248,8 @@ class Biaya_kebutuhan extends CI_Controller {
             t_biaya_kebutuhan.*, 
             m_tahun_ajaran.id as tahun_ajaran_id,
             m_tahun_ajaran.name as tahun_ajaran_name,
-            m_kebutuhan.id as kebutuhan_id,
-            m_kebutuhan.name as kebutuhan_name,
+            m_lembaga.id as lembaga_id,
+            m_lembaga.name as lembaga_name,
         ";
         $join = [
             [
@@ -257,28 +257,27 @@ class Biaya_kebutuhan extends CI_Controller {
                 'on'        => 'm_tahun_ajaran.id = t_biaya_kebutuhan.tahun_ajaran_id'
             ],
             [
-                'table'     => 'm_kebutuhan',
-                'on'        => 'm_kebutuhan.id = t_biaya_kebutuhan.kebutuhan_id'
+                'table'     => 'm_lembaga',
+                'on'        => 'm_lembaga.id = t_biaya_kebutuhan.lembaga_id'
             ]
         ];
         $result = $this->Biaya_kebutuhan_model->get($where, $select, $join);
-
+        
         $data['tahun_ajaran_id'] = $result->tahun_ajaran_id;
         $data['tahun_ajaran_name'] = $result->tahun_ajaran_name;
-        $data['kebutuhan_id'] = $result->kebutuhan_id;
-        $data['kebutuhan_name'] = $result->kebutuhan_name;
+        $data['lembaga_id'] = $result->lembaga_id;
+        $data['lembaga_name'] = $result->lembaga_name;
         $data['id'] = $result->id;
         $data['biaya_kebutuhan_detail'] = $this->biaya_kebutuhan_detail($result->id);
-        $data['title'] = 'Lampiran Biaya '.$result->tahun_ajaran_name.' kebutuhan '.$result->kebutuhan_name;
-
+        $data['title'] = 'Lampiran Biaya Kebutuhan '.$result->lembaga_name.' Tahun Ajaran '.$result->tahun_ajaran_name;
         // echo json_encode($data);exit;
         
-
         $this->load->library('pdf');
     
         $this->pdf->setPaper('A4', 'potrait');
+        $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->filename = $data['title'];
-        $this->pdf->load_view('biaya_kebutuhan/cetak', $data);
+        $this->pdf->load_view('v_biaya/biaya_kebutuhan/cetak', $data);
     }
 
     public function select_tahun_ajaran()

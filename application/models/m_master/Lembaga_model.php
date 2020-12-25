@@ -15,6 +15,12 @@ class Lembaga_model extends CI_Model {
         parent::__construct();
     }
 
+    public function all()
+    {
+        $q = $this->db->get($this->table);
+        return $q->result_object();
+    }
+
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)

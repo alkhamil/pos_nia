@@ -291,7 +291,7 @@
             return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-fw fa-edit"></i> Edit
                     </button>
-                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus">
+                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus d-none">
                         <i class="fa fa-fw fa-trash"></i> Hapus
                     </button>`;
           }

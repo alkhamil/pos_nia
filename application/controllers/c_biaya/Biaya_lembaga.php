@@ -290,16 +290,16 @@ class Biaya_lembaga extends CI_Controller {
         $data['lembaga_name'] = $result->lembaga_name;
         $data['id'] = $result->id;
         $data['biaya_lembaga_detail'] = $this->biaya_lembaga_detail($result->id);
-        $data['title'] = 'Lampiran Biaya '.$result->tahun_ajaran_name.' Lembaga '.$result->lembaga_name;
+        $data['title'] = 'Lampiran Biaya Lembaga '.$result->lembaga_name. ' Tahun Ajaran '.$result->tahun_ajaran_name;
 
         // echo json_encode($data);exit;
         
-
         $this->load->library('pdf');
     
         $this->pdf->setPaper('A4', 'potrait');
+        $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->filename = $data['title'];
-        $this->pdf->load_view('biaya_lembaga/cetak', $data);
+        $this->pdf->load_view('v_biaya/biaya_lembaga/cetak', $data);
     }
 
     public function select_tahun_ajaran()
