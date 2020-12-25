@@ -20,7 +20,6 @@ class Pembayaran extends CI_Controller {
         $data['get_tahun_ajaran'] = base_url('c_transaksi/pembayaran/get_tahun_ajaran');
         $data['get_pembayaran_siswa'] = base_url('c_transaksi/pembayaran/get_pembayaran_siswa');
         $data['cetak'] = base_url('c_transaksi/pembayaran/cetak');
-        $data['hapus'] = base_url('c_transaksi/pembayaran/hapus');
         $data['select_lembaga'] = base_url('c_transaksi/pembayaran/select_lembaga');
         $data['select_siswa'] = base_url('c_transaksi/pembayaran/select_siswa');
         $data['select_kelas'] = base_url('c_transaksi/pembayaran/select_kelas');
@@ -177,13 +176,16 @@ class Pembayaran extends CI_Controller {
         return $this->Pembayaran_model->get_all($where, $select, $join);
     }
 
-    public function pembayaran_type_true($table, $pembayaran_id, $ref_table_1, $ref_id_1, $ref_table_2, $ref_id_2)
+    public function pembayaran_type_true($table, $pembayaran_id, $ref_table_1, $ref_id_1, $ref_table_2, $ref_id_2, $cetak=false)
     {
         $this->Pembayaran_model->table = $table;
         $this->Pembayaran_model->order_by = $table.'.id';
         $this->Pembayaran_model->order_type = 'ASC';
 
-        $where = [$table.".pembayaran_id"=>$pembayaran_id];
+        $where[$table.".pembayaran_id"] = $pembayaran_id;
+        if ($cetak) {
+            $where[$table.".is_checkout"] = 1;
+        }
         $select = $table.".*, ".$ref_table_1.".amount, ".$ref_table_2.".name as attribute_name, m_attribute_type.name as attribute_type_name";
         $join = [
             [
@@ -328,28 +330,6 @@ class Pembayaran extends CI_Controller {
         }
     }
 
-    public function hapus()
-    {
-        $where['id'] = $this->input->get('id', TRUE);
-        $this->db->trans_begin();
-        $this->Pembayaran_model->delete($where);
-
-        if ($this->db->trans_status() === FALSE){
-            $this->db->trans_rollback();
-            $msg = array(
-                'type' => 'error',
-                'msg' => 'Data tidak terhapus.',
-            );
-        }else{
-            $this->db->trans_commit();
-            $msg = array(
-                'type' => 'success',
-                'msg' => 'Data berhasil terhapus.',
-            );
-        }
-        echo json_encode($msg);
-    }
-
     public function select_lembaga()
     {
         $q = $this->input->get('q');
@@ -404,5 +384,83 @@ class Pembayaran extends CI_Controller {
         }
         $result = 'IN/'.$lembaga.'/'.date('Ym').'/'.str_pad($code + 1, 4, "0", STR_PAD_LEFT);
         return $result;
+    }
+
+    public function cetak()
+    {
+        $where['t_pembayaran.id'] = $this->input->get('id', TRUE);
+        
+        $select = "
+            t_pembayaran.*, 
+            m_tahun_ajaran.name as tahun_ajaran_name,
+            m_lembaga.name as lembaga_name,
+            m_siswa.name as siswa_name,
+            m_kelas.name as kelas_name,
+        ";
+        $join = [
+            [
+                'table'     => 'm_tahun_ajaran',
+                'on'        => 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id'
+            ],
+            [
+                'table'     => 'm_lembaga',
+                'on'        => 'm_lembaga.id = t_pembayaran.lembaga_id'
+            ],
+            [
+                'table'     => 'm_siswa',
+                'on'        => 'm_siswa.id = t_pembayaran.siswa_id'
+            ],
+            [
+                'table'     => 'm_kelas',
+                'on'        => 'm_kelas.id = t_pembayaran.kelas_id'
+            ]
+        ];
+        $pembayaran = $this->Pembayaran_model->get($where, $select, $join);
+        $data['tahun_ajaran_name'] = isset($pembayaran->tahun_ajaran_name) ? $pembayaran->tahun_ajaran_name : null;
+        $data['lembaga_name'] = isset($pembayaran->lembaga_name) ? $pembayaran->lembaga_name : null;
+        $data['siswa_name'] = isset($pembayaran->siswa_name) ? $pembayaran->siswa_name : null;
+        $data['kelas_name'] = isset($pembayaran->kelas_name) ? $pembayaran->kelas_name : null;
+        $data['code'] = isset($pembayaran->code) ? $pembayaran->code : null;
+        $data['tanggal'] = isset($pembayaran->created_at) ? date('d M Y H:i:s', strtotime($pembayaran->created_at)) : null;
+        $data['title'] = 'Lampiran Pembayaran';
+
+        if ($pembayaran != null) {
+            $data['id'] = $pembayaran->id;
+            $data['pembayaran']['komite'] = $this->pembayaran_type_true('t_pembayaran_komite', $pembayaran->id, 't_biaya_lembaga_komite', 'biaya_lembaga_komite_id', 'm_attribute_komite', 'attribute_komite_id', true);
+            $data['pembayaran']['semester'] = $this->pembayaran_type_true('t_pembayaran_semester', $pembayaran->id, 't_biaya_lembaga_semester', 'biaya_lembaga_semester_id', 'm_attribute_semester', 'attribute_semester_id', true);
+            $data['pembayaran']['lainnya'] = $this->pembayaran_type_true('t_pembayaran_lainnya', $pembayaran->id, 't_biaya_lembaga_lainnya', 'biaya_lembaga_lainnya_id', 'm_attribute_lainnya', 'attribute_lainnya_id', true);
+        }
+        
+        $data['data'] = [];
+        if (count($data['pembayaran']['komite']) > 0) {
+            foreach ($data['pembayaran']['komite'] as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
+            }
+        }
+        if (count($data['pembayaran']['semester']) > 0) {
+            foreach ($data['pembayaran']['semester'] as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
+            }
+        }
+        if (count($data['pembayaran']['lainnya']) > 0) {
+            foreach ($data['pembayaran']['lainnya'] as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
+            }
+        }
+        $this->load->library('pdf');
+    
+        $this->pdf->setPaper('A4', 'potrait');
+        $this->pdf->set_option('isRemoteEnabled', true);
+        $this->pdf->filename = $data['title'];
+        $this->pdf->load_view('v_transaksi/pembayaran/cetak', $data);
     }
 }

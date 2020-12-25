@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 25/12/2020 10:38:20
+ Date: 25/12/2020 13:37:19
 */
 
 SET NAMES utf8mb4;
@@ -153,8 +153,8 @@ CREATE TABLE `m_lembaga`  (
 -- ----------------------------
 -- Records of m_lembaga
 -- ----------------------------
-INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 525000);
-INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 135000);
+INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 1425000);
+INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 270000);
 INSERT INTO `m_lembaga` VALUES (3, 'SMA', 'SMA', 0);
 INSERT INTO `m_lembaga` VALUES (4, 'SMK', 'SMK', 0);
 
@@ -180,6 +180,7 @@ CREATE TABLE `m_siswa`  (
 -- ----------------------------
 INSERT INTO `m_siswa` VALUES (1, 1, 'S2020120001', 'Nazmudin', '1996-05-31', '08568029330', 0, '2020-12-19 23:35:26.000000', NULL);
 INSERT INTO `m_siswa` VALUES (2, 2, 'S2020120002', 'Nuralam', '2020-12-25', '08987728762', 0, '2020-12-25 03:47:54.000000', NULL);
+INSERT INTO `m_siswa` VALUES (3, 1, 'S2020120003', 'Juhe', '2020-12-25', '08987728687', 0, '2020-12-25 13:34:51.000000', NULL);
 
 -- ----------------------------
 -- Table structure for m_tahun_ajaran
@@ -388,6 +389,8 @@ CREATE TABLE `t_pembayaran`  (
 -- ----------------------------
 INSERT INTO `t_pembayaran` VALUES (1, 14, 1, 1, 1, 'IN/SMP/202012/0001', 525000, '2020-12-25 04:00:27.000000', 1);
 INSERT INTO `t_pembayaran` VALUES (2, 14, 2, 2, 1, 'IN/MTS/202012/0002', 135000, '2020-12-25 04:01:02.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (3, 14, 2, 2, 1, 'IN/MTS/202012/0003', 135000, '2020-12-25 10:41:54.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (4, 14, 1, 3, 1, 'IN/SMP/202012/0004', 900000, '2020-12-25 13:35:21.000000', 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_komite
@@ -428,6 +431,30 @@ INSERT INTO `t_pembayaran_komite` VALUES (21, 2, 112, 0);
 INSERT INTO `t_pembayaran_komite` VALUES (22, 2, 111, 0);
 INSERT INTO `t_pembayaran_komite` VALUES (23, 2, 110, 0);
 INSERT INTO `t_pembayaran_komite` VALUES (24, 2, 109, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (25, 3, 120, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (26, 3, 119, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (27, 3, 118, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (28, 3, 117, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (29, 3, 116, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (30, 3, 115, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (31, 3, 114, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (32, 3, 113, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (33, 3, 112, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (34, 3, 111, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (35, 3, 110, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (36, 3, 109, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (37, 4, 108, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (38, 4, 107, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (39, 4, 106, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (40, 4, 105, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (41, 4, 104, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (42, 4, 103, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (43, 4, 102, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (44, 4, 101, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (45, 4, 100, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (46, 4, 99, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (47, 4, 98, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (48, 4, 97, 0);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_lainnya
@@ -448,6 +475,10 @@ INSERT INTO `t_pembayaran_lainnya` VALUES (1, 1, 18, 1);
 INSERT INTO `t_pembayaran_lainnya` VALUES (2, 1, 17, 0);
 INSERT INTO `t_pembayaran_lainnya` VALUES (3, 2, 20, 0);
 INSERT INTO `t_pembayaran_lainnya` VALUES (4, 2, 19, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (5, 3, 20, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (6, 3, 19, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (7, 4, 18, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (8, 4, 17, 0);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_semester
@@ -468,6 +499,10 @@ INSERT INTO `t_pembayaran_semester` VALUES (1, 1, 18, 1);
 INSERT INTO `t_pembayaran_semester` VALUES (2, 1, 17, 0);
 INSERT INTO `t_pembayaran_semester` VALUES (3, 2, 20, 0);
 INSERT INTO `t_pembayaran_semester` VALUES (4, 2, 19, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (5, 3, 20, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (6, 3, 19, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (7, 4, 18, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (8, 4, 17, 0);
 
 -- ----------------------------
 -- Table structure for t_pengeluaran
