@@ -755,8 +755,6 @@
     });
     // END HAPUS ITEM
     
-    
-    
     // cetak
     $(document).on("click.ev", ".btn-cetak", function(e) {
         e.preventDefault();
@@ -765,7 +763,7 @@
         let id = $this.attr("data-id");
         setTimeout(() => {
             Swal.fire({
-                title: 'Cetak data ini?',
+                title: 'Cetak Pembayaran ini?',
                 text: "Anda akan di alihkan ke halaman baru untuk mencetak",
                 icon: 'info',
                 showCancelButton: true,
@@ -844,10 +842,7 @@
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
-            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-lihat">
-                        <i class="fa fa-fw fa-eye"></i> Lihat
-                    </button>
-                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-cetak">
+            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-cetak">
                         <i class="fa fa-fw fa-print"></i> Cetak
                     </button>`;
           }
