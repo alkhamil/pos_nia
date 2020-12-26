@@ -23,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+// LOCAL
 $config['base_url'] = 'http://localhost/pos_nia/';
+
+// PUBLIC
+// $config['base_url'] = 'http://niatrans.nurulimanalhasanah.com/';
 
 /*
 |--------------------------------------------------------------------------

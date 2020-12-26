@@ -28,9 +28,6 @@
     <!-- Core plugin JavaScript-->
     <script src="<?= base_url('assets/vendor/jquery-easing/jquery.easing.min.js') ?>"></script>
     
-    <!-- Custom scripts for all pages-->
-    <script src="<?= base_url('assets/js/sb-admin-2.min.js') ?>"></script>
-    
     <!-- Page level plugins -->
     <link rel="stylesheet" href="<?= base_url('assets/vendor/datatables/dataTables.bootstrap4.css');?>">
     <script src="<?= base_url('assets/vendor/datatables/jquery.dataTables.min.js');?>"></script>
@@ -175,6 +172,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item <?php if($segment_2=='pembayaran') echo 'active' ?>" href="<?= base_url('c_transaksi/pembayaran') ?>">Pembayaran</a>
                 <a class="collapse-item <?php if($segment_2=='pengeluaran') echo 'active' ?>" href="<?= base_url('c_transaksi/pengeluaran') ?>">Pengeluaran</a>
+                <a class="collapse-item <?php if($segment_2=='riwayat') echo 'active' ?>" href="<?= base_url('c_transaksi/riwayat') ?>">Riwayat</a>
             </div>
         </div>
     </li>
@@ -184,6 +182,13 @@
             <span>User</span>
         </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 
 </ul>
 <!-- End of Sidebar -->

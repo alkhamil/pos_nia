@@ -9,7 +9,7 @@
     <footer class="sticky-footer bg-white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
-                <span>Copyright &copy; POS-NIA <?= date('Y') ?></span>
+                <span>Copyright &copy; NIA <?= date('Y') ?></span>
             </div>
         </div>
     </footer>
@@ -44,6 +44,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= base_url('assets/js/sb-admin-2.min.js') ?>"></script>
     
     <script type="text/javascript">
         base_url='<?= base_url(); ?>';
