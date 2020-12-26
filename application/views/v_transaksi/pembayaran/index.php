@@ -778,7 +778,6 @@
                 }else{
                     hideLoad();
                 }
-                check_nis();
             });
         }, 1000); 
     });
