@@ -77,9 +77,9 @@ $password = "root";
 $database = "pos_nia_dev";
 
 // PUBLIC
-// $username = "nurulim_niatrans";
+// $username = "nurulim2_niatrans";
 // $password = "Seribu9009-6";
-// $database = "nurulim_niatrans";
+// $database = "nurulim2_niatrans";
 
 $active_group = 'default';
 $query_builder = TRUE;
