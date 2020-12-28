@@ -160,7 +160,7 @@
                                                             </thead>
                                                             <thead class="d-none" id="header-checkout-komite">
                                                                 <tr class="border-bottom border-top">
-                                                                    <td colspan="4" class="text-center"><div class="badge badge-info">Komite</div></td>
+                                                                    <td colspan="4"><div class="badge badge-info">[Komite]</div></td>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="content-checkout-komite">
@@ -168,7 +168,7 @@
                                                             </tbody>
                                                             <thead class="d-none" id="header-checkout-semester">
                                                                 <tr class="border-bottom border-top">
-                                                                    <td colspan="4" class="text-center"><div class="badge badge-info">Semester</div></td>
+                                                                    <td colspan="4"><div class="badge badge-info">[Semester]</div></td>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="content-checkout-semester">
@@ -176,7 +176,7 @@
                                                             </tbody>
                                                             <thead class="d-none" id="header-checkout-lainnya">
                                                                 <tr class="border-bottom border-top">
-                                                                    <td colspan="4" class="text-center"><div class="badge badge-info">Lainnya</div></td>
+                                                                    <td colspan="4"><div class="badge badge-info">[Lainnya]</div></td>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="content-checkout-lainnya">
@@ -228,6 +228,54 @@
                 <h6 class="m-0 font-weight-bold text-primary">Daftar <?= $title ?></h6>
             </div>
             <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="accordion" id="accordionFilterPembayaran">
+                            <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                <div class="card-header bg-info" id="headingKomite">
+                                    <h6 class="mb-0">
+                                        <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseKomite" aria-expanded="true" aria-controls="collapseKomite">
+                                            <i class="fa fa-plus fa-fw"></i>
+                                        </button>
+                                        <strong class="ml-2 text-white">Filter Pencarian</strong>
+                                    </h6>
+                                </div>
+
+                                <div id="collapseKomite" class="collapse" aria-labelledby="headingKomite" data-parent="#accordionFilterPembayaran">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <select name="filter_tahun_ajaran_id" id="filter_tahun_ajaran_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Tahun Ajaran">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <select name="filter_lembaga_id" id="filter_lembaga_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Lembaga">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <select name="filter_kelas_id" id="filter_kelas_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Kelas">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-outline-primary btn-block btn-filter">
+                                                        Simpan Filter
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm" id="data" width="100%">
                         <thead>
@@ -236,6 +284,7 @@
                                 <th>Code</th>
                                 <th>Nis</th>
                                 <th>Siswa</th>
+                                <th>Kelas</th>
                                 <th>Nominal</th>
                                 <th>Tanggal</th>
                                 <th></th>
@@ -257,7 +306,7 @@
     $('#checkout').prop('disabled', true).css('cursor', 'not-allowed');
 
     $(document).ready(function(){
-        $start = $('#accordionPembayaran');
+        $start = $('#accordionPembayaran , #accordionFilterPembayaran');
         // Add minus icon for collapse element which is open by default
         $start.find(".collapse.show").each(function(){
         	$(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
@@ -390,6 +439,126 @@
     }).on("select2:unselect", function(e){
         kelas_id = null;         
     });
+
+
+    // FILTER
+    let filter_tahun_ajaran_id = null;
+    $("#filter_tahun_ajaran_id").select2({
+        allowClear: true,
+        ajax: {
+            url: "<?php echo $select_tahun_ajaran ?>",
+            delay: 100,
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        filter_tahun_ajaran_id = data.id;
+    }).on("select2:unselect", function(e){
+        filter_tahun_ajaran_id = null;         
+    });
+
+    let filter_lembaga_id = null;
+    let filter_lembaga_name = null;
+    $("#filter_lembaga_id").select2({
+        allowClear: true,
+        ajax: {
+            url: "<?php echo $select_lembaga ?>",
+            delay: 100,
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        filter_lembaga_id = data.id;
+        filter_lembaga_name = data.text;
+    }).on("select2:unselect", function(e){
+        filter_lembaga_id = null;         
+        filter_lembaga_name = null;         
+    });
+
+    let filter_kelas_id = null;
+    $("#filter_kelas_id").select2({
+        allowClear: true,
+        ajax: {
+            url: "<?php echo $select_kelas ?>",
+            delay: 100,
+            data: function(params) {
+                let level = (filter_lembaga_name == 'SMP' || filter_lembaga_name == 'MTS') ? 1 : 2;
+                var query = {
+                    q: params.term,
+                    type: 'public',
+                    level: level
+                }
+                return query;
+            },
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        filter_kelas_id = data.id;
+    }).on("select2:unselect", function(e){
+        filter_kelas_id = null;         
+    });
+
+    $(document).on("click.ev", ".btn-filter",  function() {
+        showLoad();
+        setTimeout(() => {
+            table.ajax.reload();
+            hideLoad();
+        }, 800);
+    });
+
+    // END FILTER
 
     // edit Lembaga
     $(document).on("click.ev", ".btn-lihat", function(e) {
@@ -793,7 +962,9 @@
         "url": "<?= $data; ?>",
         "type": "POST",
         "data": function(data) {
-          
+            data.filter_tahun_ajaran_id = filter_tahun_ajaran_id;
+            data.filter_lembaga_id = filter_lembaga_id;
+            data.filter_kelas_id = filter_kelas_id;
         }
       },
       "fnInitComplete": function() {
@@ -815,6 +986,9 @@
           "data": "siswa_name"
         },
         {
+          "data": "kelas_name"
+        },
+        {
           "data": "amount",
           "render": function(data, type, row){
               return `<b>`+formatCurrency(data)+`</b>`
@@ -830,14 +1004,14 @@
       
       "columnDefs": [
         {
-          "targets": [0, 6], 
+          "targets": [0, 7], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 6,
+          "targets": 7,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
