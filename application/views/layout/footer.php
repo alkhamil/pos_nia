@@ -58,6 +58,7 @@
             dataType: 'json',
             cache: false
         });
+        
         function showToasts(type, msg) { 
             if (type == 'error') {
                 iziToast.warning({

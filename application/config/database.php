@@ -72,14 +72,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 // LOCAL
-$username = "root";
-$password = "root";
-$database = "pos_nia_dev";
+// $username = "root";
+// $password = "root";
+// $database = "pos_nia_dev";
 
 // PUBLIC
-// $username = "nurulim2_niatrans";
-// $password = "Seribu9009-6";
-// $database = "nurulim2_niatrans";
+$username = "nurulim2_niatrans";
+$password = "Seribu9009-6";
+$database = "nurulim2_niatrans";
 
 $active_group = 'default';
 $query_builder = TRUE;
