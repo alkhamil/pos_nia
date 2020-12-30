@@ -43,7 +43,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="total_saldo" class="">Total Saldo</label>
-                                        <span class="form-control" name="total_saldo" id="total_saldo"></span>
+                                        <input type="text" style="font-weight: bold;" class="form-control" name="total_saldo" id="total_saldo" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -93,12 +93,13 @@
                                                     <label for="nominal" class="col-sm-2 col-form-label label-required">Nominal</label>
                                                     <div class="col-sm-10">
                                                         <input type="number" name="nominal" class="form-control" id="nominal" required disabled>
+                                                        <small class="form-control-static text-danger" id="peringatan"></small>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="sisa_saldo" class="col-sm-2 col-form-label">Sisa Saldo</label>
                                                     <div class="col-sm-10">
-                                                        <span class="form-control" id="sisa_saldo"></span>
+                                                        <input type="text" style="font-weight: bold;" class="form-control" id="sisa_saldo" disabled></input>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -184,14 +185,15 @@
       let data = e.params.data;
       saldo = data.saldo;
       lembaga_id = data.id;
-      $('#total_saldo').append("<strong>Rp. "+ formatCurrency(saldo)+"</strong>");
-      $('#sisa_saldo').append("<strong>Rp. "+ formatCurrency(saldo)+"</strong>");
+      $('#total_saldo').val($('#total_saldo').val() +'Rp. '+ formatCurrency(saldo));
+      $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
       $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer'); 
     }).on("select2:unselect", function(e){
       lembaga_id = null;
     }).on('change',function () { 
-      $('#total_saldo').empty();
-      $('#sisa_saldo').html('');
+      $('#total_saldo').val('');
+      $('#sisa_saldo').val('');
+      $('#penerima').val('');
       $('#list-attribute').addClass('d-none');
      });
 
@@ -222,7 +224,7 @@
                     dataType: "json",
                     success: function (data) {
                         if(saldo <= 100000){
-                            let msg = 'Saldo kurang dari atau sama dengan 100.000 tidak bisa di ambil!';
+                            let msg = 'Saldo kurang dari atau sama dengan Rp. 100.000 tidak bisa di ambil!';
                             Swal.fire({
                                 title: 'Saldo Tidak Mencukupi!',
                                 text: msg,
@@ -286,10 +288,11 @@
         hideLoad();
       }, 800);
     }).on('change',function () { 
+      $('#sisa_saldo').val('');
       $('#kebutuhan_detail_id').empty();
       $('#desc').val('');
       $('#nominal').val('');
-      $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
+      $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
     });
     //kebutuhan detail
     $("#kebutuhan_detail_id").select2({
@@ -328,6 +331,7 @@
         }
         
     }).on("select2:select", function(e) {
+        $('#sisa_saldo').val('');
         let data = e.params.data;
         let desc = data.desc;
         let amount = data.amount;
@@ -339,31 +343,40 @@
             $('#nominal').prop('disabled', false);
             $('#desc').val($('#desc').val() + desc);
             $('#nominal').val($('#nominal').val() + amount);
-            $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(jumlah)+'</strong>');
-            if(jumlah <= 100000){
+            $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(jumlah));
+            if(jumlah < 0){
+                $('#peringatan').append('* Nominal yang di ambil tidak boleh melebihi saldo!');
                 $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+            } else {
+                $('#submit').prop('disabled', false).css('cursor', 'pointer');
             }
             hideLoad();
         }, 800);
     }).on("select2:unselect", function(e){
         kelas_id = null;  
-        $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
+        $('#sisa_saldo').val('');
+        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));;
     }).on('change',function () { 
         $('#desc').val('');
         $('#nominal').val('');
-        $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
+        $('#sisa_saldo').val('');
+        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
      });    
     
     $('#nominal').on('change paste keyup', function (){
+        $('#peringatan').empty();
+        $('#sisa_saldo').val('');
         let nominal = $(this).val();
         let jumlah = saldo - nominal;
-        $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(jumlah)+'</strong>');
-        if(jumlah <= 100000){
+        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(jumlah));
+        if(jumlah < 0){
+            $('#peringatan').append('* Nominal yang di ambil tidak boleh melebihi saldo!');
             $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
         } else {
             $('#submit').prop('disabled', false).css('cursor', 'pointer');
         }
     });
+
     // data
     let table = $("#data").DataTable({
       "processing": true, 
