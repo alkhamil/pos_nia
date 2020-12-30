@@ -20,6 +20,7 @@ class Pembayaran extends CI_Controller {
         $data['get_tahun_ajaran'] = base_url('c_transaksi/pembayaran/get_tahun_ajaran');
         $data['get_pembayaran_siswa'] = base_url('c_transaksi/pembayaran/get_pembayaran_siswa');
         $data['cetak'] = base_url('c_transaksi/pembayaran/cetak');
+        $data['select_tahun_ajaran'] = base_url('c_transaksi/pembayaran/select_tahun_ajaran');
         $data['select_lembaga'] = base_url('c_transaksi/pembayaran/select_lembaga');
         $data['select_siswa'] = base_url('c_transaksi/pembayaran/select_siswa');
         $data['select_kelas'] = base_url('c_transaksi/pembayaran/select_kelas');
@@ -30,6 +31,15 @@ class Pembayaran extends CI_Controller {
     {
         $temp_data = [];
         $where = [];
+        if ($this->input->post('filter_tahun_ajaran_id', TRUE)) {
+            $where['m_tahun_ajaran.id'] = $this->input->post('filter_tahun_ajaran_id', TRUE);
+        }
+        if ($this->input->post('filter_lembaga_id', TRUE)) {
+            $where['m_lembaga.id'] = $this->input->post('filter_lembaga_id', TRUE);
+        }
+        if ($this->input->post('filter_kelas_id', TRUE)) {
+            $where['m_kelas.id'] = $this->input->post('filter_kelas_id', TRUE);
+        }
         $no = $this->input->post('start');
         $list = $this->Pembayaran_model->lists(
             '
@@ -330,6 +340,19 @@ class Pembayaran extends CI_Controller {
         }
     }
 
+    public function select_tahun_ajaran()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        $this->Pembayaran_model->order_by = "id";
+        $this->Pembayaran_model->order_type = "ASC";
+        $this->Pembayaran_model->search_field = "name";
+        $this->Pembayaran_model->column_search = "name";
+        $this->Pembayaran_model->table = "m_tahun_ajaran";
+        $data = $this->Pembayaran_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
     public function select_lembaga()
     {
         $q = $this->input->get('q');
@@ -359,7 +382,10 @@ class Pembayaran extends CI_Controller {
     public function select_kelas()
     {
         $q = $this->input->get('q');
-        $where['level'] = $this->input->get('level', TRUE);;
+        $where = [];
+        if ($this->input->get('level', TRUE)) {
+            $where['level'] = $this->input->get('level', TRUE);
+        }
         $this->Pembayaran_model->order_by = "id";
         $this->Pembayaran_model->order_type = "ASC";
         $this->Pembayaran_model->search_field = "name";
