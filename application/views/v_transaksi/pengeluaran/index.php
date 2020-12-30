@@ -74,29 +74,25 @@
                                                     <div class="col-sm-10">
                                                         <select name="tipe_kebutuhan" id="tipe_kebutuhan" class="form-control" style="width: 100%" data-placeholder="Pilih Tipe" required>
                                                         </select>
-                                                        <input type="hidden" name="tipe_kebutuhan_temp">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="kebutuhan_detail_id" class="col-sm-2 col-form-label label-required">Kebutuhan Detail</label>
                                                     <div class="col-sm-10">
-                                                        <select name="kebutuhan_detail_id" id="kebutuhan_detail_id" class="form-control" style="width: 100%" data-placeholder="Pilih Detail Kebutuhan" required>
+                                                        <select name="kebutuhan_detail_id" id="kebutuhan_detail_id" class="form-control" style="width: 100%" data-placeholder="Pilih Detail Kebutuhan" required disabled>
                                                         </select>
-                                                        <input type="hidden" name="kebutuhan_detail_id_temp">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="desc" class="col-sm-2 col-form-label label-required">Deskripsi</label>
                                                     <div class="col-sm-10">
-                                                        <textarea name="desc" id="desc" class="form-control" cols="3" required readonly></textarea>
-                                                        <input type="hidden" name="desc_temp">
+                                                        <textarea name="desc" id="desc" class="form-control" cols="3" required disabled></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="nominal" class="col-sm-2 col-form-label label-required">Nominal</label>
                                                     <div class="col-sm-10">
-                                                        <span class="form-control" id="nominal1"></span>
-                                                        <input type="hidden" name="nominal" class="form-control" id="nominal" required>
+                                                        <input type="number" name="nominal" class="form-control" id="nominal" required disabled>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -158,6 +154,7 @@
 </div>
 
 <script>
+    $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
     let saldo = null;
     let lembaga_id = null;
     $("#lembaga_id").select2({
@@ -216,7 +213,6 @@
 
         if (lanjut) {
             setTimeout(() => {
-                $('#submit').prop('disabled', false).css('cursor', 'pointer');
                 $.ajax({
                     type: "get",
                     url: "<?= $get_biaya_kebutuhan ?>",
@@ -225,18 +221,10 @@
                     },
                     dataType: "json",
                     success: function (data) {
-                        if(data !== null ){
-                            DATA = data;
-
-                            if (!data.is_isset) {
-                                loadDataChild(DATA);
-                                biaya_kebutuhan_id = data.id
-                            }
-                            hideLoad();
-                        } else {
-                            let msg = 'Data kebutuhan di lembaga ini belum tersedia!';
+                        if(saldo <= 100000){
+                            let msg = 'Saldo kurang dari atau sama dengan 100.000 tidak bisa di ambil!';
                             Swal.fire({
-                                title: 'Data tidak tersedia!',
+                                title: 'Saldo Tidak Mencukupi!',
                                 text: msg,
                                 icon: 'info',
                                 showCancelButton: false,
@@ -245,6 +233,28 @@
                             });
                             $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer');
                             hideLoad();
+                        } else {
+                            if(data !== null ){
+                                DATA = data;
+
+                                if (!data.is_isset) {
+                                    loadDataChild(DATA);
+                                    biaya_kebutuhan_id = data.id
+                                }
+                                hideLoad();
+                            } else {
+                                let msg = 'Data kebutuhan di lembaga ini belum tersedia!';
+                                Swal.fire({
+                                    title: 'Data tidak tersedia!',
+                                    text: msg,
+                                    icon: 'info',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK'
+                                });
+                                $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer');
+                                hideLoad();
+                            }
                         }
                     },
                 });
@@ -270,10 +280,14 @@
     }).on("select2:select", function(e) {
       let data = e.params.data;
       name = data.text;   
+      showLoad();
+      setTimeout(() => {
+        $('#kebutuhan_detail_id').prop('disabled',false);
+        hideLoad();
+      }, 800);
     }).on('change',function () { 
       $('#kebutuhan_detail_id').empty();
       $('#desc').val('');
-      $('#nominal1').html('');
       $('#nominal').val('');
       $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
     });
@@ -318,20 +332,38 @@
         let desc = data.desc;
         let amount = data.amount;
         let jumlah = saldo - amount;
-        $('#desc').val($('#desc').val() + desc);
-        $('#nominal1').html('<strong>Rp. '+formatCurrency(amount)+'</strong>');
-        $('#nominal').val($('#nominal').val() + amount);
-        $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(jumlah)+'</strong>');
+        showLoad();
+        setTimeout(() => {
+            $('#submit').prop('disabled', false).css('cursor', 'pointer');
+            $('#desc').prop('disabled', false);
+            $('#nominal').prop('disabled', false);
+            $('#desc').val($('#desc').val() + desc);
+            $('#nominal').val($('#nominal').val() + amount);
+            $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(jumlah)+'</strong>');
+            if(jumlah <= 100000){
+                $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+            }
+            hideLoad();
+        }, 800);
     }).on("select2:unselect", function(e){
         kelas_id = null;  
         $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
     }).on('change',function () { 
         $('#desc').val('');
-        $('#nominal1').html('');
         $('#nominal').val('');
         $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(saldo)+'</strong>');
      });    
-
+    
+    $('#nominal').on('change paste keyup', function (){
+        let nominal = $(this).val();
+        let jumlah = saldo - nominal;
+        $('#sisa_saldo').html('<strong>Rp. '+formatCurrency(jumlah)+'</strong>');
+        if(jumlah <= 100000){
+            $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+        } else {
+            $('#submit').prop('disabled', false).css('cursor', 'pointer');
+        }
+    });
     // data
     let table = $("#data").DataTable({
       "processing": true, 

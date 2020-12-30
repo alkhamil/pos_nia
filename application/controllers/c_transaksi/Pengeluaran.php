@@ -70,6 +70,7 @@ class Pengeluaran extends CI_Controller {
         $savedata['amount'] = $this->input->post('nominal',TRUE);
         $savedata['created_at'] = date('Y-m-d H:i:s');
         $savedata['created_by'] = $this->userdata->id;
+        $desc = $this->input->post('desc',TRUE);
 
         $this->db->trans_begin();
         if($this->input->post('id')) { 
@@ -79,7 +80,7 @@ class Pengeluaran extends CI_Controller {
             //create
             $pengeluaran_id = $this->Pengeluaran_model->insert($savedata, true);
             if ($pengeluaran_id) {  
-                $this->update_kebutuhan_detail($kebutuhanDetail);
+                $this->update_kebutuhan_detail($kebutuhanDetail,$savedata['amount'],$desc);
                 $this->save_detail($savedataDetail,$pengeluaran_id);
                 // update lembaga amount
                 $this->update_amount($savedataDetail['lembaga_id'],$savedata['amount']);
@@ -104,7 +105,7 @@ class Pengeluaran extends CI_Controller {
         redirect(base_url('c_transaksi/pengeluaran'), 'refresh');
     }
 
-    public function update_kebutuhan_detail($id)
+    public function update_kebutuhan_detail($id,$nominal,$desc)
     {
         $where['id'] = $id;
         $this->Pengeluaran_model->table = 't_biaya_kebutuhan_detail';
@@ -112,8 +113,9 @@ class Pengeluaran extends CI_Controller {
         $detail = $this->Pengeluaran_model->get($where);
         $savedata['biaya_kebutuhan_id'] = $detail->biaya_kebutuhan_id;
         $savedata['kebutuhan_id']       = $detail->kebutuhan_id;
-        $savedata['amount']             = $detail->amount;
+        $savedata['amount']             = $nominal;
         $savedata['is_checked']         = 1;
+        $savedata['desc']               = $desc;
         $this->Pengeluaran_model->update($savedata,$where);
     }
 
@@ -226,7 +228,7 @@ class Pengeluaran extends CI_Controller {
                     t_pengeluaran.*,
                     m_kebutuhan.name as kebutuhan_name,
                     m_kebutuhan.type as kebutuhan_type,
-                    m_kebutuhan.desc as desc,
+                    t_biaya_kebutuhan_detail.desc as desc,
                     m_tahun_ajaran.name as tahun_name,
                     m_lembaga.name as lembaga_name";
         $join = [
