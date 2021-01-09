@@ -24,11 +24,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // LOCAL
-$config['base_url'] = 'http://localhost/pos_nia/';
+// $config['base_url'] = 'http://localhost/pos_nia/';
 
 // PUBLIC
 // $config['base_url'] = 'http://niatrans.nurulimanalhasanah.com/';
-// $config['base_url'] = 'https://niatrans.nurulimanalhasanah.com/';
+$config['base_url'] = 'https://niatrans.nurulimanalhasanah.com/';
 
 
 /*
