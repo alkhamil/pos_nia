@@ -382,10 +382,10 @@ CREATE TABLE `t_checkout`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `siswa_id` int(0) NULL DEFAULT NULL,
   `kelas_id` int(0) NULL DEFAULT NULL,
-  `biaya_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `biaya_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `biaya_type_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_checkout
