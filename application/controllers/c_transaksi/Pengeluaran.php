@@ -18,8 +18,8 @@ class Pengeluaran extends CI_Controller {
         $data['data'] = base_url('c_transaksi/pengeluaran/data');
         $data['get'] = base_url('c_transaksi/pengeluaran/get_data');
         $data['cetak'] = base_url('c_transaksi/pengeluaran/cetak');
-        $data['get_biaya_kebutuhan'] = base_url('c_transaksi/pengeluaran/get_biaya_kebutuhan');
-        $data['get_kebutuhan_detail'] = base_url('c_transaksi/pengeluaran/get_kebutuhan_detail');
+        $data['get_tahun_ajaran'] = base_url('c_transaksi/pembayaran/get_tahun_ajaran');
+        $data['get_kebutuhan'] = base_url('c_transaksi/pengeluaran/get_kebutuhan');
         $data['select_lembaga'] = base_url('c_transaksi/pengeluaran/select_lembaga');
         $this->load->view('layout/wrapper', $data);
     }
@@ -59,31 +59,38 @@ class Pengeluaran extends CI_Controller {
 
     public function simpan()
     {
-        $kebutuhanDetail = $this->input->post('kebutuhan_detail_id',TRUE);
-        $savedataDetail['lembaga_id'] = $this->input->post('lembaga_id', TRUE);
-        $savedataDetail['kebutuhan_lembaga_id'] = $this->input->post('t_biaya_kebutuhan_id',TRUE);
-        $savedataDetail['tahun_ajaran_id'] = $this->input->post('tahun_ajaran_id', TRUE);
-        $savedataDetail['biaya_kebutuhan_detail_id'] = $this->input->post('kebutuhan_detail_id',TRUE);
-        $savedata['code'] = $this->check_code($this->get_lembaga($savedataDetail['lembaga_id']));
+        $savedata['tahun_ajaran_id'] = $this->input->post('tahun_ajaran_id', TRUE);
+        $savedata['lembaga_id'] = $this->input->post('lembaga_id', TRUE);
+        $savedata['code'] = $this->check_code($this->get_lembaga($this->input->post('lembaga_id', TRUE)));
         $savedata['approval_name'] = $this->userdata->username;
-        $savedata['receive_name'] = $this->input->post('penerima',TRUE);
-        $savedata['amount'] = $this->input->post('nominal',TRUE);
+        $savedata['receive_name'] = $this->input->post('receive_name',TRUE);
+        
         $savedata['created_at'] = date('Y-m-d H:i:s');
         $savedata['created_by'] = $this->userdata->id;
-        $desc = $this->input->post('desc',TRUE);
+        $list_anggaran_temp = json_decode($this->input->post('list-anggaran-temp'));
+        $amount = 0;
+        foreach ($list_anggaran_temp as $key => $item) {
+            if (isset($item->is_checkout)) {
+                if ($item->is_checkout == 1) {
+                    $amount+=$item->amount;
+                }
+            }
+        }
+        $savedata['amount'] = $amount;
 
         $this->db->trans_begin();
         if($this->input->post('id')) { 
             // edit
+            die('edit');exit;
 			$this->Pengeluaran_modal->update($savedata, array('id' => $this->input->post('id', TRUE)));
         } else { 
             //create
             $pengeluaran_id = $this->Pengeluaran_model->insert($savedata, true);
             if ($pengeluaran_id) {  
-                $this->update_kebutuhan_detail($kebutuhanDetail,$savedata['amount'],$desc);
-                $this->save_detail($savedataDetail,$pengeluaran_id);
+                $this->update_master_kebutuhan($list_anggaran_temp);
+                $this->save_detail($list_anggaran_temp, $pengeluaran_id);
                 // update lembaga amount
-                $this->update_amount($savedataDetail['lembaga_id'],$savedata['amount']);
+                $this->update_amount($savedata['lembaga_id'], $amount);
             }
         }
         
@@ -105,29 +112,42 @@ class Pengeluaran extends CI_Controller {
         redirect(base_url('c_transaksi/pengeluaran'), 'refresh');
     }
 
-    public function update_kebutuhan_detail($id,$nominal,$desc)
+    public function update_master_kebutuhan($data)
     {
-        $where['id'] = $id;
-        $this->Pengeluaran_model->table = 't_biaya_kebutuhan_detail';
-        $this->Pengeluaran_model->order_by = 'id';
-        $detail = $this->Pengeluaran_model->get($where);
-        $savedata['biaya_kebutuhan_id'] = $detail->biaya_kebutuhan_id;
-        $savedata['kebutuhan_id']       = $detail->kebutuhan_id;
-        $savedata['amount']             = $nominal;
-        $savedata['is_checked']         = 1;
-        $savedata['desc']               = $desc;
-        $this->Pengeluaran_model->update($savedata,$where);
+        $this->Pengeluaran_model->table = 'm_kebutuhan';
+        foreach ($data as $key => $item) {
+            $where['id'] = $item->id;
+            $updatedate_detail['amount'] = $item->amount;
+            $updatedate_detail['desc'] = $item->desc;
+            $this->Pengeluaran_model->update($updatedate_detail, $where);
+        }
     }
 
-    public function save_detail($savedata,$id)
+    public function save_detail($data, $pengeluaran_id)
     {
-        $save['pengeluaran_id']     = $id;
-        $save['tahun_ajaran_id']    = (int)$savedata['tahun_ajaran_id'];
-        $save['lembaga_id']         = (int)$savedata['lembaga_id'];
-        $save['kebutuhan_lembaga_id'] = (int)$savedata['kebutuhan_lembaga_id'];
-        $save['biaya_kebutuhan_detail_id'] = (int)$savedata['biaya_kebutuhan_detail_id'];
         $this->Pengeluaran_model->table = 't_pengeluaran_detail';
-        $this->Pengeluaran_model->insert($save);
+        foreach ($data as $key => $item) {
+            if (isset($item->is_checkout)) {
+                if ((int)$item->is_checkout == 1) {
+                    $savedata['pengeluaran_id'] = $pengeluaran_id;
+                    $savedata['kebutuhan_id'] = $item->id;
+                    $savedata['amount'] = $item->amount;
+                    $savedata['desc'] = $item->desc;
+                    $this->Pengeluaran_model->insert($savedata);
+                }
+            }
+        }
+    }
+
+    public function update_amount($lembaga_id, $amount)
+    {
+        $where['id'] = $lembaga_id;
+        $this->Pengeluaran_model->table = 'm_lembaga';
+        $lembaga = $this->Pengeluaran_model->get($where);
+        if ($lembaga) {
+            $updatedata['saldo'] = $lembaga->saldo - $amount;
+            $this->Pengeluaran_model->update($updatedata, $where);
+        }
     }
 
     public function get_lembaga($id)
@@ -139,18 +159,6 @@ class Pengeluaran extends CI_Controller {
         $lembaga = $this->Pengeluaran_model->get($where, $select);
         $this->Pengeluaran_model->table = "t_pengeluaran";
         return $lembaga->name;
-    }
-
-    public function update_amount($data,$amount)
-    {
-        $where['id'] = $data;
-        $this->Pengeluaran_model->table = "m_lembaga";
-        $this->Pengeluaran_model->order_by = "id";
-        $lembaga = $this->Pengeluaran_model->get($where);
-        if ($lembaga) {
-            $update['saldo'] = $lembaga->saldo - $amount;
-            $this->Pengeluaran_model->update($update, $where);
-        }
     }
 
     public function select_lembaga()
@@ -183,40 +191,22 @@ class Pengeluaran extends CI_Controller {
         return $result;
     }
 
-    public function get_biaya_kebutuhan()
-    {       
+    public function get_tahun_ajaran()
+    {
+        $where['is_active'] = 1;
+        $select = "*";
         $this->Pengeluaran_model->table = "m_tahun_ajaran";
         $this->Pengeluaran_model->order_by = "id";
-        $tahun = $this->Pengeluaran_model->get(['is_active' => 1]);
-        $where['t_biaya_kebutuhan.tahun_ajaran_id'] = $tahun->id;
-        $where['t_biaya_kebutuhan.lembaga_id'] = $this->input->get('lembaga_id',TRUE);
-        $this->Pengeluaran_model->table = "t_biaya_kebutuhan";
-        $this->Pengeluaran_model->order_by = "id";
-        $data = $this->Pengeluaran_model->get($where);
-        echo json_encode($data);
+        $tahun_ajaran = $this->Pengeluaran_model->get($where, $select);
+        echo json_encode($tahun_ajaran->id);
     }
 
-    public function get_kebutuhan_detail()
-    {
-        $where['t_biaya_kebutuhan_detail.biaya_kebutuhan_id'] = $this->input->get('biaya_id',TRUE);
-        $where['t_biaya_kebutuhan_detail.is_checked'] = 0;
-        $where['m_kebutuhan.type'] = $this->input->get('tipe',TRUE);
-        
-        $select =   "t_biaya_kebutuhan_detail.*,
-                     m_kebutuhan.type as tipe_kebutuhan,
-                     m_kebutuhan.name as name,
-                     m_kebutuhan.desc as desc
-                     ";
-        $join = [
-                    [
-                        'type'      => 'LEFT JOIN',
-                        'table'     => 'm_kebutuhan',
-                        'on'        => 'm_kebutuhan.id = t_biaya_kebutuhan_detail.kebutuhan_id'
-                    ]
-                ];
-        $this->Pengeluaran_model->table = 't_biaya_kebutuhan_detail';
-        $this->Pengeluaran_model->order_by = 'id';
-        $data = $this->Pengeluaran_model->get_all($where,$select,$join);
+    public function get_kebutuhan()
+    {       
+        $this->Pengeluaran_model->table = "m_kebutuhan";
+        $this->Pengeluaran_model->order_by = "id";
+        $where = [];
+        $data = $this->Pengeluaran_model->get_all($where, "*");
         echo json_encode($data);
     }
 
@@ -226,45 +216,31 @@ class Pengeluaran extends CI_Controller {
         
         $select = "
                     t_pengeluaran.*,
-                    m_kebutuhan.name as kebutuhan_name,
-                    m_kebutuhan.type as kebutuhan_type,
-                    t_biaya_kebutuhan_detail.desc as desc,
-                    m_tahun_ajaran.name as tahun_name,
-                    m_lembaga.name as lembaga_name";
+                    m_tahun_ajaran.name as tahun_ajaran_name,
+                    m_lembaga.name as lembaga_name
+                  ";
         $join = [
             [
-                'table'     => 't_pengeluaran_detail',
-                'on'        => 't_pengeluaran_detail.pengeluaran_id = t_pengeluaran.id'
-            ],
-            [
                 'table'     => 'm_tahun_ajaran',
-                'on'        => 'm_tahun_ajaran.id = t_pengeluaran_detail.tahun_ajaran_id'
+                'on'        => 'm_tahun_ajaran.id = t_pengeluaran.tahun_ajaran_id'
             ],
             [
                 'table'     => 'm_lembaga',
-                'on'        => 'm_lembaga.id = t_pengeluaran_detail.lembaga_id'
-            ],
-            [
-                'table'     => 't_biaya_kebutuhan_detail',
-                'on'        => 't_biaya_kebutuhan_detail.id = t_pengeluaran_detail.biaya_kebutuhan_detail_id'
-            ],
-            [
-                'table'     => 'm_kebutuhan',
-                'on'        => 'm_kebutuhan.id = t_biaya_kebutuhan_detail.kebutuhan_id'
+                'on'        => 'm_lembaga.id = t_pengeluaran.lembaga_id'
             ]
         ];
         $pengeluaran = $this->Pengeluaran_model->get($where, $select, $join);
-        $data['tahun_name'] = isset($pengeluaran->tahun_name) ? $pengeluaran->tahun_name : null;
+        $data['tahun_ajaran_name'] = isset($pengeluaran->tahun_ajaran_name) ? $pengeluaran->tahun_ajaran_name : null;
         $data['lembaga_name'] = isset($pengeluaran->lembaga_name) ? $pengeluaran->lembaga_name : null;
         $data['approval_name'] = isset($pengeluaran->approval_name) ? $pengeluaran->approval_name : null;
         $data['receive_name'] = isset($pengeluaran->receive_name) ? $pengeluaran->receive_name : null;
         $data['code'] = isset($pengeluaran->code) ? $pengeluaran->code : null;
-        $data['desc'] = isset($pengeluaran->desc) ? $pengeluaran->desc : null;
         $data['amount'] = isset($pengeluaran->amount) ? $pengeluaran->amount : null;
-        $data['kebutuhan_name'] = isset($pengeluaran->kebutuhan_name) ? $pengeluaran->kebutuhan_name : null;
-        $data['kebutuhan_type'] = isset($pengeluaran->kebutuhan_type) ? $pengeluaran->kebutuhan_type : null;
-        $data['tanggal'] = isset($pengeluaran->created_at) ? date('d M Y H:i:s', strtotime($pengeluaran->created_at)) : null;
+        $data['created_at'] = isset($pengeluaran->created_at) ? date('d M Y H:i:s', strtotime($pengeluaran->created_at)) : null;
+        $data['list_anggaran'] = isset($pengeluaran->id) ? $this->get_list_anggaran($pengeluaran->id) : [];
         $data['title'] = 'Lampiran Pengeluaran';
+
+        // echo json_encode($data);exit;
 
         $this->load->library('pdf');
     
@@ -272,5 +248,14 @@ class Pengeluaran extends CI_Controller {
         $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->filename = $data['title'];
         $this->pdf->load_view('v_transaksi/pengeluaran/cetak', $data);
+    }
+
+    public function get_list_anggaran($pengeluaran_id)
+    {
+        $where['pengeluaran_id'] = $pengeluaran_id;
+        $this->Pengeluaran_model->table = 't_pengeluaran_detail';
+        $this->Pengeluaran_model->order_by = 'id';
+        $data = $this->Pengeluaran_model->get_all($where);
+        return $data;
     }
 }

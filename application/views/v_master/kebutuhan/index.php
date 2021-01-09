@@ -28,11 +28,8 @@
                                         <input type="text" class="form-control form-required" name="name" id="name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="type" class="label-required">Type</label>
-                                        <select name="type" id="type" class="form-control" style="width: 100%" data-placeholder="Choose Type" required>
-                                            <option value="PRIMARY">PRIMARY</option>
-                                            <option value="SECONDARY">SECONDARY</option>
-                                        </select>
+                                        <label for="amount" class="label-required">Harga</label>
+                                        <input type="number" class="form-control form-required" name="amount" id="amount" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="desc" class="label-required">Deskripsi</label>
@@ -72,7 +69,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Type</th>
+                                <th>Harga</th>
                                 <th>Deskripsi</th>
                                 <th></th>
                             </tr>
@@ -115,8 +112,7 @@
                 }
                 form.find('[name=id]').val(dt.id);
                 form.find('[name=name]').val(dt.name);
-                let opt_type = new Option(dt.type, dt.type, true, true);
-                form.find('[name=type]').append(opt_type).trigger('change');
+                form.find('[name=amount]').val(dt.amount);
                 form.find('[name=desc]').val(dt.desc);
             }
       });
@@ -193,9 +189,9 @@
           "data": "name"
         },
         {
-          "data": "type",
-          "render" : function (data, type, row) {
-            return (data=='PRIMARY') ? '<div class="badge badge-primary">Primary</div>' : '<div class="badge badge-success">Secondary</div>';
+          "data": "amount",
+          "render" : function(data, type, row) {
+              return '<b>'+formatCurrency(data)+'</b>';
           }
         },
         {
@@ -222,7 +218,7 @@
             return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-fw fa-edit"></i> Edit
                     </button>
-                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus d-none">
+                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus">
                         <i class="fa fa-fw fa-trash"></i> Hapus
                     </button>`;
           }

@@ -307,6 +307,7 @@ class Biaya_lembaga extends CI_Controller {
         $q = $this->input->get('q');
         $where = [];
         $this->Biaya_lembaga_model->order_by = "id";
+        $this->Biaya_lembaga_model->order_type = "ASC";
         $this->Biaya_lembaga_model->search_field = "name";
         $this->Biaya_lembaga_model->column_search = "name";
         $this->Biaya_lembaga_model->table = "m_tahun_ajaran";
@@ -320,6 +321,7 @@ class Biaya_lembaga extends CI_Controller {
         $q = $this->input->get('q');
         $where = [];
         $this->Biaya_lembaga_model->order_by = "id";
+        $this->Biaya_lembaga_model->order_type = "ASC";
         $this->Biaya_lembaga_model->search_field = "name";
         $this->Biaya_lembaga_model->column_search = "name";
         $this->Biaya_lembaga_model->table = "m_lembaga";

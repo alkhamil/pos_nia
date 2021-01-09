@@ -35,6 +35,10 @@
                                         <label for="phone" class="label-required">Telepon</label>
                                         <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control form-required" name="phone" id="phone" required>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="address" class="label-required">Alamat Siswa</label>
+                                        <textarea name="address" id="address" class="form-control" cols="10" rows="3" required></textarea>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -84,6 +88,7 @@
                                 <th>Nama</th>
                                 <th>Lembaga</th>
                                 <th>Tanggal Lahir</th>
+                                <th>Alamat</th>
                                 <th>Telepon</th>
                                 <th></th>
                             </tr>
@@ -179,6 +184,7 @@
                 form.find('[name=name]').val(dt.name);
                 form.find('[name=phone]').val(dt.phone);
                 form.find('[name=birthday]').val(dt.birthday);
+                form.find('[name=address]').val(dt.address);
 
                 let opt_lembaga = new Option(dt.lembaga_name, dt.lembaga_id, true, true);
                 form.find('[name=lembaga_id]').append(opt_lembaga).trigger('change');
@@ -224,10 +230,35 @@
                 check_nis();
             });
         }, 1000);
-      
-        
     });
     // end hapus Lembaga
+
+    // cetak
+    $(document).on("click.ev", ".btn-riwayat", function(e) {
+        e.preventDefault();
+        showLoad();
+        let $this = $(this);
+        let id = $this.attr("data-id");
+        setTimeout(() => {
+            Swal.fire({
+                title: 'Lihat Riwayat Pembayaran?',
+                text: "Anda akan untuk melihat riwayat pembayaran ini?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Lanjutkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let link = "<?= $riwayat_pembayaran ?>" +"?id="+ id;
+                    location.replace(link);
+                    hideLoad();
+                }else{
+                    hideLoad();
+                }
+            });
+        }, 1000); 
+    });
 
     
 
@@ -268,6 +299,9 @@
           "data": "birthday"
         },
         {
+          "data": "address"
+        },
+        {
           "data": "phone"
         },
         {
@@ -277,18 +311,21 @@
       
       "columnDefs": [
         {
-          "targets": [0, 6], 
+          "targets": [0, 7], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 6,
+          "targets": 7,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
-            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
+            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-success btn-riwayat">
+                        <i class="fa fa-fw fa-money-bill"></i> Riwayat Pembayaran
+                    </button>
+                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-fw fa-edit"></i> Edit
                     </button>
                     <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-hapus d-none">

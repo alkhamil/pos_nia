@@ -1,12 +1,14 @@
 <style>
-.table-scroll {
-  max-height: 250px;
-  overflow: auto;
-  display: inline-block;
-}
 .form-check-input{
     cursor:pointer;
 }
+
+table.scroll tbody {
+    height: 250px;
+    overflow-y: auto;
+}
+
+
 </style>
 <!-- Content Row -->
 <div class="row content">
@@ -61,53 +63,96 @@
                                         - Gunakan fitur <b>Centang dan Tidak Centang</b> untuk mengatur attribute yang di butuhkan.
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 table-scroll">
-                                            <table class="table table-sm table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="4" class="text-center text-white bg-dark">Komite</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Harga</th>
-                                                        <th>C/TC</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="list-attribute-komite"></tbody>
-                                            </table>
+                                        <div class="col-md-4">
+                                            <div class="accordion" id="accordionBiayaKomite">
+                                                <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                                    <div class="card-header bg-info" id="headingBiayaKomite">
+                                                        <h6 class="mb-0">
+                                                            <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseBiayaKomite" aria-expanded="true" aria-controls="collapseBiayaKomite">
+                                                            <i class="fa fa-cog fa-fw"></i>
+                                                            </button>
+                                                            <strong class="ml-2 text-white">Atur Biaya Komite</strong>
+                                                        </h6>
+                                                    </div>
+
+                                                    <div id="collapseBiayaKomite" class="collapse show" aria-labelledby="headingBiayaKomite" data-parent="#accordionBiayaKomite">
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Name</th>
+                                                                        <th>Harga</th>
+                                                                        <th>C/TC</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="list-attribute-komite"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4 table-scroll">
-                                            <table class="table table-sm table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="4" class="text-center text-white bg-dark">Semester</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Harga</th>
-                                                        <th>C/TC</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="list-attribute-semester"></tbody>
-                                            </table>
+                                        <div class="col-md-4">
+                                            <div class="accordion" id="accordionBiayaSemester">
+                                                <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                                    <div class="card-header bg-info" id="headingBiayaSemester">
+                                                        <h6 class="mb-0">
+                                                            <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseBiayaSemester" aria-expanded="true" aria-controls="collapseBiayaSemester">
+                                                            <i class="fa fa-cog fa-fw"></i>
+                                                            </button>
+                                                            <strong class="ml-2 text-white">Atur Biaya Semester</strong>
+                                                        </h6>
+                                                    </div>
+
+                                                    <div id="collapseBiayaSemester" class="collapse show" aria-labelledby="headingBiayaSemester" data-parent="#accordionBiayaSemester">
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-bordered scroll">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Name</th>
+                                                                        <th>Harga</th>
+                                                                        <th>C/TC</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="list-attribute-semester"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4 table-scroll">
-                                            <table class="table table-sm table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="4" class="text-center text-white bg-dark">Lainnya</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Harga</th>
-                                                        <th>C/TC</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="list-attribute-lainnya"></tbody>
-                                            </table>
+                                        <div class="col-md-4">
+                                            <div class="accordion" id="accordionBiayaLainnya">
+                                                <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                                    <div class="card-header bg-info" id="headingBiayaLainnya">
+                                                        <h6 class="mb-0">
+                                                            <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseBiayaLainnya" aria-expanded="true" aria-controls="collapseBiayaLainnya">
+                                                            <i class="fa fa-cog fa-fw"></i>
+                                                            </button>
+                                                            <strong class="ml-2 text-white">Atur Biaya Lainnya</strong>
+                                                        </h6>
+                                                    </div>
+
+                                                    <div id="collapseBiayaLainnya" class="collapse show" aria-labelledby="headingBiayaLainnya" data-parent="#accordionBiayaLainnya">
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-bordered scroll">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Name</th>
+                                                                        <th>Harga</th>
+                                                                        <th>C/TC</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="list-attribute-lainnya"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -162,6 +207,21 @@
 
 
 <script>
+
+    $(document).ready(function(){
+        $start = $('#accordionBiayaKomite, #accordionBiayaSemester, #accordionBiayaLainnya');
+        // Add minus icon for collapse element which is open by default
+        $start.find(".collapse.show").each(function(){
+        	$(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+        });
+        // Toggle plus minus icon on show hide of collapse element
+        $start.find(".collapse").on('show.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+        }).on('hide.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+        });
+    });
+
     showLoad();
     $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
 
@@ -389,7 +449,7 @@
     }
 
     // change use komite
-    $(document).on("change.ev", ".change-price-item-komite", function(e) {
+    $(document).on("keyup.ev", ".change-price-item-komite", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
         let value = $(this).val();
@@ -405,7 +465,7 @@
     });
 
     // change use semester
-    $(document).on("change.ev", ".change-price-item-semester", function(e) {
+    $(document).on("keyup.ev", ".change-price-item-semester", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
         DATA.semester[i-1].amount = $(this).val();
@@ -418,7 +478,7 @@
     });
 
     // change use lainnya
-    $(document).on("change.ev", ".change-price-item-lainnya", function(e) {
+    $(document).on("keyup.ev", ".change-price-item-lainnya", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
         DATA.lainnya[i-1].amount = $(this).val();

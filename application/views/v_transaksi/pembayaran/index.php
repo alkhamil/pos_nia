@@ -241,7 +241,7 @@
                                     </h6>
                                 </div>
 
-                                <div id="collapseKomite" class="collapse" aria-labelledby="headingKomite" data-parent="#accordionFilterPembayaran">
+                                <div id="collapseKomite" class="collapse show" aria-labelledby="headingKomite" data-parent="#accordionFilterPembayaran">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3">
@@ -631,38 +631,42 @@
                     },
                     dataType: "json",
                     success: function (data) {
-                        DATA = data.pembayaran;
-
-                        if (!data.is_isset) {
-                            loadDataChild(DATA);
-                        }else{
-                            $.each(DATA.komite, function (index, data) { 
-                             data.id = data.biaya_lembaga_komite_id;
-                            });
-                            $.each(DATA.semester, function (index, data) { 
-                                data.id = data.biaya_lembaga_semester_id;
-                            });
-                            $.each(DATA.lainnya, function (index, data) { 
-                                data.id = data.biaya_lembaga_lainnya_id;
-                            });
-                            let msg = 'Siswa '+data.siswa_name+' pernah melakukan pembayaran pada tanggal '+data.tanggal+' dengan no pembayaran '+data.code+'. Apakah ingin melanjutkan?';
-                            Swal.fire({
-                                title: 'Transaki Pernah dilakukan!',
-                                text: msg,
-                                icon: 'info',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Ya, Lanjutkan'
+                        if (data.hasOwnProperty('pembayaran')) {
+                            DATA = data.pembayaran;
+                            DATA_ = data.pembayaran_;
+                            if (!data.is_isset) {
+                                loadDataChild(DATA);
+                            }else{
+                                // $.each(DATA.komite, function (index, data) { 
+                                //     data.id = data.biaya_lembaga_komite_id;
+                                // });
+                                // $.each(DATA.semester, function (index, data) { 
+                                //     data.id = data.biaya_lembaga_semester_id;
+                                // });
+                                // $.each(DATA.lainnya, function (index, data) { 
+                                //     data.id = data.biaya_lembaga_lainnya_id;
+                                // });
+                                let msg = 'Siswa '+data.siswa_name+' pernah melakukan pembayaran pada tanggal '+data.tanggal+' dengan no pembayaran '+data.code+'. Apakah ingin melanjutkan?';
+                                Swal.fire({
+                                    title: 'Transaki Pernah dilakukan!',
+                                    text: msg,
+                                    icon: 'info',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Ya, Lanjutkan'
                                 }).then((result) => {
-                                if (result.isConfirmed) {
-                                    showLoad();
-                                    setTimeout(() => {
-                                        loadDataChild(DATA);
-                                        hideLoad();
-                                    }, 800);
-                                }
-                            });
+                                    if (result.isConfirmed) {
+                                        showLoad();
+                                        setTimeout(() => {
+                                            loadDataChild(DATA);
+                                            hideLoad();
+                                        }, 800);
+                                    }
+                                });
+                            }
+                        }else{
+                            Swal.fire('Oopss!', 'Data attribute pembayaran belum di set', 'warning')
                         }
                         hideLoad();
                     }
@@ -754,8 +758,8 @@
 
         if (grand_total > 0) {
             let footer = `<tr class="border-top">
-                            <th class="text-right" colspan="2"><h5><b>Total Harga</b></h5></th>
-                            <th class="text-right"><h5><b>Rp. `+formatCurrency(grand_total)+`</b></h5></th>
+                            <th class="text-left" colspan="2"><b>Total Harga</b></th>
+                            <th class="text-right"><span class="badge badge-info"><h5 class="m-0"><b>Rp. `+formatCurrency(grand_total)+`</b></h5></span></th>
                             <th></th>
                         </tr>`
             $('#footer-checkout').append(footer);
@@ -763,6 +767,42 @@
             $('#checkout').prop('disabled', false).css('cursor', 'pointer');
         }
 
+    }
+
+    function checkRowKomite(DATA, data_id){
+        let show = ''
+        $.each(DATA, function (index, data) { 
+            if (data.biaya_type == 'komite') {
+                if (data.biaya_type_id == data_id) {
+                    show = 'd-none';
+                }
+            }
+        });
+        return show;
+    }
+
+    function checkRowSemester(DATA, data_id){
+        let show = ''
+        $.each(DATA, function (index, data) { 
+            if (data.biaya_type == 'semester') {
+                if (data.biaya_type_id == data_id) {
+                    show = 'd-none';
+                }
+            }
+        });
+        return show;
+    }
+
+    function checkRowLainnya(DATA, data_id){
+        let show = ''
+        $.each(DATA, function (index, data) { 
+            if (data.biaya_type == 'lainnya') {
+                if (data.biaya_type_id == data_id) {
+                    show = 'd-none';
+                }
+            }
+        });
+        return show;
     }
 
     function loadDataChild(_DATA){
@@ -776,7 +816,7 @@
                 index+=1;
                 data.is_checkout = (data.is_checkout == 1) ? 1 : 0;
                 show = (data.is_checkout == 1) ? 'd-none' : '';
-                let rows = `<tr class="`+show+`">
+                let rows = `<tr class="`+checkRowKomite(_DATA.checkout, data.id)+`  `+show+`">
                                 <td>`+data.attribute_name+`</td>
                                 <td><span class="badge badge-info">`+formatCurrency(data.amount)+`</span></td>
                                 <td width="50">
@@ -793,7 +833,7 @@
                 index+=1;
                 data.is_checkout = (data.is_checkout == 1) ? 1 : 0;
                 show = (data.is_checkout == 1) ? 'd-none' : '';
-                let rows = `<tr class="`+show+`">
+                let rows = `<tr class="`+checkRowSemester(_DATA.checkout, data.id)+`  `+show+`">
                                 <td>`+data.attribute_name+`</td>
                                 <td><span class="badge badge-info">`+formatCurrency(data.amount)+`</span></td>
                                 <td width="50">
@@ -810,7 +850,7 @@
                 index+=1;
                 data.is_checkout = (data.is_checkout == 1) ? 1 : 0;
                 show = (data.is_checkout == 1) ? 'd-none' : '';
-                let rows = `<tr class="`+show+`">
+                let rows = `<tr class="`+checkRowLainnya(_DATA.checkout, data.id)+`  `+show+`">
                                 <td>`+data.attribute_name+`</td>
                                 <td><span class="badge badge-info">`+formatCurrency(data.amount)+`</span></td>
                                 <td width="50">
