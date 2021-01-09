@@ -323,7 +323,7 @@
           "fixedColumns": true,
           "render": function(data, type, row) {
             return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-success btn-riwayat">
-                        <i class="fa fa-fw fa-money-bill"></i> Riwayat Pembayaran
+                        <i class="fa fa-fw fa-money-bill"></i> Pembayaran
                     </button>
                     <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-edit">
                         <i class="fa fa-fw fa-edit"></i> Edit
