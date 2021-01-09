@@ -38,7 +38,7 @@ class Kebutuhan extends CI_Controller {
 				$row = array();
                 $row['no'] = $no;
 				$row['name'] = $ls['name'];
-				$row['type'] = $ls['type'];
+				$row['amount'] = $ls['amount'];
 				$row['desc'] = $ls['desc'];
 				$row['id'] = $ls['id'];
 	
@@ -65,7 +65,7 @@ class Kebutuhan extends CI_Controller {
     public function simpan()
     {
         $savedata['name'] = $this->input->post('name', TRUE);
-        $savedata['type'] = $this->input->post('type', TRUE);
+        $savedata['amount'] = $this->input->post('amount', TRUE);
         $savedata['desc'] = $this->input->post('desc', TRUE);
 
         $this->db->trans_begin();

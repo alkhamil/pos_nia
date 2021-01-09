@@ -11,7 +11,7 @@
         padding: 30px;
         border: 1px solid #eee;
         box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-        font-size: 16px;
+        font-size: 13px;
         line-height: 24px;
         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
         color: #555;
@@ -106,15 +106,16 @@
                 <td colspan="2">
                     <table>
                         <tr>
-                            <td class="title" colspan="">
+                            <td class="title">
                                 <img src="<?= base_url('assets/img/logo.png') ?>" style="width:50">
+                            </td>
+                            
+                            <td>
+                                Nomor: <?= $code ?><br>
+                                Tanggal: <?= $created_at ?><br>
                             </td>
                         </tr>
                     </table>
-                </td>
-                <td colspan="2">
-                    Nomor: <?= $code ?><br>
-                    Tanggal: <?= $tanggal ?><br>
                 </td>
             </tr>
             
@@ -123,10 +124,11 @@
                     <table>
                         <tr>
                             <td>
-                                Nama Penerima : <?= $receive_name ?><br>
-                                Pemberi Izin : <?= $approval_name ?> <br>
-                                Tahun Ajaran : <?= $tahun_name ?><br>
+                                Nama Penerima : <?= ucfirst($receive_name) ?><br>
+                                Pemberi Izin : <?= ucfirst($approval_name) ?> <br>
+                                Tahun Ajaran : <?= $tahun_ajaran_name ?><br>
                                 Lembaga : <?= $lembaga_name ?><br>
+                                Total Anggaran : Rp. <?= number_format($amount) ?><br>
                             </td>
                         </tr>
                     </table>
@@ -134,37 +136,26 @@
             </tr>
             
             <tr class="heading">
-                <td class="text-center" style="width: 25%;">
-                    Nama
-                </td>
-                <td class="text-center" style="width: 25%;">
-                    Type
-                </td>
-                <td class="text-center" style="width: 30%;">
-                    Deskripsi
-                </td>
-                <td class="text-center" style="width: 20%;">
-                    Harga
-                </td>
+                <td>Deskripsi</td>
+                <td>Harga</td>
             </tr>
-            <tr class="item">
-                <td>[<b><?= $kebutuhan_name ?></b>]</td>
-                <td><?= $kebutuhan_type ?></td>
-                <td><?= $desc?></td>
-                <td>Rp. <?= number_format($amount) ?></td>
-            </tr>
+
+            <?php foreach ($list_anggaran as $key => $item) { ?>
+                <tr class="item">
+                    <td><?= $item['desc'] ?></td>
+                    <td><?= number_format($item['amount']) ?></td>
+                </tr>
+            <?php } ?>
             
             <tr class="total">
-                <td></td>
-                <td></td>
                 <td></td>
                 <td>
                    Total: <?= number_format($amount) ?>
                 </td>
             </tr>
             <tr>
-                <td colspan="2">Terbilang</td>
-                <td colspan="2"><b><em>"<?= ucfirst(terbilang($amount)) ?>"</em></b></td>
+                <td>Terbilang</td>
+                <td><b><em>"<?= ucfirst(terbilang($amount)) ?>"</em></b></td>
             </tr>
         </table>
     </div>

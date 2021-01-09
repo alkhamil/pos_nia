@@ -32,18 +32,19 @@
                         <form action="<?= $simpan ?>" method="POST" id="form-pengeluaran">
                             <div class="row">
                                 <input type="hidden" name="id">
+                                <input type="hidden" name="tahun_ajaran_id" id="tahun_ajaran_id">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="lembaga_id" class="label-required">Lembaga</label>
                                         <select name="lembaga_id" id="lembaga_id" class="form-control form-required" style="width: 100%" data-placeholder="Pilih Lembaga" required>
                                         </select>
-                                        <input type="hidden" name="lembaga_id_temp">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="total_saldo" class="">Total Saldo</label>
-                                        <input type="text" style="font-weight: bold;" class="form-control" name="total_saldo" id="total_saldo" disabled>
+                                        <input type="text" class="form-control" name="total_saldo" id="total_saldo" readonly>
+                                        <input type="hidden" class="form-control" name="total_saldo_temp" id="total_saldo_temp">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -53,65 +54,106 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 d-none" id="list-attribute">
+                                <div class="col-md-12 d-none" id="list-kebutuhan">
                                     <hr>
                                     <div class="card shadow border-0">
                                         <div class="card-header bg-info">
                                             <h6 class="mb-0 text-center">
-                                                <strong class="text-white">Form Pengeluaran </strong>
+                                                <strong class="text-white">Form Pengeluaran</strong>
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <div class="col-md-12">
-                                                <div class="form-group row">
-                                                    <label for="penerima" class="col-sm-2 col-form-label label-required">Nama Penerima</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" name="penerima" class="form-control" id="penerima" placeholder="Nama Penerima" required>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="accordion" id="accordionPengeluaranLeft">
+                                                        <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                                            <div class="card-header bg-info" id="headingLeft">
+                                                                <h6 class="mb-0">
+                                                                    <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseLeft" aria-expanded="true" aria-controls="collapseLeft">
+                                                                    <i class="fa fa-plus fa-fw"></i>
+                                                                    </button>
+                                                                    <strong class="ml-2 text-white">Daftar Kebutuhan</strong>
+                                                                </h6>
+                                                            </div>
+
+                                                            <div id="collapseLeft" class="collapse show" aria-labelledby="headingLeft" data-parent="#accordionPengeluaranLeft">
+                                                                <div class="card-body">
+                                                                    <table class="table table-sm">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Nama Kebutuhan</th>
+                                                                                <th>Harga</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="daftar-kebutuhan"></tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label for="tipe_kebutuhan" class="col-sm-2 col-form-label label-required">Tipe Kebutuhan</label>
-                                                    <div class="col-sm-10">
-                                                        <select name="tipe_kebutuhan" id="tipe_kebutuhan" class="form-control" style="width: 100%" data-placeholder="Pilih Tipe" required>
-                                                        </select>
+                                                <div class="col-md-7">
+                                                    <div class="accordion" id="accordionPengeluaranRight">
+                                                        <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                                            <div class="card-header bg-info" id="headingRight">
+                                                                <h6 class="mb-0">
+                                                                    <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseRight" aria-expanded="true" aria-controls="collapseRight">
+                                                                    <i class="fa fa-plus fa-fw"></i>
+                                                                    </button>
+                                                                    <strong class="ml-2 text-white">Anggaran Kebutuhan</strong>
+                                                                </h6>
+                                                            </div>
+
+                                                            <div id="collapseRight" class="collapse show" aria-labelledby="headingRight" data-parent="#accordionPengeluaranRight">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="alert alert-warning"><b>Note: Harga dan Deskripsi dapat diubah</b></div>
+                                                                            <div class="form-group">
+                                                                                <label class="label-required">Nama Penerima</label>
+                                                                                <input type="text" class="form-control" name="receive_name" id="receive_name" required>
+                                                                            </div>
+                                                                            <div id="anggaran-kebutuhan"></div>
+                                                                        </div>
+                                                                        <div class="col-md-12 mt-2 d-none" id="anggaran-footer">
+                                                                            <table class="table table-sm">
+                                                                                <tr>
+                                                                                    <td class="text-right" width="70%"><b>Total Anggaran</b></td>
+                                                                                    <td>:</td>
+                                                                                    <td class="text-right" id="f_total_anggaran"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="text-right" width="70%"><b>Sisa Saldo</b></td>
+                                                                                    <td>:</td>
+                                                                                    <td class="text-right" id="f_sisa_saldo"></td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <button type="submit" id="cairkan" class="btn btn-success btn-block mt-2">
+                                                                                Cairkan
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label for="kebutuhan_detail_id" class="col-sm-2 col-form-label label-required">Kebutuhan Detail</label>
-                                                    <div class="col-sm-10">
-                                                        <select name="kebutuhan_detail_id" id="kebutuhan_detail_id" class="form-control" style="width: 100%" data-placeholder="Pilih Detail Kebutuhan" required disabled>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="desc" class="col-sm-2 col-form-label label-required">Deskripsi</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea name="desc" id="desc" class="form-control" cols="3" required disabled></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="nominal" class="col-sm-2 col-form-label label-required">Nominal</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="number" name="nominal" class="form-control" id="nominal" required disabled>
-                                                        <small class="form-control-static text-danger" id="peringatan"></small>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="sisa_saldo" class="col-sm-2 col-form-label">Sisa Saldo</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" style="font-weight: bold;" class="form-control" id="sisa_saldo" disabled></input>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <input type="hidden" name="tahun_ajaran_id" id="tahun_ajaran_id">
-                                                <input type="hidden" name="t_biaya_kebutuhan_id" id="t_biaya_kebutuhan_id">
-                                                <!-- <textarea name="tahun_ajaran_id" id="tahun_ajaran_id" class="form-control mb-2" cols="10" rows="5"></textarea> -->
-                                                <button type="submit" id="submit" class="btn btn-block btn-info">
-                                                    Cairkan
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <hr>
+                                    <!-- Data Biaya -->
+                                    <input type="hidden" name="list-pengeluaran-temp" id="list-pengeluaran-temp">
+                                    <!-- <textarea name="list-pengeluaran-temp" id="list-pengeluaran-temp" class="form-control mb-2" cols="10" rows="5"></textarea> -->
+                                    <!-- end data biaya -->
+
+                                    <!-- Data anggaran -->
+                                    <input type="hidden" name="list-anggaran-temp" id="list-anggaran-temp">
+                                    <!-- <textarea name="list-anggaran-temp" id="list-anggaran-temp" class="form-control mb-2" cols="10" rows="5"></textarea> -->
+                                    <!-- end data anggaran -->
                                 </div>
                             </div>
                         </form>
@@ -156,7 +198,23 @@
 
 <script>
     $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
+
+    $(document).ready(function(){
+        $start = $('#accordionPengeluaranLeft , #accordionPengeluaranRight');
+        // Add minus icon for collapse element which is open by default
+        $start.find(".collapse.show").each(function(){
+        	$(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+        });
+        // Toggle plus minus icon on show hide of collapse element
+        $start.find(".collapse").on('show.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+        }).on('hide.bs.collapse', function(){
+        	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+        });
+    });
+
     let saldo = null;
+    let tahun_ajaran_id = getTahunAjaran();
     let lembaga_id = null;
     $("#lembaga_id").select2({
       ajax: {
@@ -185,25 +243,23 @@
       let data = e.params.data;
       saldo = data.saldo;
       lembaga_id = data.id;
-      $('#total_saldo').val($('#total_saldo').val() +'Rp. '+ formatCurrency(saldo));
-      $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
-      $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer'); 
+      showLoad();
+      setTimeout(() => {
+        $('#total_saldo').val(formatCurrency(saldo));
+        $('#total_saldo_temp').val(saldo);
+        $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer'); 
+        hideLoad();
+      }, 800);
     }).on("select2:unselect", function(e){
       lembaga_id = null;
-    }).on('change',function () { 
-      $('#total_saldo').val('');
-      $('#sisa_saldo').val('');
-      $('#penerima').val('');
-      $('#list-attribute').addClass('d-none');
-     });
+    });
 
-    let biaya_kebutuhan_id = null;
     let lanjut = true;
+    let DATA = [];
     $(document).on("click.ev", ".btn-lanjutkan", function(e) {
         e.preventDefault();
         showLoad();
         let form = $('#form-pengeluaran');
-        $('#btn-lanjutkan').prop('disabled', true).css('cursor', 'not-allowed');
         $('#form-pengeluaran').find('.form-required').each(function(){
             let value = $(this).val();
             if (value == null) {
@@ -214,53 +270,23 @@
         });
 
         if (lanjut) {
-            setTimeout(() => {
-                $.ajax({
-                    type: "get",
-                    url: "<?= $get_biaya_kebutuhan ?>",
-                    data: {
-                        lembaga_id:lembaga_id
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if(saldo <= 100000){
-                            let msg = 'Saldo kurang dari atau sama dengan Rp. 100.000 tidak bisa di ambil!';
-                            Swal.fire({
-                                title: 'Saldo Tidak Mencukupi!',
-                                text: msg,
-                                icon: 'info',
-                                showCancelButton: false,
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'OK'
-                            });
-                            $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer');
+            if (saldo > 0) {
+                setTimeout(() => {
+                    $.ajax({
+                        type: "get",
+                        url: "<?= $get_kebutuhan ?>",
+                        dataType: "json",
+                        success: function (res) {
+                            DATA = res;
+                            loadDataChild(DATA);
                             hideLoad();
-                        } else {
-                            if(data !== null ){
-                                DATA = data;
-
-                                if (!data.is_isset) {
-                                    loadDataChild(DATA);
-                                    biaya_kebutuhan_id = data.id
-                                }
-                                hideLoad();
-                            } else {
-                                let msg = 'Data kebutuhan di lembaga ini belum tersedia!';
-                                Swal.fire({
-                                    title: 'Data tidak tersedia!',
-                                    text: msg,
-                                    icon: 'info',
-                                    showCancelButton: false,
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'OK'
-                                });
-                                $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer');
-                                hideLoad();
-                            }
                         }
-                    },
-                });
-            }, 1000);
+                    });
+                }, 1000);
+            }else {
+                Swal.fire('Oopss!', 'Saldo lembaga tidak cukup!', 'warning')
+                hideLoad();
+            }
         }else{
             Swal.fire('Oopss!', 'Kolom tidak boleh kosong!', 'warning')
             hideLoad();
@@ -268,113 +294,142 @@
     });
 
     function loadDataChild(_DATA){
+        $('#list-pengeluaran-temp').val(JSON.stringify(_DATA));
         if (_DATA) {
-            $('#list-attribute').removeClass('d-none');
+            $('#list-kebutuhan').removeClass('d-none');
+            $('#daftar-kebutuhan').html("");
+            $.each(_DATA, function (index, data) { 
+                index+=1;
+                let show = '';
+                if (data.hasOwnProperty('is_checkout')) {
+                    if (data.is_checkout == 1) {
+                        show = 'd-none';
+                    }else {
+                        show = '';
+                    }
+                }else {
+                    show = '';
+                }
+                let rows = `<tr class="`+show+`">
+                                <td>`+data.name+`</td>
+                                <td><span class="badge badge-info">`+formatCurrency(data.amount)+`</span></td>
+                                <td width="50">
+                                    <button class="btn btn-sm btn-success btn-circle btn-add-kebutuhan" data-id="`+index+`">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </td>
+                            </tr>`;
+                $('#daftar-kebutuhan').append(rows);
+            });
         }
-        $('#tahun_ajaran_id').val(_DATA.tahun_ajaran_id);
-        $('#t_biaya_kebutuhan_id').val(_DATA.id);   
     }
 
-    let name = null;
-    let tipe_kebutuhan = [{id: '',text: 'Pilih Tipe'},{id: "PRIMARY",text: "PRIMARY"},{id: "SECONDARY",text: "SECONDARY"}];
-    $("#tipe_kebutuhan").select2({
-        data: tipe_kebutuhan
-    }).on("select2:select", function(e) {
-      let data = e.params.data;
-      name = data.text;   
-      showLoad();
-      setTimeout(() => {
-        $('#kebutuhan_detail_id').prop('disabled',false);
-        hideLoad();
-      }, 800);
-    }).on('change',function () { 
-      $('#sisa_saldo').val('');
-      $('#kebutuhan_detail_id').empty();
-      $('#desc').val('');
-      $('#nominal').val('');
-      $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
-    });
-    //kebutuhan detail
-    $("#kebutuhan_detail_id").select2({
-        ajax: {
-            url: "<?php echo $get_kebutuhan_detail ?>",
-            delay: 100,
-            data: function(params) {
-                var query = {
-                    q: params.term,
-                    type: 'public',
-                    biaya_id : biaya_kebutuhan_id,
-                    tipe: name
-                }
-                return query;
-            },
-            dataType: 'json',
-            processResults: function(data) {  
-                let items = [];
-                if (data.length > 0) {
-                    for (let i = 0; i < data.length; i++) {
-                    let tempData = {
-                        id: data[i].id,
-                        text: data[i].name,
-                        desc: data[i].desc,
-                        amount: data[i].amount,
-                        data: data[i]
+    function loadDataAnggaran(_ANGGARAN){
+        $('#list-anggaran-temp').val(JSON.stringify(_ANGGARAN));
+        if (_ANGGARAN) {
+            $('#anggaran-kebutuhan').html("");
+            $('#anggaran-footer').removeClass('d-none');
+            let sisa_saldo = parseInt(saldo);
+            let total_anggaran = 0;
+            $.each(_ANGGARAN, function (index, data) { 
+                index+=1;
+                let show = '';
+                if (data.hasOwnProperty('is_checkout')) {
+                    if (data.is_checkout == 0) {
+                        show = 'd-none';
+                    }else {
+                        show = '';
+                        sisa_saldo-=parseInt(data.amount);
+                        total_anggaran+=parseInt(data.amount);
                     }
-                    items.push(tempData)
-                    }
+                }else {
+                    show = 'd-none';
                 }
-                return {
-                    results: items
-                };
-                console.log(items);
+                let rows = `<div class="card mb-1 `+show+`" style="border:1px dashed; border-radius:0;">
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="amount" class="col-sm-2 label-required col-form-label">Harga</label>
+                                        <div class="col-sm-10">
+                                            <input type="number" class="form-control update-amount" id="amount" value="`+data.amount+`" data-id="`+index+`">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="desc" class="col-sm-2 label-required col-form-label">Deskripsi</label>
+                                        <div class="col-sm-10">
+                                            <textarea name="desc" id="desc" class="form-control update-desc" cols="7" rows="3" data-id="`+index+`">`+data.desc+`</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12 d-flex justify-content-end">
+                                            <button class="btn ml-1 btn-sm btn-circle btn-danger btn-delete-kebutuhan" data-id="`+index+`">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                $('#anggaran-kebutuhan').append(rows);
+            });
+
+            if (sisa_saldo <= 0) {
+                $('#cairkan').prop('disabled', true).css('cursor', 'not-allowed');
+            }else{
+                $('#cairkan').prop('disabled', false).css('cursor', 'pointer');
             }
+            
+            $('#f_total_anggaran').html(`<span class="badge badge-info"><h5 class="m-0">Rp. `+formatCurrency(total_anggaran)+`</h5></span>`);
+            $('#f_sisa_saldo').html(`<span class="badge badge-info"><h5 class="m-0">Rp. `+formatCurrency(sisa_saldo)+`</h5></span>`);
         }
-        
-    }).on("select2:select", function(e) {
-        $('#sisa_saldo').val('');
-        let data = e.params.data;
-        let desc = data.desc;
-        let amount = data.amount;
-        let jumlah = saldo - amount;
+    }
+
+    //kebutuhan detail
+    $(document).on("keyup.ev", ".update-amount", function(e) {
+        e.preventDefault();
+        let $this = $(this);
+        let i = parseInt($(this).attr('data-id'));
+        DATA[i-1].amount = $this.val();
         showLoad();
         setTimeout(() => {
-            $('#submit').prop('disabled', false).css('cursor', 'pointer');
-            $('#desc').prop('disabled', false);
-            $('#nominal').prop('disabled', false);
-            $('#desc').val($('#desc').val() + desc);
-            $('#nominal').val($('#nominal').val() + amount);
-            $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(jumlah));
-            if(jumlah < 0){
-                $('#peringatan').append('* Nominal yang di ambil tidak boleh melebihi saldo!');
-                $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
-            } else {
-                $('#submit').prop('disabled', false).css('cursor', 'pointer');
-            }
+            loadDataAnggaran(DATA);
+            loadDataChild(DATA);
             hideLoad();
-        }, 800);
-    }).on("select2:unselect", function(e){
-        kelas_id = null;  
-        $('#sisa_saldo').val('');
-        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));;
-    }).on('change',function () { 
-        $('#desc').val('');
-        $('#nominal').val('');
-        $('#sisa_saldo').val('');
-        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(saldo));
-     });    
-    
-    $('#nominal').on('change paste keyup', function (){
-        $('#peringatan').empty();
-        $('#sisa_saldo').val('');
-        let nominal = $(this).val();
-        let jumlah = saldo - nominal;
-        $('#sisa_saldo').val($('#sisa_saldo').val() +'Rp. '+ formatCurrency(jumlah));
-        if(jumlah < 0){
-            $('#peringatan').append('* Nominal yang di ambil tidak boleh melebihi saldo!');
-            $('#submit').prop('disabled', true).css('cursor', 'not-allowed');
-        } else {
-            $('#submit').prop('disabled', false).css('cursor', 'pointer');
-        }
+        }, 600);
+    });
+    $(document).on("change.ev", ".update-desc", function(e) {
+        e.preventDefault();
+        let $this = $(this);
+        let i = parseInt($(this).attr('data-id'));
+        DATA[i-1].desc = $this.val();
+        showLoad();
+        setTimeout(() => {
+            loadDataAnggaran(DATA);
+            loadDataChild(DATA);
+            hideLoad();
+        }, 600);
+    });
+
+    $(document).on("click.ev", ".btn-add-kebutuhan", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA[i-1].is_checkout = 1;
+        showLoad();
+        setTimeout(() => {
+            loadDataAnggaran(DATA);
+            loadDataChild(DATA);
+            hideLoad();
+        }, 600);
+    });
+
+    $(document).on("click.ev", ".btn-delete-kebutuhan", function(e) {
+        e.preventDefault();
+        let i = parseInt($(this).attr('data-id'));
+        DATA[i-1].is_checkout = 0;
+        showLoad();
+        setTimeout(() => {
+            loadDataAnggaran(DATA);
+            loadDataChild(DATA);
+            hideLoad();
+        }, 600);
     });
 
     // data
@@ -470,4 +525,19 @@
         }, 1000); 
     });
     // end data 
+
+    function getTahunAjaran(){
+        let result;
+        $.ajax({
+            type: "get",
+            async: false,
+            url: "<?= $get_tahun_ajaran ?>",
+            dataType: "json",
+            success: function (res) {
+                result = res;
+                $('#tahun_ajaran_id').val(result);
+            }
+        });
+        return result;
+    }
 </script>

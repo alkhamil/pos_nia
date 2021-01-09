@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Pengeluaran_model extends CI_Model {
+class Siswa_riwayat_model extends CI_Model {
 
-    public $table = 't_pengeluaran';
-    public $primary_key = 't_pengeluaran.id';
-    public $order_by = 't_pengeluaran.id';
+    public $table = 't_pembayaran';
+    public $primary_key = 't_pembayaran.id';
+    public $order_by = 't_pembayaran.id';
     public $order_type = 'DESC';
-    public $search_field = 't_pengeluaran.code';
-    public $column_order = ['t_pengeluaran.code']; //set column field database for datatable orderable
-    public $column_search = ['t_pengeluaran.code']; //set column field database for datatable searchable 
+    public $search_field = 't_pembayaran.code';
+    public $column_order = ['t_pembayaran.code', 'm_siswa.name', 'm_kelas.name', 'm_lembaga.name']; //set column field database for datatable orderable
+    public $column_search = ['t_pembayaran.code', 'm_siswa.name', 'm_kelas.name', 'm_lembaga.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -18,6 +18,10 @@ class Pengeluaran_model extends CI_Model {
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)
+                 ->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_pembayaran.lembaga_id')
+                 ->join('m_siswa', 'm_siswa.id = t_pembayaran.siswa_id')
+                 ->join('m_kelas', 'm_kelas.id = t_pembayaran.kelas_id')
                  ->limit($limit,$offset);
 
         if($where) {
@@ -68,6 +72,10 @@ class Pengeluaran_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id')
+        ->join('m_lembaga', 'm_lembaga.id = t_pembayaran.lembaga_id')
+        ->join('m_siswa', 'm_siswa.id = t_pembayaran.siswa_id')
+        ->join('m_kelas', 'm_kelas.id = t_pembayaran.kelas_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])
@@ -138,7 +146,6 @@ class Pengeluaran_model extends CI_Model {
     function get_all($where, $select = '*', $join = null)
     {
         $this->db->select($select);
-        
         if($where)
             $this->db->where($where);
             

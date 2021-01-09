@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost_3306
+ Source Server         : MYSQL LOCAL UBUNTU
  Source Server Type    : MySQL
  Source Server Version : 80022
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 30/12/2020 14:34:01
+ Date: 09/01/2021 22:01:24
 */
 
 SET NAMES utf8mb4;
@@ -22,12 +22,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `m_attribute_komite`;
 CREATE TABLE `m_attribute_komite`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `attribute_type_id` int NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `attribute_type_id` int(0) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_attribute_komite
@@ -50,12 +50,12 @@ INSERT INTO `m_attribute_komite` VALUES (12, 1, 'Desember', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `m_attribute_lainnya`;
 CREATE TABLE `m_attribute_lainnya`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `attribute_type_id` int NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `attribute_type_id` int(0) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_attribute_lainnya
@@ -68,28 +68,30 @@ INSERT INTO `m_attribute_lainnya` VALUES (2, 3, 'Lks', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `m_attribute_semester`;
 CREATE TABLE `m_attribute_semester`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `attribute_type_id` int NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `attribute_type_id` int(0) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_attribute_semester
 -- ----------------------------
 INSERT INTO `m_attribute_semester` VALUES (1, 2, 'Uts', 0);
 INSERT INTO `m_attribute_semester` VALUES (2, 2, 'Uas', 0);
+INSERT INTO `m_attribute_semester` VALUES (3, 2, 'Pts', 0);
+INSERT INTO `m_attribute_semester` VALUES (4, 2, 'Pas', 0);
 
 -- ----------------------------
 -- Table structure for m_attribute_type
 -- ----------------------------
 DROP TABLE IF EXISTS `m_attribute_type`;
 CREATE TABLE `m_attribute_type`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_attribute_type
@@ -103,31 +105,29 @@ INSERT INTO `m_attribute_type` VALUES (3, 'LAINNYA');
 -- ----------------------------
 DROP TABLE IF EXISTS `m_kebutuhan`;
 CREATE TABLE `m_kebutuhan`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `amount` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `amount` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_kebutuhan
 -- ----------------------------
-INSERT INTO `m_kebutuhan` VALUES (2, 'Meja', 'PRIMARY', 'Membeli meja dan kebutuhan lainnya', 0);
-INSERT INTO `m_kebutuhan` VALUES (3, 'Membeli Game', 'SECONDARY', 'Kebutuhan yang sangar', 0);
-INSERT INTO `m_kebutuhan` VALUES (4, 'bagong', 'PRIMARY', 'babi yang sangat banyak di semua tempat', 0);
+INSERT INTO `m_kebutuhan` VALUES (1, 'Meja', 'Meja 50 Biji Untuk SMP Smester 5', 100000);
+INSERT INTO `m_kebutuhan` VALUES (2, 'Pengadaan Laptop untuk LAB', 'Pengadaan Laptop untuk LAB yang di pimpin oleh bpk Junaedi', 50000);
 
 -- ----------------------------
 -- Table structure for m_kelas
 -- ----------------------------
 DROP TABLE IF EXISTS `m_kelas`;
 CREATE TABLE `m_kelas`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `level` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `level` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_kelas
@@ -144,18 +144,18 @@ INSERT INTO `m_kelas` VALUES (6, '12', 2);
 -- ----------------------------
 DROP TABLE IF EXISTS `m_lembaga`;
 CREATE TABLE `m_lembaga`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `saldo` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `saldo` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_lembaga
 -- ----------------------------
-INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 1410000);
-INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 375000);
+INSERT INTO `m_lembaga` VALUES (1, 'SMP', 'SMP', 6190000);
+INSERT INTO `m_lembaga` VALUES (2, 'MTS', 'MTS', 260000);
 INSERT INTO `m_lembaga` VALUES (3, 'SMA', 'SMA', 0);
 INSERT INTO `m_lembaga` VALUES (4, 'SMK', 'SMK', 0);
 
@@ -164,53 +164,55 @@ INSERT INTO `m_lembaga` VALUES (4, 'SMK', 'SMK', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `m_siswa`;
 CREATE TABLE `m_siswa`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `lembaga_id` int NULL DEFAULT NULL,
-  `nis` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `is_graduated` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
+  `nis` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `birthday` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `address` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `is_graduated` int(0) NULL DEFAULT 0,
   `created_at` timestamp(6) NULL DEFAULT NULL,
   `updated_at` timestamp(6) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_siswa
 -- ----------------------------
-INSERT INTO `m_siswa` VALUES (1, 1, 'S2020120001', 'Nazmudin', '1996-05-31', '08568029330', 0, '2020-12-19 23:35:26.000000', NULL);
-INSERT INTO `m_siswa` VALUES (2, 2, 'S2020120002', 'Nuralam', '2020-12-25', '08987728762', 0, '2020-12-25 03:47:54.000000', NULL);
-INSERT INTO `m_siswa` VALUES (3, 1, 'S2020120003', 'Juhe', '2020-12-25', '08987728687', 0, '2020-12-25 13:34:51.000000', NULL);
+INSERT INTO `m_siswa` VALUES (1, 1, 'S2020120001', 'Nazmudin', '1996-05-31', '08568029330', 'Kp Leuwilisung, RT/RW 001/001', 0, '2020-12-19 23:35:26.000000', NULL);
+INSERT INTO `m_siswa` VALUES (6, 2, 'S2021010001', 'Erin Herniawati', '2021-01-05', '08981278122', 'Kp Leuwilisung, RT/RW 001/001', 0, '2021-01-05 15:25:08.000000', NULL);
+INSERT INTO `m_siswa` VALUES (7, 1, 'S2021010003', 'Rochman', '2021-01-06', '08981298912', 'Kp. Pamijahan No 05 RT/RW 002/008', 0, '2021-01-06 18:42:43.000000', NULL);
 
 -- ----------------------------
 -- Table structure for m_tahun_ajaran
 -- ----------------------------
 DROP TABLE IF EXISTS `m_tahun_ajaran`;
 CREATE TABLE `m_tahun_ajaran`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `is_active` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `is_active` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_tahun_ajaran
 -- ----------------------------
 INSERT INTO `m_tahun_ajaran` VALUES (14, '2020-2021', 1);
 INSERT INTO `m_tahun_ajaran` VALUES (15, '2021-2022', 0);
+INSERT INTO `m_tahun_ajaran` VALUES (16, '2022-2023', 0);
 
 -- ----------------------------
 -- Table structure for m_user
 -- ----------------------------
 DROP TABLE IF EXISTS `m_user`;
 CREATE TABLE `m_user`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_type_id` int NULL DEFAULT NULL,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `user_type_id` int(0) NULL DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_user
@@ -222,10 +224,10 @@ INSERT INTO `m_user` VALUES (1, 1, 'admin', '$2y$10$zmvkTBUCtqXwtrc7/umOZOckmRWj
 -- ----------------------------
 DROP TABLE IF EXISTS `m_user_type`;
 CREATE TABLE `m_user_type`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_user_type
@@ -238,357 +240,355 @@ INSERT INTO `m_user_type` VALUES (2, 'OPERATOR');
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_kebutuhan`;
 CREATE TABLE `t_biaya_kebutuhan`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tahun_ajaran_id` int NULL DEFAULT NULL,
-  `lembaga_id` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_kebutuhan
 -- ----------------------------
 INSERT INTO `t_biaya_kebutuhan` VALUES (1, 14, 1);
-INSERT INTO `t_biaya_kebutuhan` VALUES (2, 14, 2);
-INSERT INTO `t_biaya_kebutuhan` VALUES (3, 14, 4);
 
 -- ----------------------------
 -- Table structure for t_biaya_kebutuhan_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_kebutuhan_detail`;
 CREATE TABLE `t_biaya_kebutuhan_detail`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `biaya_kebutuhan_id` int NULL DEFAULT NULL,
-  `kebutuhan_id` int NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
-  `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
-  `is_checked` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `biaya_kebutuhan_id` int(0) NULL DEFAULT NULL,
+  `kebutuhan_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_kebutuhan_detail
 -- ----------------------------
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (1, 1, 2, 7000, NULL, 1);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (2, 1, 3, 8000, NULL, 1);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (3, 2, 2, 2000, NULL, 0);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (4, 2, 4, 30000, 'babi yang sangat banyak di semua tempat tolol', 1);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (5, 2, 3, 5000, NULL, 0);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (6, 3, 2, 5000, NULL, 0);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (7, 3, 4, 0, NULL, 0);
-INSERT INTO `t_biaya_kebutuhan_detail` VALUES (8, 3, 3, 0, NULL, 0);
+INSERT INTO `t_biaya_kebutuhan_detail` VALUES (1, 1, 1, 5000, 'Meja 50 Biji Untuk SMP Smester 5', 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_lembaga`;
 CREATE TABLE `t_biaya_lembaga`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tahun_ajaran_id` int NULL DEFAULT NULL,
-  `lembaga_id` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga` VALUES (6, 14, 1);
-INSERT INTO `t_biaya_lembaga` VALUES (7, 14, 2);
+INSERT INTO `t_biaya_lembaga` VALUES (1, 14, 1);
+INSERT INTO `t_biaya_lembaga` VALUES (2, 14, 2);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_komite
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_lembaga_komite`;
 CREATE TABLE `t_biaya_lembaga_komite`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `biaya_lembaga_id` int NULL DEFAULT NULL,
-  `attribute_komite_id` int NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
-  `is_checked` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `biaya_lembaga_id` int(0) NULL DEFAULT NULL,
+  `attribute_komite_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
+  `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_komite
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_komite` VALUES (97, 6, 12, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (98, 6, 11, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (99, 6, 10, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (100, 6, 9, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (101, 6, 8, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (102, 6, 7, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (103, 6, 6, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (104, 6, 5, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (105, 6, 4, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (106, 6, 3, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (107, 6, 2, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (108, 6, 1, 150000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (109, 7, 12, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (110, 7, 11, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (111, 7, 10, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (112, 7, 9, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (113, 7, 8, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (114, 7, 7, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (115, 7, 6, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (116, 7, 5, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (117, 7, 4, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (118, 7, 3, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (119, 7, 2, 135000, 1);
-INSERT INTO `t_biaya_lembaga_komite` VALUES (120, 7, 1, 135000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (1, 1, 12, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (2, 1, 11, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (3, 1, 10, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (4, 1, 9, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (5, 1, 8, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (6, 1, 7, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (7, 1, 6, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (8, 1, 5, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (9, 1, 4, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (10, 1, 3, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (11, 1, 2, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (12, 1, 1, 150000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (13, 2, 12, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (14, 2, 11, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (15, 2, 10, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (16, 2, 9, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (17, 2, 8, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (18, 2, 7, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (19, 2, 6, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (20, 2, 5, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (21, 2, 4, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (22, 2, 3, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (23, 2, 2, 140000, 1);
+INSERT INTO `t_biaya_lembaga_komite` VALUES (24, 2, 1, 140000, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_lainnya
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_lembaga_lainnya`;
 CREATE TABLE `t_biaya_lembaga_lainnya`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `biaya_lembaga_id` int NULL DEFAULT NULL,
-  `attribute_lainnya_id` int NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
-  `is_checked` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `biaya_lembaga_id` int(0) NULL DEFAULT NULL,
+  `attribute_lainnya_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
+  `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_lainnya
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (17, 6, 2, 180000, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (18, 6, 1, 125000, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (19, 7, 2, 120000, 1);
-INSERT INTO `t_biaya_lembaga_lainnya` VALUES (20, 7, 1, 90000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (1, 1, 2, 90000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (2, 1, 1, 180000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (3, 2, 2, 90000, 1);
+INSERT INTO `t_biaya_lembaga_lainnya` VALUES (4, 2, 1, 75000, 1);
 
 -- ----------------------------
 -- Table structure for t_biaya_lembaga_semester
 -- ----------------------------
 DROP TABLE IF EXISTS `t_biaya_lembaga_semester`;
 CREATE TABLE `t_biaya_lembaga_semester`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `biaya_lembaga_id` int NULL DEFAULT NULL,
-  `attribute_semester_id` int NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
-  `is_checked` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `biaya_lembaga_id` int(0) NULL DEFAULT NULL,
+  `attribute_semester_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
+  `is_checked` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_biaya_lembaga_semester
 -- ----------------------------
-INSERT INTO `t_biaya_lembaga_semester` VALUES (17, 6, 2, 250000, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (18, 6, 1, 250000, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (19, 7, 2, 150000, 1);
-INSERT INTO `t_biaya_lembaga_semester` VALUES (20, 7, 1, 150000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (1, 1, 4, 200000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (2, 1, 3, 200000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (3, 1, 2, 200000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (4, 1, 1, 200000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (5, 2, 4, 120000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (6, 2, 3, 120000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (7, 2, 2, 120000, 1);
+INSERT INTO `t_biaya_lembaga_semester` VALUES (8, 2, 1, 120000, 1);
+
+-- ----------------------------
+-- Table structure for t_checkout
+-- ----------------------------
+DROP TABLE IF EXISTS `t_checkout`;
+CREATE TABLE `t_checkout`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `siswa_id` int(0) NULL DEFAULT NULL,
+  `kelas_id` int(0) NULL DEFAULT NULL,
+  `biaya_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `biaya_type_id` int(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_checkout
+-- ----------------------------
+INSERT INTO `t_checkout` VALUES (1, 1, 1, 'komite', 12);
+INSERT INTO `t_checkout` VALUES (2, 1, 1, 'komite', 11);
+INSERT INTO `t_checkout` VALUES (3, 1, 1, 'komite', 10);
+INSERT INTO `t_checkout` VALUES (4, 1, 1, 'semester', 4);
+INSERT INTO `t_checkout` VALUES (5, 1, 1, 'lainnya', 2);
+INSERT INTO `t_checkout` VALUES (6, 6, 1, 'komite', 24);
+INSERT INTO `t_checkout` VALUES (7, 6, 1, 'semester', 8);
+INSERT INTO `t_checkout` VALUES (8, 1, 1, 'komite', 9);
+INSERT INTO `t_checkout` VALUES (9, 1, 1, 'komite', 8);
+INSERT INTO `t_checkout` VALUES (10, 1, 1, 'komite', 7);
+INSERT INTO `t_checkout` VALUES (11, 1, 1, 'komite', 6);
+INSERT INTO `t_checkout` VALUES (12, 1, 1, 'komite', 5);
+INSERT INTO `t_checkout` VALUES (13, 1, 1, 'komite', 4);
+INSERT INTO `t_checkout` VALUES (14, 1, 1, 'komite', 3);
+INSERT INTO `t_checkout` VALUES (15, 1, 1, 'komite', 2);
+INSERT INTO `t_checkout` VALUES (16, 1, 1, 'komite', 1);
+INSERT INTO `t_checkout` VALUES (17, 1, 1, 'semester', 3);
+INSERT INTO `t_checkout` VALUES (18, 1, 1, 'semester', 2);
+INSERT INTO `t_checkout` VALUES (19, 1, 1, 'semester', 1);
+INSERT INTO `t_checkout` VALUES (20, 1, 1, 'lainnya', 1);
+INSERT INTO `t_checkout` VALUES (21, 1, 2, 'komite', 12);
+INSERT INTO `t_checkout` VALUES (22, 1, 2, 'komite', 11);
+INSERT INTO `t_checkout` VALUES (23, 1, 2, 'komite', 10);
+INSERT INTO `t_checkout` VALUES (24, 1, 2, 'semester', 4);
+INSERT INTO `t_checkout` VALUES (25, 1, 2, 'lainnya', 2);
+INSERT INTO `t_checkout` VALUES (26, 1, 2, 'komite', 9);
+INSERT INTO `t_checkout` VALUES (27, 1, 2, 'komite', 8);
+INSERT INTO `t_checkout` VALUES (28, 1, 2, 'semester', 3);
+INSERT INTO `t_checkout` VALUES (29, 1, 2, 'semester', 2);
+INSERT INTO `t_checkout` VALUES (30, 1, 2, 'lainnya', 1);
+INSERT INTO `t_checkout` VALUES (31, 1, 2, 'komite', 7);
+INSERT INTO `t_checkout` VALUES (32, 1, 2, 'komite', 6);
+INSERT INTO `t_checkout` VALUES (33, 1, 2, 'semester', 1);
+INSERT INTO `t_checkout` VALUES (34, 1, 2, 'komite', 5);
+INSERT INTO `t_checkout` VALUES (35, 1, 2, 'komite', 4);
+INSERT INTO `t_checkout` VALUES (36, 1, 2, 'komite', 3);
+INSERT INTO `t_checkout` VALUES (37, 1, 2, 'komite', 2);
+INSERT INTO `t_checkout` VALUES (38, 1, 2, 'komite', 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pembayaran`;
 CREATE TABLE `t_pembayaran`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tahun_ajaran_id` int NULL DEFAULT NULL,
-  `lembaga_id` int NULL DEFAULT NULL,
-  `siswa_id` int NULL DEFAULT NULL,
-  `kelas_id` int NULL DEFAULT NULL,
-  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
+  `siswa_id` int(0) NULL DEFAULT NULL,
+  `kelas_id` int(0) NULL DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
   `created_at` timestamp(6) NULL DEFAULT NULL,
-  `created_by` int NULL DEFAULT NULL,
+  `created_by` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_pembayaran
 -- ----------------------------
-INSERT INTO `t_pembayaran` VALUES (1, 14, 1, 1, 1, 'IN/SMP/202012/0001', 525000, '2020-12-25 04:00:27.000000', 1);
-INSERT INTO `t_pembayaran` VALUES (2, 14, 2, 2, 1, 'IN/MTS/202012/0002', 135000, '2020-12-25 04:01:02.000000', 1);
-INSERT INTO `t_pembayaran` VALUES (3, 14, 2, 2, 1, 'IN/MTS/202012/0003', 135000, '2020-12-25 10:41:54.000000', 1);
-INSERT INTO `t_pembayaran` VALUES (4, 14, 1, 3, 1, 'IN/SMP/202012/0004', 900000, '2020-12-25 13:35:21.000000', 1);
-INSERT INTO `t_pembayaran` VALUES (5, 14, 2, 2, 1, 'IN/MTS/202012/0005', 135000, '2020-12-26 14:05:20.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (3, 14, 1, 1, 1, 'IN/SMP/7/202101/0001', 150000, '2021-01-09 19:25:19.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (4, 14, 1, 1, 1, 'IN/SMP/7/202101/0002', 300000, '2021-01-09 19:33:22.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (5, 14, 1, 1, 1, 'IN/SMP/7/202101/0003', 380000, '2021-01-09 19:35:21.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (6, 14, 2, 6, 1, 'IN/MTS/7/202101/0004', 260000, '2021-01-09 19:37:46.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (7, 14, 1, 1, 1, 'IN/SMP/7/202101/0005', 2040000, '2021-01-09 19:38:54.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (8, 14, 1, 1, 2, 'IN/SMP/8/202101/0006', 300000, '2021-01-09 19:40:23.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (9, 14, 1, 1, 2, 'IN/SMP/8/202101/0007', 530000, '2021-01-09 20:48:11.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (10, 14, 1, 1, 2, 'IN/SMP/8/202101/0008', 790000, '2021-01-09 20:48:46.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (11, 14, 1, 1, 2, 'IN/SMP/8/202101/0009', 500000, '2021-01-09 20:49:17.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (12, 14, 1, 1, 2, 'IN/SMP/8/202101/0010', 300000, '2021-01-09 21:57:14.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (13, 14, 1, 1, 2, 'IN/SMP/8/202101/0011', 150000, '2021-01-09 21:57:29.000000', 1);
+INSERT INTO `t_pembayaran` VALUES (14, 14, 1, 1, 2, 'IN/SMP/8/202101/0012', 300000, '2021-01-09 21:57:49.000000', 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_komite
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pembayaran_komite`;
 CREATE TABLE `t_pembayaran_komite`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pembayaran_id` int NULL DEFAULT NULL,
-  `biaya_lembaga_komite_id` int NULL DEFAULT NULL,
-  `is_checkout` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `pembayaran_id` int(0) NULL DEFAULT NULL,
+  `biaya_lembaga_komite_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_pembayaran_komite
 -- ----------------------------
-INSERT INTO `t_pembayaran_komite` VALUES (1, 1, 108, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (2, 1, 107, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (3, 1, 106, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (4, 1, 105, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (5, 1, 104, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (6, 1, 103, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (7, 1, 102, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (8, 1, 101, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (9, 1, 100, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (10, 1, 99, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (11, 1, 98, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (12, 1, 97, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (13, 2, 120, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (14, 2, 119, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (15, 2, 118, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (16, 2, 117, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (17, 2, 116, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (18, 2, 115, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (19, 2, 114, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (20, 2, 113, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (21, 2, 112, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (22, 2, 111, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (23, 2, 110, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (24, 2, 109, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (25, 3, 120, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (26, 3, 119, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (27, 3, 118, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (28, 3, 117, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (29, 3, 116, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (30, 3, 115, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (31, 3, 114, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (32, 3, 113, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (33, 3, 112, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (34, 3, 111, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (35, 3, 110, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (36, 3, 109, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (37, 4, 108, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (38, 4, 107, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (39, 4, 106, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (40, 4, 105, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (41, 4, 104, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (42, 4, 103, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (43, 4, 102, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (44, 4, 101, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (45, 4, 100, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (46, 4, 99, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (47, 4, 98, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (48, 4, 97, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (49, 5, 120, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (50, 5, 119, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (51, 5, 118, 1);
-INSERT INTO `t_pembayaran_komite` VALUES (52, 5, 117, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (53, 5, 116, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (54, 5, 115, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (55, 5, 114, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (56, 5, 113, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (57, 5, 112, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (58, 5, 111, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (59, 5, 110, 0);
-INSERT INTO `t_pembayaran_komite` VALUES (60, 5, 109, 0);
+INSERT INTO `t_pembayaran_komite` VALUES (4, 3, 12, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (5, 4, 11, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (6, 4, 10, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (7, 6, 24, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (8, 7, 9, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (9, 7, 8, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (10, 7, 7, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (11, 7, 6, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (12, 7, 5, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (13, 7, 4, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (14, 7, 3, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (15, 7, 2, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (16, 7, 1, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (17, 8, 12, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (18, 8, 11, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (19, 9, 10, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (20, 10, 9, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (21, 10, 8, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (22, 11, 7, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (23, 11, 6, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (24, 12, 5, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (25, 12, 4, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (26, 13, 3, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (27, 14, 2, 1);
+INSERT INTO `t_pembayaran_komite` VALUES (28, 14, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_lainnya
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pembayaran_lainnya`;
 CREATE TABLE `t_pembayaran_lainnya`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pembayaran_id` int NULL DEFAULT NULL,
-  `biaya_lembaga_lainnya_id` int NULL DEFAULT NULL,
-  `is_checkout` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `pembayaran_id` int(0) NULL DEFAULT NULL,
+  `biaya_lembaga_lainnya_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_pembayaran_lainnya
 -- ----------------------------
-INSERT INTO `t_pembayaran_lainnya` VALUES (1, 1, 18, 1);
-INSERT INTO `t_pembayaran_lainnya` VALUES (2, 1, 17, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (3, 2, 20, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (4, 2, 19, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (5, 3, 20, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (6, 3, 19, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (7, 4, 18, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (8, 4, 17, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (9, 5, 20, 0);
-INSERT INTO `t_pembayaran_lainnya` VALUES (10, 5, 19, 0);
+INSERT INTO `t_pembayaran_lainnya` VALUES (1, 5, 2, 1);
+INSERT INTO `t_pembayaran_lainnya` VALUES (2, 7, 1, 1);
+INSERT INTO `t_pembayaran_lainnya` VALUES (3, 9, 2, 1);
+INSERT INTO `t_pembayaran_lainnya` VALUES (4, 10, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_pembayaran_semester
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pembayaran_semester`;
 CREATE TABLE `t_pembayaran_semester`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pembayaran_id` int NULL DEFAULT NULL,
-  `biaya_lembaga_semester_id` int NULL DEFAULT NULL,
-  `is_checkout` int NULL DEFAULT 0,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `pembayaran_id` int(0) NULL DEFAULT NULL,
+  `biaya_lembaga_semester_id` int(0) NULL DEFAULT NULL,
+  `is_checkout` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_pembayaran_semester
 -- ----------------------------
-INSERT INTO `t_pembayaran_semester` VALUES (1, 1, 18, 1);
-INSERT INTO `t_pembayaran_semester` VALUES (2, 1, 17, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (3, 2, 20, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (4, 2, 19, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (5, 3, 20, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (6, 3, 19, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (7, 4, 18, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (8, 4, 17, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (9, 5, 20, 0);
-INSERT INTO `t_pembayaran_semester` VALUES (10, 5, 19, 0);
+INSERT INTO `t_pembayaran_semester` VALUES (1, 5, 4, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (2, 6, 8, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (3, 7, 3, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (4, 7, 2, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (5, 7, 1, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (6, 9, 4, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (7, 10, 3, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (8, 10, 2, 1);
+INSERT INTO `t_pembayaran_semester` VALUES (9, 11, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_pengeluaran
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pengeluaran`;
 CREATE TABLE `t_pengeluaran`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `approval_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `receive_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `approval_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `receive_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
   `created_at` timestamp(6) NULL DEFAULT NULL,
-  `created_by` int NULL DEFAULT NULL,
+  `created_by` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of t_pengeluaran
--- ----------------------------
-INSERT INTO `t_pengeluaran` VALUES (25, 'OUT/SMP/20201226/0001', 'admin', 'nazmudin', 7000, '2020-12-26 14:02:12.000000', 1);
-INSERT INTO `t_pengeluaran` VALUES (26, 'OUT/SMP/20201226/0002', 'admin', 'haha', 8000, '2020-12-26 14:21:43.000000', 1);
-INSERT INTO `t_pengeluaran` VALUES (27, 'OUT/MTS/20201230/0003', 'admin', 'ahmad', 30000, '2020-12-30 14:29:22.000000', 1);
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_pengeluaran_detail
 -- ----------------------------
 DROP TABLE IF EXISTS `t_pengeluaran_detail`;
 CREATE TABLE `t_pengeluaran_detail`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pengeluaran_id` int NULL DEFAULT NULL,
-  `tahun_ajaran_id` int NULL DEFAULT NULL,
-  `lembaga_id` int NULL DEFAULT NULL,
-  `kebutuhan_lembaga_id` int NULL DEFAULT NULL,
-  `biaya_kebutuhan_detail_id` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `pengeluaran_id` int(0) NULL DEFAULT NULL,
+  `kebutuhan_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
+  `desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of t_pengeluaran_detail
--- ----------------------------
-INSERT INTO `t_pengeluaran_detail` VALUES (4, 25, 14, 1, 1, 1);
-INSERT INTO `t_pengeluaran_detail` VALUES (5, 26, 14, 1, 1, 2);
-INSERT INTO `t_pengeluaran_detail` VALUES (6, 27, 14, 2, 2, 4);
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_saldo
 -- ----------------------------
 DROP TABLE IF EXISTS `t_saldo`;
 CREATE TABLE `t_saldo`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tahun_ajaran_id` int NULL DEFAULT NULL,
-  `lembaga_id` int NULL DEFAULT NULL,
-  `pembayaran_id` int NULL DEFAULT NULL,
-  `amount` int NULL DEFAULT NULL,
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `tahun_ajaran_id` int(0) NULL DEFAULT NULL,
+  `lembaga_id` int(0) NULL DEFAULT NULL,
+  `pembayaran_id` int(0) NULL DEFAULT NULL,
+  `amount` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of t_saldo
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

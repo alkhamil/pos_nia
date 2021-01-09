@@ -47,7 +47,11 @@
 
     <script>
         function showLoad(){
-            $('.content').css('opacity', 0.6);
+            let style = {
+                "pointer-events" : "none",
+                "opacity" : 0.6
+            }
+            $('.content').css(style);
             $('.load').addClass('loader');
         }
         function hideLoad(){
@@ -75,6 +79,9 @@
                 console.log(e)
             }
         }
+
+        
+        
     </script>
 
 </head>
@@ -155,7 +162,7 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item <?php if($segment_2=='biaya_lembaga') echo 'active' ?>" href="<?= base_url('c_biaya/biaya_lembaga') ?>">Biaya Lembaga</a>
-                <a class="collapse-item <?php if($segment_2=='biaya_kebutuhan') echo 'active' ?>" href="<?= base_url('c_biaya/biaya_kebutuhan') ?>">Biaya Kebutuhan</a>
+                <!-- <a class="collapse-item <?php if($segment_2=='biaya_kebutuhan') echo 'active' ?>" href="<?= base_url('c_biaya/biaya_kebutuhan') ?>">Biaya Kebutuhan</a> -->
             </div>
         </div>
     </li>
