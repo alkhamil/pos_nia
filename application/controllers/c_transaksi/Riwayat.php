@@ -6,22 +6,23 @@ class Riwayat extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('m_transaksi/Pengeluaran_model');
+        $this->load->model('m_transaksi/Riwayat_model');
     }
 
 	public function index()
 	{
-        die('comming soong');exit;
-        $data['title'] = 'Pengeluaran';
-        $data['isi'] = 'v_transaksi/pengeluaran/index';
+        $data['title'] = 'Riwayat';
+        $data['isi'] = 'v_transaksi/riwayat/index';
         $data['userdata'] = $this->userdata;
-        $data['simpan'] = base_url('c_transaksi/pengeluaran/simpan');
-        $data['data'] = base_url('c_transaksi/pengeluaran/data');
-        $data['get'] = base_url('c_transaksi/pengeluaran/get_data');
-        $data['cetak'] = base_url('c_transaksi/pengeluaran/cetak');
-        $data['get_biaya_kebutuhan'] = base_url('c_transaksi/pengeluaran/get_biaya_kebutuhan');
-        $data['get_kebutuhan_detail'] = base_url('c_transaksi/pengeluaran/get_kebutuhan_detail');
-        $data['select_lembaga'] = base_url('c_transaksi/pengeluaran/select_lembaga');
+        $data['data'] = base_url('c_transaksi/riwayat/data');
+        $data['get'] = base_url('c_transaksi/riwayat/get_data');
+        $data['riwayat_pembayaran_detail'] = base_url('c_transaksi/riwayat/riwayat_pembayaran_detail');
+        $data['select_tahun_ajaran'] = base_url('c_transaksi/riwayat/select_tahun_ajaran');
+        $data['select_lembaga'] = base_url('c_transaksi/riwayat/select_lembaga');
+        $data['select_siswa'] = base_url('c_transaksi/riwayat/select_siswa');
+        $data['select_kelas'] = base_url('c_transaksi/riwayat/select_kelas');
+        $data['cetak'] = base_url('c_transaksi/pembayaran/cetak');
+        $data['cetak_semua'] = base_url('c_transaksi/riwayat/cetak_semua');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -29,12 +30,33 @@ class Riwayat extends CI_Controller {
     {
         $temp_data = [];
         $where = [];
+        if ($this->input->post('filter_siswa_id', TRUE)) {
+            $where['m_siswa.id'] = $this->input->post('filter_siswa_id', TRUE);
+        }
+        if ($this->input->post('filter_tahun_ajaran_id', TRUE)) {
+            $where['m_tahun_ajaran.id'] = $this->input->post('filter_tahun_ajaran_id', TRUE);
+        }
+        if ($this->input->post('filter_lembaga_id', TRUE)) {
+            $where['m_lembaga.id'] = $this->input->post('filter_lembaga_id', TRUE);
+        }
+        if ($this->input->post('filter_kelas_id', TRUE)) {
+            $where['m_kelas.id'] = $this->input->post('filter_kelas_id', TRUE);
+        }
+        
         $no = $this->input->post('start');
-        $list = $this->Pengeluaran_model->lists(
-            '*',
+        $list = $this->Riwayat_model->lists(
+            '
+                t_pembayaran.*, 
+                m_tahun_ajaran.name as tahun_ajaran_name,
+                m_lembaga.name as lembaga_name,
+                m_siswa.name as siswa_name,
+                m_siswa.address as siswa_address,
+                m_siswa.phone as siswa_phone,
+                m_kelas.name as kelas_name,'
+            ,
             $where, 
             $this->input->post('length'), 
-            $this->input->post('start') 
+            $this->input->post('start')
         );
 		if($list) {
 			foreach ($list as $ls) {
@@ -42,234 +64,230 @@ class Riwayat extends CI_Controller {
 				$row = array();
                 $row['no'] = $no;
 				$row['code'] = $ls['code'];
-				$row['approval_name'] = $ls['approval_name'];
-				$row['receive_name'] = $ls['receive_name'];
+				$row['tahun_ajaran_name'] = $ls['tahun_ajaran_name'];
+				$row['lembaga_name'] = $ls['lembaga_name'];
+				$row['siswa_name'] = $ls['siswa_name'];
+				$row['siswa_phone'] = $ls['siswa_phone'];
+				$row['siswa_address'] = $ls['siswa_address'];
+				$row['kelas_name'] = $ls['kelas_name'];
 				$row['amount'] = $ls['amount'];
-				$row['created_at'] = date('d-M-Y H:i:s', strtotime($ls['created_at']));
+                $row['created_at'] = date('d-M-Y', strtotime($ls['created_at']));
+                $row['pembayaran'] = $this->pembayaran_detail($ls['id']);
 				$row['id'] = $ls['id'];
+	
 				$temp_data[] = (object)$row;
 			}
 		}
 		
 		$data['draw'] = $this->input->post('draw');
-		$data['recordsTotal'] = $this->Pengeluaran_model->list_count($where, true);
-		$data['recordsFiltered'] = $this->Pengeluaran_model->list_count($where, true);
+		$data['recordsTotal'] = $this->Riwayat_model->list_count($where, true);
+		$data['recordsFiltered'] = $this->Riwayat_model->list_count($where, true);
         $data['data'] = $temp_data;
         echo json_encode($data);
     }
 
-    public function simpan()
+    public function pembayaran_detail($pembayaran_id)
     {
-        $kebutuhanDetail = $this->input->post('kebutuhan_detail_id',TRUE);
-        $savedataDetail['lembaga_id'] = $this->input->post('lembaga_id', TRUE);
-        $savedataDetail['kebutuhan_lembaga_id'] = $this->input->post('t_biaya_kebutuhan_id',TRUE);
-        $savedataDetail['tahun_ajaran_id'] = $this->input->post('tahun_ajaran_id', TRUE);
-        $savedataDetail['biaya_kebutuhan_detail_id'] = $this->input->post('kebutuhan_detail_id',TRUE);
-        $savedata['code'] = $this->check_code($this->get_lembaga($savedataDetail['lembaga_id']));
-        $savedata['approval_name'] = $this->userdata->username;
-        $savedata['receive_name'] = $this->input->post('penerima',TRUE);
-        $savedata['amount'] = $this->input->post('nominal',TRUE);
-        $savedata['created_at'] = date('Y-m-d H:i:s');
-        $savedata['created_by'] = $this->userdata->id;
+        $komite = $this->pembayaran_type_true('t_pembayaran_komite', $pembayaran_id, 't_biaya_lembaga_komite', 'biaya_lembaga_komite_id', 'm_attribute_komite', 'attribute_komite_id', true);
+        $semester = $this->pembayaran_type_true('t_pembayaran_semester', $pembayaran_id, 't_biaya_lembaga_semester', 'biaya_lembaga_semester_id', 'm_attribute_semester', 'attribute_semester_id', true);
+        $lainnya = $this->pembayaran_type_true('t_pembayaran_lainnya', $pembayaran_id, 't_biaya_lembaga_lainnya', 'biaya_lembaga_lainnya_id', 'm_attribute_lainnya', 'attribute_lainnya_id', true);
 
-        $this->db->trans_begin();
-        if($this->input->post('id')) { 
-            // edit
-			$this->Pengeluaran_modal->update($savedata, array('id' => $this->input->post('id', TRUE)));
-        } else { 
-            //create
-            $pengeluaran_id = $this->Pengeluaran_model->insert($savedata, true);
-            if ($pengeluaran_id) {  
-                $this->update_kebutuhan_detail($kebutuhanDetail);
-                $this->save_detail($savedataDetail,$pengeluaran_id);
-                // update lembaga amount
-                $this->update_amount($savedataDetail['lembaga_id'],$savedata['amount']);
+        $data['data'] = [];
+        if (count($komite) > 0) {
+            foreach ($komite as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
             }
         }
-        
-        if ($this->db->trans_status() === FALSE){
-            $this->db->trans_rollback();
-            $msg = array(
-                'type' => 'error',
-                'msg' => 'Data tidak berhasil disimpan',
-            );
-        }else {
-            $this->db->trans_commit();
-            $msg = array(
-                'type' => 'success',
-                'msg' => 'Data Berhasil disimpan',
-            );
+        if (count($semester) > 0) {
+            foreach ($semester as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
+            }
         }
-        $this->session->set_flashdata('msg', $msg);
-        
-        redirect(base_url('c_transaksi/pengeluaran'), 'refresh');
-    }
-
-    public function update_kebutuhan_detail($id)
-    {
-        $where['id'] = $id;
-        $this->Pengeluaran_model->table = 't_biaya_kebutuhan_detail';
-        $this->Pengeluaran_model->order_by = 'id';
-        $detail = $this->Pengeluaran_model->get($where);
-        $savedata['biaya_kebutuhan_id'] = $detail->biaya_kebutuhan_id;
-        $savedata['kebutuhan_id']       = $detail->kebutuhan_id;
-        $savedata['amount']             = $detail->amount;
-        $savedata['is_checked']         = 1;
-        $this->Pengeluaran_model->update($savedata,$where);
-    }
-
-    public function save_detail($savedata,$id)
-    {
-        $save['pengeluaran_id']     = $id;
-        $save['tahun_ajaran_id']    = (int)$savedata['tahun_ajaran_id'];
-        $save['lembaga_id']         = (int)$savedata['lembaga_id'];
-        $save['kebutuhan_lembaga_id'] = (int)$savedata['kebutuhan_lembaga_id'];
-        $save['biaya_kebutuhan_detail_id'] = (int)$savedata['biaya_kebutuhan_detail_id'];
-        $this->Pengeluaran_model->table = 't_pengeluaran_detail';
-        $this->Pengeluaran_model->insert($save);
-    }
-
-    public function get_lembaga($id)
-    {
-        $where['id'] = $id;
-        $select = "*";
-        $this->Pengeluaran_model->table = "m_lembaga";
-        $this->Pengeluaran_model->order_by = "id";
-        $lembaga = $this->Pengeluaran_model->get($where, $select);
-        $this->Pengeluaran_model->table = "t_pengeluaran";
-        return $lembaga->name;
-    }
-
-    public function update_amount($data,$amount)
-    {
-        $where['id'] = $data;
-        $this->Pengeluaran_model->table = "m_lembaga";
-        $this->Pengeluaran_model->order_by = "id";
-        $lembaga = $this->Pengeluaran_model->get($where);
-        if ($lembaga) {
-            $update['saldo'] = $lembaga->saldo - $amount;
-            $this->Pengeluaran_model->update($update, $where);
+        if (count($lainnya) > 0) {
+            foreach ($lainnya as $key => $item) {
+                $colom['attribute_name'] = $item['attribute_name'];
+                $colom['attribute_type_name'] = $item['attribute_type_name'];
+                $colom['amount'] = $item['amount'];
+                array_push($data['data'], $colom);
+            }
         }
+        $this->Riwayat_model->table = "t_pembayaran";
+        return $data;
+    }
+
+    public function pembayaran_type_true($table, $pembayaran_id, $ref_table_1, $ref_id_1, $ref_table_2, $ref_id_2, $cetak=false)
+    {
+        $this->Riwayat_model->table = $table;
+        $this->Riwayat_model->order_by = $table.'.id';
+        $this->Riwayat_model->order_type = 'ASC';
+
+        $where[$table.".pembayaran_id"] = $pembayaran_id;
+        if ($cetak) {
+            $where[$table.".is_checkout"] = 1;
+        }
+        $select = $table.".*, ".$ref_table_1.".amount, ".$ref_table_2.".name as attribute_name, m_attribute_type.name as attribute_type_name";
+        $join = [
+            [
+                'table'     => $ref_table_1,
+                'on'        => $ref_table_1.'.id = '.$table.'.'.$ref_id_1
+            ],
+            [
+                'table'     => $ref_table_2,
+                'on'        => $ref_table_2.'.id = '.$ref_table_1.'.'.$ref_id_2
+            ],
+            [
+                'table'     => 'm_attribute_type',
+                'on'        => 'm_attribute_type.id = '.$ref_table_2.'.attribute_type_id'
+            ]
+        ];
+        return $this->Riwayat_model->get_all($where, $select, $join);
+    }
+
+    public function riwayat_pembayaran_detail()
+    {
+        $pembayaran_id = $this->input->get('pembayaran_id', TRUE);
+        $result = $this->pembayaran_detail($pembayaran_id);
+        echo json_encode($result);
+    }
+
+    public function select_tahun_ajaran()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        $this->Riwayat_model->order_by = "id";
+        $this->Riwayat_model->order_type = "ASC";
+        $this->Riwayat_model->search_field = "name";
+        $this->Riwayat_model->column_search = "name";
+        $this->Riwayat_model->table = "m_tahun_ajaran";
+        $data = $this->Riwayat_model->list_select($q, $where);
+        echo json_encode($data);
     }
 
     public function select_lembaga()
     {
         $q = $this->input->get('q');
         $where = [];
-        $this->Pengeluaran_model->order_by = "id";
-        $this->Pengeluaran_model->order_type = "ASC";
-        $this->Pengeluaran_model->search_field = "name";
-        $this->Pengeluaran_model->column_search = "name";
-        $this->Pengeluaran_model->table = "m_lembaga";
-        $data = $this->Pengeluaran_model->list_select($q, $where);
+        $this->Riwayat_model->order_by = "id";
+        $this->Riwayat_model->search_field = "name";
+        $this->Riwayat_model->column_search = "name";
+        $this->Riwayat_model->table = "m_lembaga";
+        $data = $this->Riwayat_model->list_select($q, $where);
         echo json_encode($data);
     }
 
-    public function check_code($lembaga)
+
+    public function select_siswa()
     {
-        $tahun = $this->db->order_by('id', 'desc')->limit(1)->get('t_pengeluaran')->row_array();
-        if ($tahun) {
-            $tahun = date('Y', strtotime($tahun['created_at']));
-            if ($tahun != date('Y')) {
-                $code = 0;
-            }else{
-                $code = count($this->db->get('t_pengeluaran')->result_array());
-            }
-        }else{
-            $code = count($this->db->get('t_pengeluaran')->result_array());
+        $q = $this->input->get('q');
+        $where = [];
+        if ($this->input->get('id', TRUE)) {
+            $where['lembaga_id'] = $this->input->get('id', TRUE);
         }
-        $result = 'OUT/'.$lembaga.'/'.date('Ymd').'/'.str_pad($code + 1, 4, "0", STR_PAD_LEFT);
-        return $result;
-    }
-
-    public function get_biaya_kebutuhan()
-    {       
-        $this->Pengeluaran_model->table = "m_tahun_ajaran";
-        $this->Pengeluaran_model->order_by = "id";
-        $tahun = $this->Pengeluaran_model->get(['is_active' => 1]);
-        $where['t_biaya_kebutuhan.tahun_ajaran_id'] = $tahun->id;
-        $where['t_biaya_kebutuhan.lembaga_id'] = $this->input->get('lembaga_id',TRUE);
-        $this->Pengeluaran_model->table = "t_biaya_kebutuhan";
-        $this->Pengeluaran_model->order_by = "id";
-        $data = $this->Pengeluaran_model->get($where);
+        $this->Riwayat_model->order_by = "id";
+        $this->Riwayat_model->order_type = "ASC";
+        $this->Riwayat_model->search_field = "name";
+        $this->Riwayat_model->column_search = "name";
+        $this->Riwayat_model->table = "m_siswa";
+        $data = $this->Riwayat_model->list_select($q, $where);
         echo json_encode($data);
     }
 
-    public function get_kebutuhan_detail()
+    public function select_kelas()
     {
-        $where['t_biaya_kebutuhan_detail.biaya_kebutuhan_id'] = $this->input->get('biaya_id',TRUE);
-        $where['t_biaya_kebutuhan_detail.is_checked'] = 0;
-        $where['m_kebutuhan.type'] = $this->input->get('tipe',TRUE);
-        
-        $select =   "t_biaya_kebutuhan_detail.*,
-                     m_kebutuhan.type as tipe_kebutuhan,
-                     m_kebutuhan.name as name,
-                     m_kebutuhan.desc as desc
-                     ";
-        $join = [
-                    [
-                        'type'      => 'LEFT JOIN',
-                        'table'     => 'm_kebutuhan',
-                        'on'        => 'm_kebutuhan.id = t_biaya_kebutuhan_detail.kebutuhan_id'
-                    ]
-                ];
-        $this->Pengeluaran_model->table = 't_biaya_kebutuhan_detail';
-        $this->Pengeluaran_model->order_by = 'id';
-        $data = $this->Pengeluaran_model->get_all($where,$select,$join);
+        $q = $this->input->get('q');
+        $where = [];
+        if ($this->input->get('level', TRUE)) {
+            $where['level'] = $this->input->get('level', TRUE);
+        }
+        $this->Riwayat_model->order_by = "id";
+        $this->Riwayat_model->order_type = "ASC";
+        $this->Riwayat_model->search_field = "name";
+        $this->Riwayat_model->column_search = "name";
+        $this->Riwayat_model->table = "m_kelas";
+        $data = $this->Riwayat_model->list_select($q, $where);
         echo json_encode($data);
     }
 
-    public function cetak()
+    public function get_name($table, $id)
     {
-        $where['t_pengeluaran.id'] = $this->input->get('id', TRUE);
-        
+        $this->Riwayat_model->table = $table;   
+        $this->Riwayat_model->order_by = 'id';   
+        $where['id'] = $id;
+        $row = $this->Riwayat_model->get($where);
+        return $row->name;  
+    }
+
+    public function cetak_semua()
+    {
+        $where = [];
+        $data['tahun_ajaran_name'] = null;
+        if ($this->input->get('filter_tahun_ajaran_id', TRUE)) {
+            $where['m_tahun_ajaran.id'] = $this->input->get('filter_tahun_ajaran_id', TRUE);
+            $data['tahun_ajaran_name'] = $this->get_name('m_tahun_ajaran', $this->input->get('filter_tahun_ajaran_id', TRUE));
+        }
+        $data['tahun_lembaga'] = null;
+        if ($this->input->get('filter_lemabaga_id', TRUE)) {
+            $where['m_lemabaga.id'] = $this->input->get('filter_lemabaga_id', TRUE);
+            $data['lembaga_name'] = $this->get_name('m_lembaga', $this->input->get('filter_lembaga_id', TRUE));
+        }
+        $data['siswa_name'] = null;
+        if ($this->input->get('filter_siswa_id', TRUE)) {
+            $where['m_siswa.id'] = $this->input->get('filter_siswa_id', TRUE);
+            $data['siswa_name'] = $this->get_name('m_siswa', $this->input->get('filter_siswa_id', TRUE));
+        }
+        $data['kelas_name'] = null;
+        if ($this->input->get('filter_kelas_id', TRUE)) {
+            $where['m_kelas.id'] = $this->input->get('filter_kelas_id', TRUE);
+            $data['kelas_name'] = $this->get_name('m_kelas', $this->input->get('filter_kelas_id', TRUE));
+        }
+        $this->Riwayat_model->table = "t_pembayaran";   
+        $this->Riwayat_model->order_by = "t_pembayaran.id";   
         $select = "
-                    t_pengeluaran.*,
-                    m_kebutuhan.name as kebutuhan_name,
-                    m_kebutuhan.type as kebutuhan_type,
-                    m_kebutuhan.desc as desc,
-                    m_tahun_ajaran.name as tahun_name,
-                    m_lembaga.name as lembaga_name";
+            t_pembayaran.*, 
+            m_tahun_ajaran.name as tahun_ajaran_name,
+            m_lembaga.name as lembaga_name,
+            m_siswa.name as siswa_name,
+            m_siswa.address as siswa_address,
+            m_siswa.phone as siswa_phone,
+            m_kelas.name as kelas_name
+        ";
         $join = [
-            [
-                'table'     => 't_pengeluaran_detail',
-                'on'        => 't_pengeluaran_detail.pengeluaran_id = t_pengeluaran.id'
-            ],
             [
                 'table'     => 'm_tahun_ajaran',
-                'on'        => 'm_tahun_ajaran.id = t_pengeluaran_detail.tahun_ajaran_id'
+                'on'        => 'm_tahun_ajaran.id = t_pembayaran.tahun_ajaran_id'
             ],
             [
                 'table'     => 'm_lembaga',
-                'on'        => 'm_lembaga.id = t_pengeluaran_detail.lembaga_id'
+                'on'        => 'm_lembaga.id = t_pembayaran.lembaga_id'
             ],
             [
-                'table'     => 't_biaya_kebutuhan_detail',
-                'on'        => 't_biaya_kebutuhan_detail.id = t_pengeluaran_detail.biaya_kebutuhan_detail_id'
+                'table'     => 'm_siswa',
+                'on'        => 'm_siswa.id = t_pembayaran.siswa_id'
             ],
             [
-                'table'     => 'm_kebutuhan',
-                'on'        => 'm_kebutuhan.id = t_biaya_kebutuhan_detail.kebutuhan_id'
-            ]
+                'table'     => 'm_kelas',
+                'on'        => 'm_kelas.id = t_pembayaran.kelas_id'
+            ],
         ];
-        $pengeluaran = $this->Pengeluaran_model->get($where, $select, $join);
-        $data['tahun_name'] = isset($pengeluaran->tahun_name) ? $pengeluaran->tahun_name : null;
-        $data['lembaga_name'] = isset($pengeluaran->lembaga_name) ? $pengeluaran->lembaga_name : null;
-        $data['approval_name'] = isset($pengeluaran->approval_name) ? $pengeluaran->approval_name : null;
-        $data['receive_name'] = isset($pengeluaran->receive_name) ? $pengeluaran->receive_name : null;
-        $data['code'] = isset($pengeluaran->code) ? $pengeluaran->code : null;
-        $data['desc'] = isset($pengeluaran->desc) ? $pengeluaran->desc : null;
-        $data['amount'] = isset($pengeluaran->amount) ? $pengeluaran->amount : null;
-        $data['kebutuhan_name'] = isset($pengeluaran->kebutuhan_name) ? $pengeluaran->kebutuhan_name : null;
-        $data['kebutuhan_type'] = isset($pengeluaran->kebutuhan_type) ? $pengeluaran->kebutuhan_type : null;
-        $data['tanggal'] = isset($pengeluaran->created_at) ? date('d M Y H:i:s', strtotime($pengeluaran->created_at)) : null;
-        $data['title'] = 'Lampiran Pengeluaran';
+        $list = $this->Riwayat_model->get_all($where, $select, $join);
+        $data['data'] = $list;
+        $data['title'] = 'Lampiran Pembayaran';
+
+        // echo json_encode($data);exit;
 
         $this->load->library('pdf');
     
         $this->pdf->setPaper('A4', 'potrait');
         $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->filename = $data['title'];
-        $this->pdf->load_view('v_transaksi/pengeluaran/cetak', $data);
+        $this->pdf->load_view('v_transaksi/riwayat/cetak', $data);
+        
+        echo json_encode($data);
     }
 }

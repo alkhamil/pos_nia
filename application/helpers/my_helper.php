@@ -36,6 +36,6 @@ if (!function_exists('terbilang')) {
         } else {
             $hasil = trim(penyebut($nilai));
         }     		
-        return $hasil;
+        return $hasil.' rupiah';
     }
 }

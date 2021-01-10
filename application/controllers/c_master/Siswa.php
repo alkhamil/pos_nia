@@ -84,6 +84,7 @@ class Siswa extends CI_Controller {
         $savedata['nis'] = $this->input->post('nis', TRUE);
         $savedata['birthday'] = $this->input->post('birthday', TRUE);
         $savedata['phone'] = $this->input->post('phone', TRUE);
+        $savedata['address'] = $this->input->post('address', TRUE);
 
         $this->db->trans_begin();
         if($this->input->post('id')) { 
@@ -150,10 +151,15 @@ class Siswa extends CI_Controller {
     {
         $data['siswa_id'] = $this->input->get('id', TRUE);
         $data['title'] = 'Riwayat Pembayaran Siswa : '.$this->get_siswa_name($this->input->get('id', TRUE));
+        $data['userdata'] = $this->userdata;
+        $data['isi'] = 'v_master/siswa/riwayat_pembayaran';
         $data['data'] = base_url('c_master/siswa/data_riwayat_pembayaran');
         $data['riwayat_pembayaran_detail'] = base_url('c_master/siswa/riwayat_pembayaran_detail');
-        $data['isi'] = 'v_master/siswa/riwayat_pembayaran';
-        $data['userdata'] = $this->userdata;
+        $data['select_tahun_ajaran'] = base_url('c_master/siswa/select_tahun_ajaran');
+        $data['select_lembaga'] = base_url('c_master/siswa/select_lembaga');
+        $data['select_siswa'] = base_url('c_master/siswa/select_siswa');
+        $data['select_kelas'] = base_url('c_master/siswa/select_kelas');
+        $data['cetak'] = base_url('c_transaksi/pembayaran/cetak');
         $this->load->view('layout/wrapper', $data);   
         // echo json_encode($data);exit;
     }
@@ -168,7 +174,18 @@ class Siswa extends CI_Controller {
     public function data_riwayat_pembayaran()
     {
         $temp_data = [];
+        $where = [];
         $where['t_pembayaran.siswa_id'] = $this->input->post('siswa_id', TRUE);
+        if ($this->input->post('filter_tahun_ajaran_id', TRUE)) {
+            $where['m_tahun_ajaran.id'] = $this->input->post('filter_tahun_ajaran_id', TRUE);
+        }
+        if ($this->input->post('filter_lembaga_id', TRUE)) {
+            $where['m_lembaga.id'] = $this->input->post('filter_lembaga_id', TRUE);
+        }
+        if ($this->input->post('filter_kelas_id', TRUE)) {
+            $where['m_kelas.id'] = $this->input->post('filter_kelas_id', TRUE);
+        }
+        
         $no = $this->input->post('start');
         $list = $this->Siswa_riwayat_model->lists(
             '
@@ -217,11 +234,6 @@ class Siswa extends CI_Controller {
         $komite = $this->pembayaran_type_true('t_pembayaran_komite', $pembayaran_id, 't_biaya_lembaga_komite', 'biaya_lembaga_komite_id', 'm_attribute_komite', 'attribute_komite_id', true);
         $semester = $this->pembayaran_type_true('t_pembayaran_semester', $pembayaran_id, 't_biaya_lembaga_semester', 'biaya_lembaga_semester_id', 'm_attribute_semester', 'attribute_semester_id', true);
         $lainnya = $this->pembayaran_type_true('t_pembayaran_lainnya', $pembayaran_id, 't_biaya_lembaga_lainnya', 'biaya_lembaga_lainnya_id', 'm_attribute_lainnya', 'attribute_lainnya_id', true);
-
-        // $data['siswa_name'] = $data['siswa_name'];
-        // $data['siswa_address'] = $data['siswa_address'];
-        // $data['siswa_phone'] = $data['siswa_phone'];
-        // $data['created_at'] = $data['created_at'];
 
         $data['data'] = [];
         if (count($komite) > 0) {
@@ -280,6 +292,19 @@ class Siswa extends CI_Controller {
         return $this->Siswa_model->get_all($where, $select, $join);
     }
 
+    public function select_tahun_ajaran()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        $this->Siswa_model->order_by = "id";
+        $this->Siswa_model->order_type = "ASC";
+        $this->Siswa_model->search_field = "name";
+        $this->Siswa_model->column_search = "name";
+        $this->Siswa_model->table = "m_tahun_ajaran";
+        $data = $this->Siswa_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
     public function select_lembaga()
     {
         $q = $this->input->get('q');
@@ -288,6 +313,36 @@ class Siswa extends CI_Controller {
         $this->Siswa_model->search_field = "name";
         $this->Siswa_model->column_search = "name";
         $this->Siswa_model->table = "m_lembaga";
+        $data = $this->Siswa_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
+
+    public function select_siswa()
+    {
+        $q = $this->input->get('q');
+        $where['lembaga_id'] = $this->input->get('id', TRUE);
+        $this->Siswa_model->order_by = "id";
+        $this->Siswa_model->order_type = "ASC";
+        $this->Siswa_model->search_field = "name";
+        $this->Siswa_model->column_search = "name";
+        $this->Siswa_model->table = "m_siswa";
+        $data = $this->Siswa_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
+    public function select_kelas()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        if ($this->input->get('level', TRUE)) {
+            $where['level'] = $this->input->get('level', TRUE);
+        }
+        $this->Siswa_model->order_by = "id";
+        $this->Siswa_model->order_type = "ASC";
+        $this->Siswa_model->search_field = "name";
+        $this->Siswa_model->column_search = "name";
+        $this->Siswa_model->table = "m_kelas";
         $data = $this->Siswa_model->list_select($q, $where);
         echo json_encode($data);
     }
