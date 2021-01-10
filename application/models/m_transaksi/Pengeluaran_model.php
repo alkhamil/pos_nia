@@ -7,8 +7,8 @@ class Pengeluaran_model extends CI_Model {
     public $order_by = 't_pengeluaran.id';
     public $order_type = 'DESC';
     public $search_field = 't_pengeluaran.code';
-    public $column_order = ['t_pengeluaran.code']; //set column field database for datatable orderable
-    public $column_search = ['t_pengeluaran.code']; //set column field database for datatable searchable 
+    public $column_order = ['t_pengeluaran.code', 'm_lembaga.name']; //set column field database for datatable orderable
+    public $column_search = ['t_pengeluaran.code', 'm_lembaga.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
@@ -18,6 +18,8 @@ class Pengeluaran_model extends CI_Model {
     function lists($select = '*', $where = null, $limit = 10 ,$offset = 0)
     {
         $this->db->select($select)
+                 ->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pengeluaran.tahun_ajaran_id')
+                 ->join('m_lembaga', 'm_lembaga.id = t_pengeluaran.lembaga_id')
                  ->limit($limit,$offset);
 
         if($where) {
@@ -68,6 +70,8 @@ class Pengeluaran_model extends CI_Model {
     }
 
     function list_count($where = null, $is_where = false) {
+        $this->db->join('m_tahun_ajaran', 'm_tahun_ajaran.id = t_pengeluaran.tahun_ajaran_id')
+                ->join('m_lembaga', 'm_lembaga.id = t_pengeluaran.lembaga_id');
         if($is_where) {
             if($where) {
                 if(isset($where['q']) && $where['q'])

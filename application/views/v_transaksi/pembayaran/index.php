@@ -61,7 +61,7 @@
                                         - Tekan tombol Checkout untuk memproses pembayaran.
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
                                             <div class="accordion" id="accordionPembayaran">
                                                 <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
                                                     <div class="card-header bg-info" id="headingKomite">
@@ -140,7 +140,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-7">
                                             <div class="card shadow border-0">
                                                 <div class="card-header bg-info">
                                                     <h6 class="mb-0 text-center">
@@ -148,48 +148,88 @@
                                                     </h6>
                                                 </div>
                                                 <div class="card-body">
-                                                    <div class="table-responsive p-2" style="border:1px dashed">
-                                                        <table class="table table-borderless table-condensed table-sm">
-                                                            <thead class="bg-info">
-                                                                <tr class="border-bottom text-white">
-                                                                    <th>#</th>
-                                                                    <th>Deskripsi</th>
-                                                                    <th class="text-right">Harga</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <thead class="d-none" id="header-checkout-komite">
-                                                                <tr class="border-bottom border-top">
-                                                                    <td colspan="4"><div class="badge badge-info">[Komite]</div></td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="content-checkout-komite">
-                                                            
-                                                            </tbody>
-                                                            <thead class="d-none" id="header-checkout-semester">
-                                                                <tr class="border-bottom border-top">
-                                                                    <td colspan="4"><div class="badge badge-info">[Semester]</div></td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="content-checkout-semester">
-                                                            
-                                                            </tbody>
-                                                            <thead class="d-none" id="header-checkout-lainnya">
-                                                                <tr class="border-bottom border-top">
-                                                                    <td colspan="4"><div class="badge badge-info">[Lainnya]</div></td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="content-checkout-lainnya">
-                                                            
-                                                            </tbody>
-                                                            <tfoot id="footer-checkout">
-                                                                
-                                                            </tfoot>
-                                                        </table>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="card shadow border-0">
+                                                                        <div class="card-header border-0">
+                                                                            Bukti Pembayaran
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <div class="table-responsive-sm">
+                                                                                <table class="table table-sm table-striped">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>#</th>
+                                                                                            <th>Deskripsi</th>
+                                                                                            <th class="text-right">Total</th>
+                                                                                            <th class="text-center"></th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <thead class="d-none" id="header-checkout-komite">
+                                                                                        <tr class="border-bottom border-top">
+                                                                                            <td colspan="4"><div class="badge badge-info">[Komite]</div></td>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="content-checkout-komite">
+                                                                                    
+                                                                                    </tbody>
+                                                                                    <thead class="d-none" id="header-checkout-semester">
+                                                                                        <tr class="border-bottom border-top">
+                                                                                            <td colspan="4"><div class="badge badge-info">[Semester]</div></td>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="content-checkout-semester">
+                                                                                    
+                                                                                    </tbody>
+                                                                                    <thead class="d-none" id="header-checkout-lainnya">
+                                                                                        <tr class="border-bottom border-top">
+                                                                                            <td colspan="4"><div class="badge badge-info">[Lainnya]</div></td>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="content-checkout-lainnya">
+                                                                                    
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-lg-5 col-sm-5">
+
+                                                                                </div>
+
+                                                                                <div class="col-lg-5 col-sm-5 ml-auto">
+                                                                                    <table class="table table-sm table-clear">
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td class="text-right">
+                                                                                                    <strong>Grand Total</strong>
+                                                                                                </td>
+                                                                                                <td class="text-right">
+                                                                                                    <strong id="grand_total"></strong>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <h6 class="text-center"><strong><i>Terbilang : <span id="terbilang"></span></i></strong></h6>
+                                                                                    <button type="submit" id="checkout" class="btn btn-success btn-block mt-2">
+                                                                                        Checkout
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <button type="submit" id="checkout" class="btn btn-success btn-block mt-2 d-none">
-                                                        Checkout
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -286,17 +326,23 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal</th>
                                 <th>Code</th>
                                 <th>Nis</th>
                                 <th>Siswa</th>
                                 <th>Kelas</th>
                                 <th>Nominal</th>
-                                <th>Tanggal</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6"><b>Total:</b></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -716,7 +762,7 @@
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
                                         <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-komite" data-id="`+index+`">
-                                            <i class="fa fa-minus"></i>
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -740,7 +786,7 @@
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
                                         <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-semester" data-id="`+index+`">
-                                            <i class="fa fa-minus"></i>
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -764,7 +810,7 @@
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
                                         <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-lainnya" data-id="`+index+`">
-                                            <i class="fa fa-minus"></i>
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -777,12 +823,7 @@
         let grand_total = total_komite + total_semester + total_lainnya;
 
         if (grand_total > 0) {
-            let footer = `<tr class="border-top">
-                            <th class="text-left" colspan="2"><b>Total Harga</b></th>
-                            <th class="text-right"><span class="badge badge-info"><h5 class="m-0"><b>Rp. `+formatCurrency(grand_total)+`</b></h5></span></th>
-                            <th></th>
-                        </tr>`
-            $('#footer-checkout').append(footer);
+            $('#grand_total').text(formatCurrency(grand_total));
             $('#checkout').removeClass('d-none');
             $('#checkout').prop('disabled', false).css('cursor', 'pointer');
         }
@@ -1039,6 +1080,9 @@
           "data": "no"
         },
         {
+          "data": "created_at"
+        },
+        {
           "data": "code"
         },
         {
@@ -1053,11 +1097,8 @@
         {
           "data": "amount",
           "render": function(data, type, row){
-              return `<b>`+formatCurrency(data)+`</b>`
+              return formatCurrency(data);
           }
-        },
-        {
-          "data": "created_at"
         },
         {
           "data": "id"
@@ -1083,6 +1124,38 @@
           }
         },
       ],
+      "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(6)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(6, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $(api.column(6).footer()).html(
+                formatCurrency(pageTotal)
+            );
+        }
     });
     // end data
 

@@ -545,6 +545,45 @@ table.scroll tbody {
             });
         }, 1000);    
     });
+
+    $(document).on("click.ev", ".btn-aktif", function(e) {
+        e.preventDefault();
+        showLoad();
+        let $this = $(this);
+        let id = $this.attr("data-id");
+        setTimeout(() => {
+            Swal.fire({
+                title: 'Aktifkan Data Biaya ini?',
+                text: "Anda yakin ingin mengaktifkan data ini, data tidak bisa di rubah setelah aktif",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Aktifkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "get",
+                        url: "<?= $aktif_biaya ?>",
+                        data: {id:id},
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.msg == 'ok') {
+                                Swal.fire('Data Telah Aktif!', 'data biaya telah aktif dan tidak bisa diubah setelah diaktifkan', 'success')
+                            }else {
+                                Swal.fire('Gagal!', 'Proses gagal!', 'warning')
+                            }
+                            table.ajax.reload();
+                        }
+                    });
+                    hideLoad();
+                }else{
+                    hideLoad();
+                }
+                check_nis();
+            });
+        }, 1000);    
+    });
     
 
     // data
@@ -594,8 +633,13 @@ table.scroll tbody {
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
-            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-lihat">
-                        <i class="fa fa-fw fa-eye"></i> Lihat
+            let disabled = (parseInt(row.is_active) == 1) ? 'disabled style="cursor:not-allowed"' : '';
+            let hide = (parseInt(row.is_active) == 1) ? 'd-none' : '';
+            return `<button type="button" data-id="`+row.id+`" class="btn btn-sm btn-success btn-aktif `+hide+`">
+                        <i class="fa fa-fw fa-check"></i> Aktifkan
+                    </button>
+                    <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-info btn-lihat" `+disabled+`>
+                        <i class="fa fa-fw fa-edit"></i> Edit
                     </button>
                     <button type="button" data-id="`+row.id+`" class="btn btn-sm btn-danger btn-cetak">
                         <i class="fa fa-fw fa-print"></i> Cetak
