@@ -57,7 +57,7 @@
                                 <div class="col-md-12 d-none" id="list-pembayaran">
                                     <hr>
                                     <div class="alert alert-info">Note: <br>
-                                        - Gunakan fitur <b>Centang dan Tidak Centang</b> untuk mengatur attribute yang akan di bayarkan. <br>
+                                        - Gunakan fitur <b>+ dan -</b> untuk mengatur attribute yang akan di bayarkan. <br>
                                         - Tekan tombol Checkout untuk memproses pembayaran.
                                     </div>
                                     <div class="row">
@@ -264,8 +264,13 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <button type="button" class="btn btn-outline-primary btn-block btn-filter">
-                                                        Simpan Filter
+                                                    <input type="text" class="form-control" name="duration" id="duration">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-info btn-block btn-filter">
+                                                        Terapkan Filter
                                                     </button>
                                                 </div>
                                             </div>
@@ -543,6 +548,22 @@
     }).on("select2:unselect", function(e){
         filter_kelas_id = null;  
         loadData();       
+    });
+
+    let filter_start_date = moment().format('DD/MM/YYYY');
+    let filter_end_date = moment().format('DD/MM/YYYY');
+    $("#duration").daterangepicker({
+      locale : {
+          format : 'DD/MM/YYYY'
+      }
+    }).on('apply.daterangepicker', function (ev, picker) {
+      filter_start_date = picker.startDate.format('DD/MM/YYYY');
+      filter_end_date = picker.endDate.format('DD/MM/YYYY');
+      loadData();
+    }).on('cancel.daterangepicker', function(ev, picker) {
+        filter_start_date = moment().format('DD/MM/YYYY');
+        filter_end_date = moment().format('DD/MM/YYYY');
+        loadData();
     });
 
     $(document).on("click.ev", ".btn-filter",  function() {
@@ -1004,6 +1025,8 @@
             data.filter_tahun_ajaran_id = filter_tahun_ajaran_id;
             data.filter_lembaga_id = filter_lembaga_id;
             data.filter_kelas_id = filter_kelas_id;
+            data.filter_start_date = filter_start_date;
+            data.filter_end_date = filter_end_date;
         }
       },
       "fnInitComplete": function() {

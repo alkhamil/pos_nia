@@ -40,6 +40,16 @@ class Pembayaran extends CI_Controller {
         if ($this->input->post('filter_kelas_id', TRUE)) {
             $where['m_kelas.id'] = $this->input->post('filter_kelas_id', TRUE);
         }
+        if($this->input->post('filter_start_date', TRUE) && $this->input->post('filter_end_date', TRUE)) {
+            if($this->input->post('filter_start_date', TRUE) == $this->input->post('filter_end_date', TRUE)) {
+                $where["DATE_FORMAT(t_pembayaran.created_at, '%d/%m/%Y') = "] = $this->input->post('filter_start_date', TRUE);
+            } else {
+                $where["DATE_FORMAT(t_pembayaran.created_at, '%d/%m/%Y')  >= "] = $this->input->post('filter_start_date', TRUE);
+                $where["DATE_FORMAT(t_pembayaran.created_at, '%d/%m/%Y') <= "] = $this->input->post('filter_end_date', TRUE);
+            }
+        } else {
+            $where["DATE_FORMAT(t_pembayaran.created_at, '%d/%m/%Y') = "] = date('d/m/Y');
+        }
         $no = $this->input->post('start');
         $list = $this->Pembayaran_model->lists(
             '

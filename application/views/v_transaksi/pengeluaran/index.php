@@ -172,7 +172,49 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Daftar <?= $title ?></h6>
             </div>
+            
             <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="accordion" id="accordionFilterPembayaran">
+                            <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
+                                <div class="card-header bg-info" id="headingFilter">
+                                    <h6 class="mb-0">
+                                        <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
+                                            <i class="fa fa-plus fa-fw"></i>
+                                        </button>
+                                        <strong class="ml-2 text-white">Filter Pencarian</strong>
+                                    </h6>
+                                </div>
+
+                                <div id="collapseFilter" class="collapse" aria-labelledby="headingFilter" data-parent="#accordionFilterPembayaran">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <select name="filter_lembaga_id" id="filter_lembaga_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Lembaga">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="duration" id="duration">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <button type="button" class="btn btn-info btn-block btn-filter">
+                                                        Terapkan Filter
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-sm" id="data" width="100%">
                         <thead>
@@ -212,6 +254,72 @@
         	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
         });
     });
+
+    // FILTER
+
+    let filter_lembaga_id = null;
+    $("#filter_lembaga_id").select2({
+        allowClear: true,
+        ajax: {
+            url: "<?php echo $select_lembaga ?>",
+            delay: 100,
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        filter_lembaga_id = data.id;
+        loadData();
+    }).on("select2:unselect", function(e){
+        filter_lembaga_id = null;         
+        filter_lembaga_name = null;  
+        loadData();       
+    });
+
+    let filter_start_date = moment().format('DD/MM/YYYY');
+    let filter_end_date = moment().format('DD/MM/YYYY');
+    $("#duration").daterangepicker({
+      locale : {
+          format : 'DD/MM/YYYY'
+      }
+    }).on('apply.daterangepicker', function (ev, picker) {
+      filter_start_date = picker.startDate.format('DD/MM/YYYY');
+      filter_end_date = picker.endDate.format('DD/MM/YYYY');
+      loadData();
+    }).on('cancel.daterangepicker', function(ev, picker) {
+        filter_start_date = moment().format('DD/MM/YYYY');
+        filter_end_date = moment().format('DD/MM/YYYY');
+        loadData();
+    });
+
+
+    $(document).on("click.ev", ".btn-filter",  function() {
+        loadData();
+    });
+
+    function loadData() { 
+        showLoad();
+        setTimeout(() => {
+            table.ajax.reload();
+            hideLoad();
+        }, 800);
+    }
 
     let saldo = null;
     let tahun_ajaran_id = getTahunAjaran();
@@ -443,7 +551,9 @@
         "url": "<?= $data; ?>",
         "type": "POST",
         "data": function(data) {
-          
+          data.filter_lembaga_id = filter_lembaga_id;
+          data.filter_start_date = filter_start_date;
+          data.filter_end_date = filter_end_date;
         }
       },
       "fnInitComplete": function() {

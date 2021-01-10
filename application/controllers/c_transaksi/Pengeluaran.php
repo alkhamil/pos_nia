@@ -20,6 +20,9 @@ class Pengeluaran extends CI_Controller {
         $data['cetak'] = base_url('c_transaksi/pengeluaran/cetak');
         $data['get_tahun_ajaran'] = base_url('c_transaksi/pembayaran/get_tahun_ajaran');
         $data['get_kebutuhan'] = base_url('c_transaksi/pengeluaran/get_kebutuhan');
+        $data['select_tahun_ajaran'] = base_url('c_transaksi/pembayaran/select_tahun_ajaran');
+        $data['select_siswa'] = base_url('c_transaksi/pembayaran/select_siswa');
+        $data['select_kelas'] = base_url('c_transaksi/pembayaran/select_kelas');
         $data['select_lembaga'] = base_url('c_transaksi/pengeluaran/select_lembaga');
         $this->load->view('layout/wrapper', $data);
     }
@@ -28,6 +31,20 @@ class Pengeluaran extends CI_Controller {
     {
         $temp_data = [];
         $where = [];
+        if ($this->input->post('filter_lembaga_id', TRUE)) {
+            $where['t_pengeluaran.lembaga_id'] = $this->input->post('filter_lembaga_id', TRUE);
+        }
+        if($this->input->post('filter_start_date', TRUE) && $this->input->post('filter_end_date', TRUE)) {
+            if($this->input->post('filter_start_date', TRUE) == $this->input->post('filter_end_date', TRUE)) {
+                $where["DATE_FORMAT(t_pengeluaran.created_at, '%d/%m/%Y') = "] = $this->input->post('filter_start_date', TRUE);
+            } else {
+                $where["DATE_FORMAT(t_pengeluaran.created_at, '%d/%m/%Y')  >= "] = $this->input->post('filter_start_date', TRUE);
+                $where["DATE_FORMAT(t_pengeluaran.created_at, '%d/%m/%Y') <= "] = $this->input->post('filter_end_date', TRUE);
+            }
+        } else {
+            $where["DATE_FORMAT(t_pengeluaran.created_at, '%d/%m/%Y') = "] = date('d/m/Y');
+        }
+
         $no = $this->input->post('start');
         $list = $this->Pengeluaran_model->lists(
             '*',
