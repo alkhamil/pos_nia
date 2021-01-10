@@ -88,7 +88,6 @@
                                 <th>Nama</th>
                                 <th>Lembaga</th>
                                 <th>Tanggal Lahir</th>
-                                <th>Alamat</th>
                                 <th>Telepon</th>
                                 <th></th>
                             </tr>
@@ -299,9 +298,6 @@
           "data": "birthday"
         },
         {
-          "data": "address"
-        },
-        {
           "data": "phone"
         },
         {
@@ -311,14 +307,14 @@
       
       "columnDefs": [
         {
-          "targets": [0, 7], 
+          "targets": [0, 6], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 7,
+          "targets": 6,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {

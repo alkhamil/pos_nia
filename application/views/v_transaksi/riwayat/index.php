@@ -9,9 +9,6 @@
     <!-- listing -->
     <div class="col-md-12">
         <!-- DataTales Example -->
-        <a href="<?= base_url('c_master/siswa') ?>" class="btn btn-danger mb-1">
-            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Kembali
-        </a>
         <div class="accordion mb-2" id="accordionFilterPembayaran">
             <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
                 <div class="card-header bg-info" id="headingFilter">
@@ -23,9 +20,15 @@
                     </h6>
                 </div>
 
-                <div id="collapseFilter" class="collapse" aria-labelledby="headingFilter" data-parent="#accordionFilterPembayaran">
+                <div id="collapseFilter" class="collapse show" aria-labelledby="headingFilter" data-parent="#accordionFilterPembayaran">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <select name="filter_siswa_id" id="filter_siswa_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Siswa">
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <select name="filter_tahun_ajaran_id" id="filter_tahun_ajaran_id" class="form-control form-control-sm" style="width: 100%" data-placeholder="Filter Tahun Ajaran">
@@ -46,8 +49,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-outline-primary btn-block btn-filter">
-                                        Simpan Filter
+                                    <button type="button" class="btn btn-outline-info btn-block btn-filter">
+                                        Terapkan Filter
                                     </button>
                                 </div>
                             </div>
@@ -60,6 +63,9 @@
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Daftar
                     <?= $title ?>
+                    <button type="button" id="btn-cetak-semua" class="btn btn-sm btn-info float-right">
+                        <i class="fa fa-print"></i> Cetak
+                    </button>
                 </h6>
             </div>
             <div class="card-body">
@@ -98,7 +104,7 @@
     <div class="modal fade" id="modal-pembayaran-detail" data-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="modal-pembayaran-detailTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content border-0">
                 <div class="modal-header bg-info">
                     <h5 class="modal-title text-white" id="modal-pembayaran-detailTitle"></h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -143,7 +149,7 @@
                                         <table class="table table-sm table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">#</th>
+                                                    <th>#</th>
                                                     <th>Nama Pembayaran</th>
                                                     <th class="text-right">Total</th>
                                                 </tr>
@@ -155,9 +161,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-5">
-
                                         </div>
-
                                         <div class="col-lg-4 col-sm-5 ml-auto">
                                             <table class="table table-sm table-clear">
                                                 <tbody>
@@ -171,9 +175,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-
                                         </div>
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -217,6 +219,40 @@
     });
 
     // FILTER
+    let filter_siswa_id = null;
+    $("#filter_siswa_id").select2({
+        allowClear: true,
+        ajax: {
+            url: "<?php echo $select_siswa ?>",
+            delay: 100,
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        filter_siswa_id = data.id;
+        loadData();
+    }).on("select2:unselect", function(e){
+        filter_siswa_id = null; 
+        loadData();  
+    });
+
     let filter_tahun_ajaran_id = null;
     $("#filter_tahun_ajaran_id").select2({
         allowClear: true,
@@ -324,6 +360,43 @@
         loadData();
     });
 
+    $(document).on("click.ev", "#btn-cetak-semua",  function() {
+        let query = "?";
+        if (filter_siswa_id) {
+            query += "&filter_siswa_id="+filter_siswa_id;
+        }
+        if (filter_tahun_ajaran_id) {
+            query += "&filter_tahun_ajaran_id="+filter_tahun_ajaran_id;
+        }
+        if (filter_lembaga_id) {
+            query += "&filter_lembaga_id="+filter_lembaga_id;
+        }
+        if (filter_kelas_id) {
+            query += "&filter_kelas_id="+filter_kelas_id;
+        }
+        console.log(query);
+        showLoad();
+        setTimeout(() => {
+            Swal.fire({
+                title: 'Cetak Semua Data ini?',
+                text: "Anda akan di alihkan ke halaman baru untuk mencetak",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Cetak!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let link = "<?= $cetak_semua ?>" + query;
+                    window.open(link);
+                    hideLoad();
+                }else{
+                    hideLoad();
+                }
+            });
+        }, 1000);
+    });
+
     function loadData() { 
         showLoad();
         setTimeout(() => {
@@ -394,7 +467,7 @@
             "url": "<?= $data; ?>",
             "type": "POST",
             "data": function (data) {
-                data.siswa_id = "<?= $siswa_id ?>";
+                data.filter_siswa_id = filter_siswa_id;
                 data.filter_tahun_ajaran_id = filter_tahun_ajaran_id;
                 data.filter_lembaga_id = filter_lembaga_id;
                 data.filter_kelas_id = filter_kelas_id;

@@ -232,16 +232,16 @@
                     <div class="col-md-12">
                         <div class="accordion" id="accordionFilterPembayaran">
                             <div class="card shadow border-top-0 border-left-0 border-right-0 border-bottom border-white">
-                                <div class="card-header bg-info" id="headingKomite">
+                                <div class="card-header bg-info" id="headingFilter">
                                     <h6 class="mb-0">
-                                        <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseKomite" aria-expanded="true" aria-controls="collapseKomite">
+                                        <button class="btn btn-success btn-circle btn-sm btn-change" type="button" data-toggle="collapse" data-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
                                             <i class="fa fa-plus fa-fw"></i>
                                         </button>
                                         <strong class="ml-2 text-white">Filter Pencarian</strong>
                                     </h6>
                                 </div>
 
-                                <div id="collapseKomite" class="collapse show" aria-labelledby="headingKomite" data-parent="#accordionFilterPembayaran">
+                                <div id="collapseFilter" class="collapse show" aria-labelledby="headingFilter" data-parent="#accordionFilterPembayaran">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-3">
@@ -470,12 +470,13 @@
     }).on("select2:select", function(e) {
         let data = e.params.data;
         filter_tahun_ajaran_id = data.id;
+        loadData();
     }).on("select2:unselect", function(e){
-        filter_tahun_ajaran_id = null;         
+        filter_tahun_ajaran_id = null; 
+        loadData();  
     });
 
     let filter_lembaga_id = null;
-    let filter_lembaga_name = null;
     $("#filter_lembaga_id").select2({
         allowClear: true,
         ajax: {
@@ -503,10 +504,11 @@
     }).on("select2:select", function(e) {
         let data = e.params.data;
         filter_lembaga_id = data.id;
-        filter_lembaga_name = data.text;
+        loadData();
     }).on("select2:unselect", function(e){
         filter_lembaga_id = null;         
-        filter_lembaga_name = null;         
+        filter_lembaga_name = null;  
+        loadData();       
     });
 
     let filter_kelas_id = null;
@@ -515,15 +517,6 @@
         ajax: {
             url: "<?php echo $select_kelas ?>",
             delay: 100,
-            data: function(params) {
-                let level = (filter_lembaga_name == 'SMP' || filter_lembaga_name == 'MTS') ? 1 : 2;
-                var query = {
-                    q: params.term,
-                    type: 'public',
-                    level: level
-                }
-                return query;
-            },
             dataType: 'json',
             processResults: function(data) {   
                 let items = [];
@@ -546,17 +539,23 @@
     }).on("select2:select", function(e) {
         let data = e.params.data;
         filter_kelas_id = data.id;
+        loadData();
     }).on("select2:unselect", function(e){
-        filter_kelas_id = null;         
+        filter_kelas_id = null;  
+        loadData();       
     });
 
     $(document).on("click.ev", ".btn-filter",  function() {
+        loadData();
+    });
+
+    function loadData() { 
         showLoad();
         setTimeout(() => {
             table.ajax.reload();
             hideLoad();
         }, 800);
-    });
+    }
 
     // END FILTER
 
