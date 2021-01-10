@@ -232,8 +232,8 @@ class Riwayat extends CI_Controller {
             $data['tahun_ajaran_name'] = $this->get_name('m_tahun_ajaran', $this->input->get('filter_tahun_ajaran_id', TRUE));
         }
         $data['tahun_lembaga'] = null;
-        if ($this->input->get('filter_lemabaga_id', TRUE)) {
-            $where['m_lemabaga.id'] = $this->input->get('filter_lemabaga_id', TRUE);
+        if ($this->input->get('filter_lembaga_id', TRUE)) {
+            $where['m_lembaga.id'] = $this->input->get('filter_lembaga_id', TRUE);
             $data['lembaga_name'] = $this->get_name('m_lembaga', $this->input->get('filter_lembaga_id', TRUE));
         }
         $data['siswa_name'] = null;
