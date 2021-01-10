@@ -7,6 +7,20 @@
 .form-check-input{
     cursor:pointer;
 }
+
+#desc {
+    background: transparent;
+    border: none;
+    border-radius:0;
+    border-bottom: 1px solid #000000;
+}
+#amount {
+    background: transparent;
+    border: none;
+    border-radius:0;
+    text-align:right;
+    border-bottom: 1px solid #000000;
+}
 </style>
 <!-- Content Row -->
 <div class="row content">
@@ -109,29 +123,89 @@
                                                                 <div class="card-body">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <div class="alert alert-warning"><b>Note: Harga dan Deskripsi dapat diubah</b></div>
-                                                                            <div class="form-group">
-                                                                                <label class="label-required">Nama Penerima</label>
-                                                                                <input type="text" class="form-control" name="receive_name" id="receive_name" required>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="card shadow border-0">
+                                                                                        <div class="card-header border-0">
+                                                                                            Bukti Pengeluaran
+                                                                                            <strong id="created_at"></strong>
+                                                                                        </div>
+                                                                                        <div class="card-body">
+                                                                                            <div class="row mb-4">
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label for="approval_name" class="label-required">Petugas</label>
+                                                                                                        <input type="text" name="approval_name" id="approval_name" value="Admin" class="form-control" disabled>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="col-sm-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label for="receive_name" class="label-required">Penerima</label>
+                                                                                                        <input type="text" name="receive_name" id="receive_name" class="form-control" required>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+
+                                                                                            <div class="table-responsive-sm">
+                                                                                                <table class="table table-sm table-striped">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th>#</th>
+                                                                                                            <th>Deskripsi Kebutuhan</th>
+                                                                                                            <th class="text-right">Total</th>
+                                                                                                            <th class="text-center"></th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody id="tbody-kebutuhan">
+                                                                                                        
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-lg-5 col-sm-5">
+
+                                                                                                </div>
+
+                                                                                                <div class="col-lg-5 col-sm-5 ml-auto">
+                                                                                                    <table class="table table-sm table-clear">
+                                                                                                        <tbody>
+                                                                                                            <tr>
+                                                                                                                <td class="text-right">
+                                                                                                                    <strong>Grand Total</strong>
+                                                                                                                </td>
+                                                                                                                <td class="text-right">
+                                                                                                                    <strong id="grand_total"></strong>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td class="text-right">
+                                                                                                                    <strong>Sisa Saldo</strong>
+                                                                                                                </td>
+                                                                                                                <td class="text-right">
+                                                                                                                    <strong id="sisa_saldo"></strong>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <h6 class="text-center"><strong><i>Terbilang : <span id="terbilang"></span></i></strong></h6>
+                                                                                                    <button type="submit" id="cairkan" class="btn btn-success btn-block mt-2">
+                                                                                                        Cairkan
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                            <div id="anggaran-kebutuhan"></div>
-                                                                        </div>
-                                                                        <div class="col-md-12 mt-2 d-none" id="anggaran-footer">
-                                                                            <table class="table table-sm">
-                                                                                <tr>
-                                                                                    <td class="text-right" width="70%"><b>Total Anggaran</b></td>
-                                                                                    <td>:</td>
-                                                                                    <td class="text-right" id="f_total_anggaran"></td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td class="text-right" width="70%"><b>Sisa Saldo</b></td>
-                                                                                    <td>:</td>
-                                                                                    <td class="text-right" id="f_sisa_saldo"></td>
-                                                                                </tr>
-                                                                            </table>
-                                                                            <button type="submit" id="cairkan" class="btn btn-success btn-block mt-2">
-                                                                                Cairkan
-                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -220,16 +294,22 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal</th>
                                 <th>Code</th>
                                 <th>Pemberi Izin</th>
                                 <th>Nama Penerima</th>
                                 <th>Nominal</th>
-                                <th>Tanggal</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5"><b>Total:</b></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -253,6 +333,44 @@
         }).on('hide.bs.collapse', function(){
         	$(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
         });
+
+    });
+
+    let kebutuhan = [];
+    $("#kebutuhan_id").select2({
+        ajax: {
+            url: "<?php echo $select_kebutuhan ?>",
+            delay: 100,
+            dataType: 'json',
+            processResults: function(data) {   
+                let items = [];
+                if (data.length > 0) {
+                    for (let i = 0; i < data.length; i++) {
+                    let tempData = {
+                        id: data[i].id,
+                        text: data[i].name,
+                        desc: data[i].desc,
+                        amount: data[i].amount,
+                        data: data[i]
+                    }
+                    items.push(tempData)
+                    }
+                }
+                return {
+                    results: items
+                };
+                console.log(items);
+            }
+        }
+    }).on("select2:select", function(e) {
+        let data = e.params.data;
+        kebutuhan.push(data);
+        loadKebutuhan(kebutuhan, '#tbody-kebutuhan');
+        kebutuhan_id = data.id;
+    }).on("select2:unselect", function(e){
+        let data = e.params.data;
+        removeItemsById(kebutuhan, parseInt(data.id));
+        loadKebutuhan(kebutuhan, '#tbody-kebutuhan');      
     });
 
     // FILTER
@@ -435,10 +553,9 @@
     function loadDataAnggaran(_ANGGARAN){
         $('#list-anggaran-temp').val(JSON.stringify(_ANGGARAN));
         if (_ANGGARAN) {
-            $('#anggaran-kebutuhan').html("");
-            $('#anggaran-footer').removeClass('d-none');
+            $('#tbody-kebutuhan').html("");
             let sisa_saldo = parseInt(saldo);
-            let total_anggaran = 0;
+            let grand_total = 0;
             $.each(_ANGGARAN, function (index, data) { 
                 index+=1;
                 let show = '';
@@ -448,35 +565,27 @@
                     }else {
                         show = '';
                         sisa_saldo-=parseInt(data.amount);
-                        total_anggaran+=parseInt(data.amount);
+                        grand_total+=parseInt(data.amount);
                     }
                 }else {
                     show = 'd-none';
                 }
-                let rows = `<div class="card mb-1 `+show+`" style="border:1px dashed; border-radius:0;">
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="amount" class="col-sm-2 label-required col-form-label">Harga</label>
-                                        <div class="col-sm-10">
-                                            <input type="number" class="form-control update-amount" id="amount" value="`+data.amount+`" data-id="`+index+`">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="desc" class="col-sm-2 label-required col-form-label">Deskripsi</label>
-                                        <div class="col-sm-10">
-                                            <textarea name="desc" id="desc" class="form-control update-desc" cols="7" rows="3" data-id="`+index+`">`+data.desc+`</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-12 d-flex justify-content-end">
-                                            <button class="btn ml-1 btn-sm btn-circle btn-danger btn-delete-kebutuhan" data-id="`+index+`">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                $('#anggaran-kebutuhan').append(rows);
+                let rows = `<tr class="`+show+`">
+                            <td width="30">`+index+`</td>
+                            <td>
+                                <input type="text" class="form-control update-desc" id="desc" value="`+data.desc+`" data-id="`+index+`">
+                            </td>
+                            <td class="text-right" width="150">
+                                <input type="text" pattern="[0-9.]+" class="form-control update-amount" id="amount" value="`+data.amount+`" data-id="`+index+`">
+                            </td>
+                            <td class="text-center" valign="middle">
+                                <span class="btn-set-kebutuhan text-info" title="Update item" style="cursor:pointer" data-id="`+index+`"><i class="fa fa-check"></i></span>
+                                |
+                                <span class="btn-delete-kebutuhan text-danger" title="Hapus item" style="cursor:pointer" data-id="`+index+`"><i class="fa fa-trash"></i></span>
+                            </td>
+                        </tr>`;
+                $('#tbody-kebutuhan').append(rows);
+                
             });
 
             if (sisa_saldo <= 0) {
@@ -484,36 +593,37 @@
             }else{
                 $('#cairkan').prop('disabled', false).css('cursor', 'pointer');
             }
-            
-            $('#f_total_anggaran').html(`<span class="badge badge-info"><h5 class="m-0">Rp. `+formatCurrency(total_anggaran)+`</h5></span>`);
-            $('#f_sisa_saldo').html(`<span class="badge badge-info"><h5 class="m-0">Rp. `+formatCurrency(sisa_saldo)+`</h5></span>`);
+
+            $('#grand_total').text(formatCurrency(grand_total));
+            $('#sisa_saldo').text(formatCurrency(sisa_saldo));
+            $('#terbilang').text(terbilang(grand_total));
         }
     }
 
-    //kebutuhan detail
+    // kebutuhan detail
     $(document).on("keyup.ev", ".update-amount", function(e) {
         e.preventDefault();
         let $this = $(this);
         let i = parseInt($(this).attr('data-id'));
         DATA[i-1].amount = $this.val();
-        showLoad();
-        setTimeout(() => {
-            loadDataAnggaran(DATA);
-            loadDataChild(DATA);
-            hideLoad();
-        }, 600);
+        // showLoad();
+        // setTimeout(() => {
+        //     loadDataAnggaran(DATA);
+        //     loadDataChild(DATA);
+        //     hideLoad();
+        // }, 1000);
     });
-    $(document).on("change.ev", ".update-desc", function(e) {
+    $(document).on("keyup.ev", ".update-desc", function(e) {
         e.preventDefault();
         let $this = $(this);
         let i = parseInt($(this).attr('data-id'));
         DATA[i-1].desc = $this.val();
-        showLoad();
-        setTimeout(() => {
-            loadDataAnggaran(DATA);
-            loadDataChild(DATA);
-            hideLoad();
-        }, 600);
+        // showLoad();
+        // setTimeout(() => {
+        //     loadDataAnggaran(DATA);
+        //     loadDataChild(DATA);
+        //     hideLoad();
+        // }, 1000);
     });
 
     $(document).on("click.ev", ".btn-add-kebutuhan", function(e) {
@@ -538,6 +648,16 @@
             loadDataChild(DATA);
             hideLoad();
         }, 600);
+    });
+
+    $(document).on("click.ev", ".btn-set-kebutuhan", function(e) {
+        e.preventDefault();
+        showLoad();
+        setTimeout(() => {
+            loadDataAnggaran(DATA);
+            loadDataChild(DATA);
+            hideLoad();
+        }, 1000);
     });
 
     // data
@@ -566,6 +686,9 @@
           "data": "no"
         },
         {
+          "data": "created_at"
+        },
+        {
           "data": "code"
         },
         {
@@ -577,11 +700,8 @@
         {
           "data": "amount",
           "render": function(data, type, row){
-              return `<b>Rp. `+formatCurrency(data)+`</b>`
+              return formatCurrency(data);
           }
-        },
-        {
-          "data": "created_at"
         },
         {
           "data": "id"
@@ -607,6 +727,38 @@
           }
         },
       ],
+      "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(5)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(5, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $(api.column(5).footer()).html(
+                formatCurrency(pageTotal)
+            );
+        }
     });
     
     $(document).on("click.ev", ".btn-cetak", function(e) {

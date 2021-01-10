@@ -68,12 +68,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal</th>
                                 <th>Code</th>
                                 <th>Nama</th>
                                 <th>Kelas</th>
                                 <th>Tahun Ajaran</th>
                                 <th>Lembaga</th>
-                                <th>Tanggal</th>
                                 <th>Total</th>
                                 <th></th>
                             </tr>
@@ -410,6 +410,9 @@
                 "data": "no"
             },
             {
+                "data": "created_at"
+            },
+            {
                 "data": "code"
             },
             {
@@ -425,12 +428,9 @@
                 "data": "lembaga_name"
             },
             {
-                "data": "created_at"
-            },
-            {
                 "data": "amount",
                 "render": function (data, type, row) {
-                    return '<b>' + formatCurrency(data) + '</b>';
+                    return formatCurrency(data);
                 }
             },
             {

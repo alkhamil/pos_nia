@@ -24,6 +24,8 @@ class Pengeluaran extends CI_Controller {
         $data['select_siswa'] = base_url('c_transaksi/pembayaran/select_siswa');
         $data['select_kelas'] = base_url('c_transaksi/pembayaran/select_kelas');
         $data['select_lembaga'] = base_url('c_transaksi/pengeluaran/select_lembaga');
+        $data['select_kebutuhan'] = base_url('c_transaksi/pengeluaran/select_kebutuhan');
+        $data['add_kebutuhan'] = base_url('c_transaksi/pengeluaran/add_kebutuhan');
         $this->load->view('layout/wrapper', $data);
     }
 
@@ -187,6 +189,19 @@ class Pengeluaran extends CI_Controller {
         $this->Pengeluaran_model->search_field = "name";
         $this->Pengeluaran_model->column_search = "name";
         $this->Pengeluaran_model->table = "m_lembaga";
+        $data = $this->Pengeluaran_model->list_select($q, $where);
+        echo json_encode($data);
+    }
+
+    public function select_kebutuhan()
+    {
+        $q = $this->input->get('q');
+        $where = [];
+        $this->Pengeluaran_model->order_by = "id";
+        $this->Pengeluaran_model->order_type = "DESC";
+        $this->Pengeluaran_model->search_field = "name";
+        $this->Pengeluaran_model->column_search = "name";
+        $this->Pengeluaran_model->table = "m_kebutuhan";
         $data = $this->Pengeluaran_model->list_select($q, $where);
         echo json_encode($data);
     }

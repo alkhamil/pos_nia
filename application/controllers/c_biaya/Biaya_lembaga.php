@@ -20,6 +20,7 @@ class Biaya_lembaga extends CI_Controller {
         $data['get'] = base_url('c_biaya/biaya_lembaga/get_data');
         $data['get_biaya_lembaga'] = base_url('c_biaya/biaya_lembaga/get_biaya_lembaga');
         $data['cetak'] = base_url('c_biaya/biaya_lembaga/cetak');
+        $data['aktif_biaya'] = base_url('c_biaya/biaya_lembaga/aktif_biaya');
         $data['select_tahun_ajaran'] = base_url('c_biaya/biaya_lembaga/select_tahun_ajaran');
         $data['select_lembaga'] = base_url('c_biaya/biaya_lembaga/select_lembaga');
         $this->load->view('layout/wrapper', $data);
@@ -51,6 +52,7 @@ class Biaya_lembaga extends CI_Controller {
 				$row['tahun_ajaran_name'] = $ls['tahun_ajaran_name'];
 				$row['lembaga_id'] = $ls['lembaga_id'];
 				$row['lembaga_name'] = $ls['lembaga_name'];
+				$row['is_active'] = $ls['is_active'];
 				$row['id'] = $ls['id'];
 	
 				$temp_data[] = (object)$row;
@@ -62,6 +64,19 @@ class Biaya_lembaga extends CI_Controller {
 		$data['recordsFiltered'] = $this->Biaya_lembaga_model->list_count($where, true);
         $data['data'] = $temp_data;
         echo json_encode($data);
+    }
+
+    public function aktif_biaya()
+    {
+        if ($this->input->get('id', TRUE)) {
+            $where['id'] = $this->input->get('id', TRUE);
+            $update['is_active'] = 1;
+            $this->Biaya_lembaga_model->update($update, $where);
+            $result['msg'] = 'ok';
+        }else {
+            $result['msg'] = 'bad';
+        }
+        echo json_encode($result);
     }
 
     public function get_data()

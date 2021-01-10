@@ -140,12 +140,13 @@ class Pembayaran extends CI_Controller {
         
         $where_['t_biaya_lembaga.tahun_ajaran_id'] = $this->input->get('tahun_ajaran_id', TRUE);
         $where_['t_biaya_lembaga.lembaga_id'] = $this->input->get('lembaga_id', TRUE);
+        $where_['t_biaya_lembaga.is_active'] = 1;
         $select_ = "
-        t_biaya_lembaga.*, 
+            t_biaya_lembaga.*, 
             m_tahun_ajaran.name as tahun_ajaran_name,
             m_lembaga.name as lembaga_name,
             ";
-            $join_ = [
+        $join_ = [
                 [
                     'table'     => 'm_tahun_ajaran',
                     'on'        => 'm_tahun_ajaran.id = t_biaya_lembaga.tahun_ajaran_id'
