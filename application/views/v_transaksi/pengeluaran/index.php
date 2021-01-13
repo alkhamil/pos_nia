@@ -296,6 +296,8 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Code</th>
+                                <th>Tahun Ajaran</th>
+                                <th>Lembaga</th>
                                 <th>Pemberi Izin</th>
                                 <th>Nama Penerima</th>
                                 <th>Nominal</th>
@@ -306,7 +308,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="5"><b>Total:</b></th>
+                                <th colspan="7"><b>Total:</b></th>
                                 <th></th>
                             </tr>
                         </tfoot>
@@ -474,6 +476,8 @@
         $('#total_saldo').val(formatCurrency(saldo));
         $('#total_saldo_temp').val(saldo);
         $('#btn-lanjutkan').prop('disabled', false).css('cursor', 'pointer'); 
+        $('#list-kebutuhan').addClass('d-none');
+        DATA = [];
         hideLoad();
       }, 800);
     }).on("select2:unselect", function(e){
@@ -496,6 +500,7 @@
         });
 
         if (lanjut) {
+            $('#list-kebutuhan').addClass('d-none');
             if (saldo > 0) {
                 setTimeout(() => {
                     $.ajax({
@@ -588,15 +593,21 @@
                 
             });
 
-            if (sisa_saldo <= 0) {
-                $('#cairkan').prop('disabled', true).css('cursor', 'not-allowed');
+            if (grand_total > 0) {
+                if (sisa_saldo > 0) {
+                    $('#cairkan').prop('disabled', false).css('cursor', 'pointer');
+                }else{
+                    $('#cairkan').prop('disabled', true).css('cursor', 'not-allowed');
+                }
+                $('#grand_total').text(formatCurrency(grand_total));
+                $('#terbilang').text(terbilang(grand_total));
+                $('#sisa_saldo').text(formatCurrency(sisa_saldo));
             }else{
-                $('#cairkan').prop('disabled', false).css('cursor', 'pointer');
+                $('#grand_total').text(formatCurrency(grand_total));
+                $('#terbilang').text('Nol');
+                $('#cairkan').prop('disabled', true).css('cursor', 'not-allowed');
             }
-
-            $('#grand_total').text(formatCurrency(grand_total));
-            $('#sisa_saldo').text(formatCurrency(sisa_saldo));
-            $('#terbilang').text(terbilang(grand_total));
+            
         }
     }
 
@@ -692,6 +703,12 @@
           "data": "code"
         },
         {
+          "data": "tahun_ajaran_name"
+        },
+        {
+          "data": "lembaga_name"
+        },
+        {
           "data": "approval_name"
         },
         {
@@ -710,14 +727,14 @@
       
       "columnDefs": [
         {
-          "targets": [0, 6], 
+          "targets": [0, 8], 
           "orderable": true, 
           "searchable": false, 
           "className": "text-center",
           "fixedColumns": true,
         },
         {
-          "targets": 6,
+          "targets": 8,
           "className": "text-center",
           "fixedColumns": true,
           "render": function(data, type, row) {
@@ -740,7 +757,7 @@
 
             // Total over all pages
             total = api
-                .column(5)
+                .column(7)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -748,14 +765,14 @@
 
             // Total over this page
             pageTotal = api
-                .column(5, { page: 'current' })
+                .column(7, { page: 'current' })
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
             // Update footer
-            $(api.column(5).footer()).html(
+            $(api.column(7).footer()).html(
                 formatCurrency(pageTotal)
             );
         }

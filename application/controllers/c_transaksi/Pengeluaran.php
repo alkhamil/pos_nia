@@ -49,7 +49,11 @@ class Pengeluaran extends CI_Controller {
 
         $no = $this->input->post('start');
         $list = $this->Pengeluaran_model->lists(
-            '*',
+            '
+                t_pengeluaran.*,
+                m_lembaga.name as lembaga_name,
+                m_tahun_ajaran.name as tahun_ajaran_name
+            ',
             $where, 
             $this->input->post('length'), 
             $this->input->post('start') 
@@ -60,6 +64,8 @@ class Pengeluaran extends CI_Controller {
 				$row = array();
                 $row['no'] = $no;
 				$row['code'] = $ls['code'];
+				$row['lembaga_name'] = $ls['lembaga_name'];
+				$row['tahun_ajaran_name'] = $ls['tahun_ajaran_name'];
 				$row['approval_name'] = $ls['approval_name'];
 				$row['receive_name'] = $ls['receive_name'];
 				$row['amount'] = $ls['amount'];
