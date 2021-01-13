@@ -825,10 +825,12 @@
 
         if (grand_total > 0) {
             $('#grand_total').text(formatCurrency(grand_total));
+            $('#terbilang').text(terbilang(grand_total));
             $('#checkout').removeClass('d-none');
             $('#checkout').prop('disabled', false).css('cursor', 'pointer');
         }else{
             $('#grand_total').text(formatCurrency(grand_total));
+            $('#terbilang').text('Nol');
             $('#checkout').prop('disabled', true).css('cursor', 'not-allowed');
         }
 

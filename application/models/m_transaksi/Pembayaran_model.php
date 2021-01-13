@@ -7,8 +7,8 @@ class Pembayaran_model extends CI_Model {
     public $order_by = 't_pembayaran.id';
     public $order_type = 'DESC';
     public $search_field = 't_pembayaran.code';
-    public $column_order = ['t_pembayaran.code']; //set column field database for datatable orderable
-    public $column_search = ['t_pembayaran.code', 'm_tahun_ajaran.name', 'm_lembaga.name', 'm_siswa.name', 'm_siswa.nis']; //set column field database for datatable searchable 
+    public $column_order = ['t_pembayaran.code', 'm_tahun_ajaran.name', 'm_lembaga.name', 'm_siswa.name', 'm_siswa.nis', 'm_kelas.name']; //set column field database for datatable orderable
+    public $column_search = ['t_pembayaran.code', 'm_tahun_ajaran.name', 'm_lembaga.name', 'm_siswa.name', 'm_siswa.nis', 'm_kelas.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {

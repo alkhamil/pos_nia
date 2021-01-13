@@ -7,8 +7,8 @@ class Pengeluaran_model extends CI_Model {
     public $order_by = 't_pengeluaran.id';
     public $order_type = 'DESC';
     public $search_field = 't_pengeluaran.code';
-    public $column_order = ['t_pengeluaran.code', 'm_lembaga.name']; //set column field database for datatable orderable
-    public $column_search = ['t_pengeluaran.code', 'm_lembaga.name']; //set column field database for datatable searchable 
+    public $column_order = ['t_pengeluaran.code', 't_pengeluaran.receive_name', 'm_lembaga.name', 'm_tahun_ajaran.name']; //set column field database for datatable orderable
+    public $column_search = ['t_pengeluaran.code', 't_pengeluaran.receive_name', 'm_lembaga.name', 'm_tahun_ajaran.name']; //set column field database for datatable searchable 
 
     public function __construct()
     {
