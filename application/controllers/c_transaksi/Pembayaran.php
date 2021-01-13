@@ -284,7 +284,7 @@ class Pembayaran extends CI_Controller {
         $list_checkout = json_decode($this->input->post('list-checkout-temp', TRUE));
         $list_pembayaran = json_decode($this->input->post('list-pembayaran-temp', TRUE));
 
-        // echo json_encode($list_pembayaran);exit;
+        echo json_encode($list_pembayaran);exit;
 
         $savedata['amount'] = $this->kalkulasi_pembayaran($list_checkout);
 

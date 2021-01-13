@@ -684,6 +684,7 @@
         });
 
         if (lanjut) {
+            $('#list-pembayaran').addClass('d-none');
             setTimeout(() => {
                 $('#submit').prop('disabled', false).css('cursor', 'pointer');
                 $.ajax({
@@ -761,8 +762,8 @@
                                     <td>`+dt.attribute_name+`</td>
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
-                                        <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-komite" data-id="`+index+`">
-                                            <i class="fa fa-trash"></i>
+                                        <button class="btn btn-sm btn-danger btn-circle btn-del-item-komite" data-key="`+dt.id+`" data-id="`+index+`">
+                                            <i class="fa fa-minus"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -785,8 +786,8 @@
                                     <td>`+dt.attribute_name+`</td>
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
-                                        <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-semester" data-id="`+index+`">
-                                            <i class="fa fa-trash"></i>
+                                        <button class="btn btn-sm btn-danger btn-circle btn-del-item-semester" data-key="`+dt.id+`" data-id="`+index+`">
+                                            <i class="fa fa-minus"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -809,8 +810,8 @@
                                     <td>`+dt.attribute_name+`</td>
                                     <td class="text-right">Rp. `+formatCurrency(dt.amount)+`</td>
                                     <td width="50" class="text-center">
-                                        <button class="btn btn-sm btn-danger btn-circle btn-add-hapus-lainnya" data-id="`+index+`">
-                                            <i class="fa fa-trash"></i>
+                                        <button class="btn btn-sm btn-danger btn-circle btn-del-item-lainnya" data-key="`+dt.id+`" data-id="`+index+`">
+                                            <i class="fa fa-minus"></i>
                                         </button>
                                     </td>
                                 </tr>`;
@@ -826,6 +827,9 @@
             $('#grand_total').text(formatCurrency(grand_total));
             $('#checkout').removeClass('d-none');
             $('#checkout').prop('disabled', false).css('cursor', 'pointer');
+        }else{
+            $('#grand_total').text(formatCurrency(grand_total));
+            $('#checkout').prop('disabled', true).css('cursor', 'not-allowed');
         }
 
     }
@@ -984,10 +988,13 @@
     // END TAMBAH ITEM
 
     // HAPUS ITEM
-    $(document).on("click.ev", ".btn-add-hapus-komite", function(e) {
+    $(document).on("click.ev", ".btn-del-item-komite", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
-        DATA.komite[i-1].is_checkout = 0;
+        let key = $(this).attr('data-key');
+        let row = DATA.komite.find(x => x.id === key);
+        row.is_checkout = 0;
+        // DATA.komite[i-1].is_checkout = 0;
         CHECKOUT.komite.splice(i-1, 1);
         loadDataCheckout(CHECKOUT);
         showLoad();
@@ -997,10 +1004,13 @@
             hideLoad();
         }, 600);
     });
-    $(document).on("click.ev", ".btn-add-hapus-semester", function(e) {
+    $(document).on("click.ev", ".btn-del-item-semester", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
-        DATA.semester[i-1].is_checkout = 0;
+        let key = $(this).attr('data-key');
+        let row = DATA.semester.find(x => x.id === key);
+        row.is_checkout = 0;
+        // DATA.semester[i-1].is_checkout = 0;
         CHECKOUT.semester.splice(i-1, 1);
         loadDataCheckout(CHECKOUT);
         showLoad();
@@ -1010,10 +1020,13 @@
             hideLoad();
         }, 600);
     });
-    $(document).on("click.ev", ".btn-add-hapus-lainnya", function(e) {
+    $(document).on("click.ev", ".btn-del-item-lainnya", function(e) {
         e.preventDefault();
         let i = parseInt($(this).attr('data-id'));
-        DATA.lainnya[i-1].is_checkout = 0;
+        let key = $(this).attr('data-key');
+        let row = DATA.lainnya.find(x => x.id === key);
+        row.is_checkout = 0;
+        // DATA.lainnya[i-1].is_checkout = 0;
         CHECKOUT.lainnya.splice(i-1, 1);
         loadDataCheckout(CHECKOUT);
         showLoad();
